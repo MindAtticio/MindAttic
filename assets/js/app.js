@@ -93,7 +93,7 @@
    * the main frame.
    */
   function buildRearPanelPath(w, h, inset) {
-    const rad = Math.max(10, 22 - inset);
+    const rad = Math.max(8, 16 - inset);
     const x0 = inset;
     const y0 = inset;
     const x1 = w - inset;
@@ -160,6 +160,7 @@
     const isMobile = layoutIsMobile();
     const r = isMobile ? 22 : 30;
     const rad = Math.max(8, r - inset);
+    const rTopLeft = Math.max(8, (isMobile ? 16 : r) - inset);
     const x0 = inset;
     const y0 = inset;
     const x1 = w - inset;
@@ -192,7 +193,7 @@
     const brCutX = 22;
     const brCutY = 16;
     return [
-      `M ${x0 + rad} ${y0}`,
+      `M ${x0 + rTopLeft} ${y0}`,
       `L ${wingW} ${y0}`,
       `C ${wingW + slopeW * 0.45} ${y0}, ${wingW + slopeW * 0.55} ${y0 + drop}, ${slopeEnd} ${y0 + drop}`,
       `L ${x1 - rad} ${y0 + drop}`,
@@ -203,8 +204,8 @@
       `Q ${x1 - brCutX} ${y1} ${x1 - brCutX - rad * 0.5} ${y1}`,
       `L ${x0 + rad} ${y1}`,
       `Q ${x0} ${y1} ${x0} ${y1 - rad}`,
-      `L ${x0} ${y0 + rad}`,
-      `Q ${x0} ${y0} ${x0 + rad} ${y0}`,
+      `L ${x0} ${y0 + rTopLeft}`,
+      `Q ${x0} ${y0} ${x0 + rTopLeft} ${y0}`,
       "Z",
     ].join(" ");
   }
