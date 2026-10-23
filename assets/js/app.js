@@ -14,6 +14,11 @@
       headlinePrimary: "The bond that saves you.",
       headlineItalic: "The bond that breaks you.",
       category: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      laurels: [
+        { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026" },
+        { src: "assets/laurel-bigscreenhack-glass.svg", alt: "Finalist, Big Screen Hack London 2026" },
+        { src: "assets/laurel-aimovie-glass.png", alt: "Official Selection, AI Movie Awards 2026" },
+      ],
     },
     {
       num: "02",
@@ -21,6 +26,10 @@
       headlinePrimary: "Without narrative, it is just stone and steel.",
       headlineItalic: "We craft mythology.",
       category: "ATELIER ARCHIVE // ORIGIN STUDY",
+      laurels: [
+        { src: "assets/laurel-cannes-glass.svg", alt: "Cannes Lions Shortlist" },
+        { src: "assets/laurel-annecy-glass.svg", alt: "Annecy Official Selection" },
+      ],
     },
     {
       num: "03",
@@ -28,6 +37,10 @@
       headlinePrimary: "A blank slate. A silent room.",
       headlineItalic: "Before the first cut.",
       category: "ATELIER ARCHIVE // MATERIAL STUDY",
+      laurels: [
+        { src: "assets/laurel-tribeca-glass.svg", alt: "Tribeca X Selection" },
+        { src: "assets/laurel-dad-glass.svg", alt: "D&AD Graphite Pencil" },
+      ],
     },
     {
       num: "04",
@@ -35,6 +48,10 @@
       headlinePrimary: "Every line is deliberate.",
       headlineItalic: "Authorship is the edge.",
       category: "ATELIER ARCHIVE // BESPOKE COMMISSION",
+      laurels: [
+        { src: "assets/laurel-venice-glass.svg", alt: "Venice Design Biennial" },
+        { src: "assets/laurel-reddot-glass.svg", alt: "Red Dot Luminary" },
+      ],
     },
     {
       num: "05",
@@ -42,6 +59,10 @@
       headlinePrimary: "Built for those who shape permanence.",
       headlineItalic: "We craft mythology.",
       category: "ATELIER ARCHIVE // SOVEREIGN WORLDS",
+      laurels: [
+        { src: "assets/laurel-monaco-glass.svg", alt: "Monaco Yacht Show Grand Prix" },
+        { src: "assets/laurel-lia-glass.svg", alt: "London International Awards" },
+      ],
     },
   ];
 
@@ -546,6 +567,7 @@
       elHeadline.innerHTML = `<span class="headline-primary">${data.headlinePrimary}</span> <em class="headline-italic">${data.headlineItalic}</em>`;
     }
     if (elDockCat) elDockCat.textContent = data.category;
+    renderLaurels(data.laurels);
 
     if (nextIdx === 0) {
       const flagship = document.querySelector(".reel-video");
@@ -555,6 +577,29 @@
     if (userTriggered) {
       restartAutoCycle();
     }
+  }
+
+  let laurelsMarkup = "";
+
+  function renderLaurels(laurels) {
+    const host = document.getElementById("viewport-laurels");
+    if (!host || !laurels) return;
+    const markup = laurels
+      .map((item) => `<span class="viewport-laurel"><img src="${item.src}" alt="${item.alt}"></span>`)
+      .join("");
+    if (markup === laurelsMarkup) return;
+    const first = laurelsMarkup === "";
+    laurelsMarkup = markup;
+    if (first) {
+      host.innerHTML = markup;
+      return;
+    }
+    host.classList.add("is-out");
+    window.setTimeout(() => {
+      if (laurelsMarkup !== markup) return;
+      host.innerHTML = markup;
+      host.classList.remove("is-out");
+    }, 240);
   }
 
   function restartAutoCycle() {
