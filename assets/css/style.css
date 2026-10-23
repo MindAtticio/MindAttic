@@ -342,7 +342,7 @@ html, body {
 .brand-sanctuary {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   text-decoration: none;
   color: var(--bone-white);
   padding: 8px 24px 8px 8px;
@@ -384,51 +384,11 @@ html, body {
   background: transparent;
 }
 
-.brand-lockup-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 7px;
-  min-width: 0;
-}
-
-.brand-wordmark-row {
-  display: flex;
-  align-items: center;
-  background: transparent;
-}
-
-.brand-name-img {
-  height: 13px;
+.brand-wordmark-svg {
+  height: 15px;
   width: auto;
   display: block;
   background: transparent;
-}
-
-.brand-sub-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.brand-signature-img {
-  height: 20px;
-  width: auto;
-  display: block;
-  flex: 0 0 auto;
-  background: transparent;
-}
-
-.brand-atelier-tag {
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--platinum-mid);
-  padding-left: 12px;
-  border-left: 1px solid rgba(228, 226, 221, 0.28);
-  white-space: nowrap;
 }
 
 /* Whisper credit between the lockup and the navigation rail */
@@ -734,13 +694,7 @@ html, body {
   text-shadow: 0 4px 28px rgba(0, 0, 0, 0.85);
 }
 
-.headline-primary {
-  display: inline;
-}
-
-.headline-italic {
-  display: inline;
-  margin-left: 10px;
+.editorial-headline em {
   font-style: italic;
   font-weight: 400;
   background: linear-gradient(135deg, #FFFFFF 0%, #E4E2DD 45%, #DFC8A2 100%);
@@ -918,6 +872,13 @@ html, body {
   text-transform: uppercase;
   color: var(--platinum-mid);
   white-space: nowrap;
+}
+
+#vhud-director-tag {
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: rgba(244, 241, 234, 0.72);
 }
 
 /* Center Sculpted Glass Command CTA Dock ("Commission a Work")
@@ -1182,26 +1143,8 @@ html, body {
     padding: 6px;
   }
 
-  .brand-lockup-text {
-    gap: 5px;
-  }
-
-  .brand-name-img {
-    height: 11px;
-  }
-
-  .brand-signature-img {
-    height: 16px;
-  }
-
-  .brand-sub-row {
-    gap: 10px;
-  }
-
-  .brand-atelier-tag {
-    font-size: 7.5px;
-    letter-spacing: 0.20em;
-    padding-left: 10px;
+  .brand-wordmark-svg {
+    height: 12px;
   }
 
   .hud-nav-rail {
@@ -1300,10 +1243,8 @@ html, body {
     line-height: 1.18;
   }
 
-  .headline-italic {
-    display: block;
-    margin-left: 0;
-    margin-top: 2px;
+  .editorial-headline em {
+    display: inline;
   }
 
   /* Own layer, dead-center above the notch. Laurels and the headline do not move it. */

@@ -11,9 +11,7 @@
     {
       num: "01",
       title: "EVERCLOSE · FLAGSHIP SERIES",
-      headlinePrimary: "The bond that saves you.",
-      headlineItalic: "The bond that breaks you.",
-      category: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      bottomRightCredit: '"THE BOND THAT SAVES YOU." · WRITTEN & DIRECTED BY ANDREJ KLIMOV',
       laurels: [
         { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026" },
         { src: "assets/laurel-aimovie-glass.png", alt: "Official Selection, AI Movie Awards 2026" },
@@ -22,10 +20,8 @@
     },
     {
       num: "02",
-      title: "THE OCULUS · MEMORY ARCHIVE",
-      headlinePrimary: "Without narrative, it is just stone and steel.",
-      headlineItalic: "We craft mythology.",
-      category: "ATELIER ARCHIVE // ORIGIN STUDY",
+      title: "L'ODYSSÉE · HAUTE HORLOGERIE",
+      bottomRightCredit: "MAISON VAUCHER GENEVA · COMMISSIONED FILM · DIR. ANDREJ KLIMOV",
       laurels: [
         { src: "assets/laurel-cannes-glass.svg", alt: "Cannes Lions Shortlist" },
         { src: "assets/laurel-annecy-glass.svg", alt: "Annecy Official Selection" },
@@ -33,10 +29,8 @@
     },
     {
       num: "03",
-      title: "THE RAW · ORIGIN SLATE",
-      headlinePrimary: "A blank slate. A silent room.",
-      headlineItalic: "Before the first cut.",
-      category: "ATELIER ARCHIVE // MATERIAL STUDY",
+      title: "AETHEL · ARCHITECTURAL FILM",
+      bottomRightCredit: "MONOLITH & SEA · ARCHITECTURAL MONOGRAPH · DIR. ANDREJ KLIMOV",
       laurels: [
         { src: "assets/laurel-tribeca-glass.svg", alt: "Tribeca X Selection" },
         { src: "assets/laurel-dad-glass.svg", alt: "D&AD Graphite Pencil" },
@@ -44,10 +38,8 @@
     },
     {
       num: "04",
-      title: "THE MARK · ARCHITECTURAL PRECISION",
-      headlinePrimary: "Every line is deliberate.",
-      headlineItalic: "Authorship is the edge.",
-      category: "ATELIER ARCHIVE // BESPOKE COMMISSION",
+      title: "VESPERS · BESPOKE AUTOMOTIVE",
+      bottomRightCredit: "COACHBUILT ONE-OFF · LAKE COMO COMMISSION · DIR. ANDREJ KLIMOV",
       laurels: [
         { src: "assets/laurel-venice-glass.svg", alt: "Venice Design Biennial" },
         { src: "assets/laurel-reddot-glass.svg", alt: "Red Dot Luminary" },
@@ -55,10 +47,8 @@
     },
     {
       num: "05",
-      title: "THE LEGACY · SOVEREIGN WORLDS",
-      headlinePrimary: "Built for those who shape permanence.",
-      headlineItalic: "We craft mythology.",
-      category: "ATELIER ARCHIVE // SOVEREIGN WORLDS",
+      title: "NOCTURNE IX · PRIVATE AVIATION",
+      bottomRightCredit: "BESPOKE CABIN STUDY · GENEVA COMMISSION · DIR. ANDREJ KLIMOV",
       laurels: [
         { src: "assets/laurel-monaco-glass.svg", alt: "Monaco Yacht Show Grand Prix" },
         { src: "assets/laurel-lia-glass.svg", alt: "London International Awards" },
@@ -198,7 +188,7 @@
       wingW = Math.round(br.right - lr.left + pad);
     }
     const maxWing = Math.max(140, x1 - rad - slopeW - 10);
-    const minWing = isMobile ? 160 : 300;
+    const minWing = isMobile ? 140 : 220;
     return Math.max(minWing, Math.min(wingW, maxWing));
   }
 
@@ -606,15 +596,11 @@
 
     const elVhudCode = document.getElementById("vhud-reel-code");
     const elVhudTitle = document.getElementById("vhud-reel-title");
-    const elHeadline = document.getElementById("editorial-headline");
-    const elDockCat = document.getElementById("dock-reel-category");
+    const elCredit = document.getElementById("vhud-director-tag");
 
     if (elVhudCode) elVhudCode.textContent = data.num;
     if (elVhudTitle) elVhudTitle.textContent = data.title;
-    if (elHeadline) {
-      elHeadline.innerHTML = `<span class="headline-primary">${data.headlinePrimary}</span> <em class="headline-italic">${data.headlineItalic}</em>`;
-    }
-    if (elDockCat) elDockCat.textContent = data.category;
+    if (elCredit) elCredit.textContent = data.bottomRightCredit;
     renderLaurels(data.laurels);
 
     if (nextIdx === 0) {
@@ -708,7 +694,7 @@
       const ro = new ResizeObserver(() => {
         window.requestAnimationFrame(updateFluidGlassGeometry);
       });
-      ["stage-assembly", "light-emitter-layer", "glass-layer-1", "glass-layer-2", "glass-layer-3", "cinema-viewport", "cta-command-button"].forEach((id) => {
+      ["stage-assembly", "light-emitter-layer", "glass-layer-1", "glass-layer-2", "glass-layer-3", "cinema-viewport", "cta-command-button", "brand-sanctuary"].forEach((id) => {
         const el = document.getElementById(id);
         if (el) ro.observe(el);
       });
