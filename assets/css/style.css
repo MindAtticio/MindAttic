@@ -1442,26 +1442,6 @@ html, body {
     max-width: 132px;
   }
 
-  /* Four official badges stay a slim left column beside the centered headline. */
-  .viewport-laurels.is-quad {
-    gap: 4px;
-  }
-
-  .viewport-laurels.is-quad .viewport-laurel {
-    padding: 3px 3px 3px;
-    border-radius: 9px;
-  }
-
-  .viewport-laurels.is-quad .viewport-laurel img {
-    height: 30px;
-    max-width: 80px;
-  }
-
-  .viewport-laurels.is-quad .viewport-laurel:first-child img {
-    height: 33px;
-    max-width: 86px;
-  }
-
   .editorial-headline {
     font-size: 22px;
     line-height: 1.18;
@@ -1565,106 +1545,56 @@ html, body {
   }
 }
 
-/* On a phone the centered headline and the reel switcher close the left
-   gutter. Lift the four-badge pyramid above that pair and let the studio
-   line wrap so the stack keeps a clear lane. */
-@media (max-width: 560px) {
-  body.reel-quad .cinema-editorial-copy,
-  body.reel-septet .cinema-editorial-copy {
-    width: min(54%, 176px);
-  }
-
-  .viewport-laurels.is-quad {
-    bottom: 136px;
-  }
-}
-
 /* Seven laurels. Desktop splits four to the left of the commission notch
-   and three to the right. Below 1180 they become one bottom-left pyramid,
-   narrowest at the top. */
-.viewport-laurels[data-laurel-count="7"] {
-  left: 36px;
-  right: 36px;
-  bottom: 32px;
-  max-width: none;
-  width: auto;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 0;
-}
+   and three to the right. Below 1180 they use the same stack metrics as
+   every other reel, in column order so the narrowest stays on top. */
+@media (min-width: 1181px) {
+  .viewport-laurels[data-laurel-count="7"] {
+    left: 36px;
+    right: 36px;
+    bottom: 32px;
+    max-width: none;
+    width: auto;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 0;
+  }
 
-.viewport-laurels[data-laurel-count="7"] .laurel-cluster {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  max-width: calc(50% - 220px);
-}
+  .viewport-laurels[data-laurel-count="7"] .laurel-cluster {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    max-width: calc(50% - 220px);
+  }
 
-.viewport-laurels[data-laurel-count="7"] .laurel-cluster--right {
-  justify-content: flex-end;
-}
+  .viewport-laurels[data-laurel-count="7"] .laurel-cluster--right {
+    justify-content: flex-end;
+  }
 
-.viewport-laurels[data-laurel-count="7"] .viewport-laurel img {
-  height: 58px;
-  max-width: 150px;
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel img {
+    height: 58px;
+    max-width: 150px;
+  }
 }
 
 @media (max-width: 1180px) {
   .viewport-laurels[data-laurel-count="7"] {
-    left: 16px;
-    right: auto;
-    bottom: 16px;
-    max-width: 148px;
-    width: max-content;
     flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
-    gap: 4px;
   }
 
   .viewport-laurels[data-laurel-count="7"] .laurel-cluster {
     display: contents;
-    max-width: none;
-  }
-
-  .viewport-laurels[data-laurel-count="7"] .viewport-laurel {
-    padding: 3px 4px 3px;
-    border-radius: 10px;
-  }
-
-  .viewport-laurels[data-laurel-count="7"] .viewport-laurel img,
-  .viewport-laurels[data-laurel-count="7"] .viewport-laurel:first-child img {
-    height: 32px;
-    max-width: 136px;
-  }
-
-  .viewport-laurels[data-laurel-count="7"] .viewport-laurel.is-base img {
-    height: 36px;
-    max-width: 142px;
   }
 }
 
 @media (max-width: 768px) {
-  .viewport-laurels[data-laurel-count="7"] {
-    left: 12px;
-    bottom: 132px;
-    max-width: 78px;
-    gap: 3px;
-  }
-
-  .viewport-laurels[data-laurel-count="7"] .viewport-laurel {
-    padding: 2px 3px 2px;
-    border-radius: 8px;
-  }
-
-  .viewport-laurels[data-laurel-count="7"] .viewport-laurel img,
   .viewport-laurels[data-laurel-count="7"] .viewport-laurel:first-child img {
-    height: 24px;
-    max-width: 70px;
+    height: 34px;
+    max-width: 126px;
   }
 
   .viewport-laurels[data-laurel-count="7"] .viewport-laurel.is-base img {
-    height: 28px;
-    max-width: 72px;
+    height: 36px;
+    max-width: 132px;
   }
 }

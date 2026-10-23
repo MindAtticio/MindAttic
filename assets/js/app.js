@@ -690,10 +690,7 @@
     const host = document.getElementById("viewport-laurels");
     if (!host || !laurels) return;
     const count = laurels.length;
-    host.classList.toggle("is-quad", count === 4);
     host.dataset.laurelCount = String(count);
-    document.body.classList.toggle("reel-quad", count === 4);
-    document.body.classList.toggle("reel-septet", count >= 7);
     let markup;
     if (count > 4) {
       const spans = laurels.map((item, i) => laurelSpan(item, i === count - 1 ? "is-base" : ""));
