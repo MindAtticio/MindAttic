@@ -1442,6 +1442,26 @@ html, body {
     max-width: 132px;
   }
 
+  /* Four official badges stay a slim left column beside the centered headline. */
+  .viewport-laurels.is-quad {
+    gap: 4px;
+  }
+
+  .viewport-laurels.is-quad .viewport-laurel {
+    padding: 3px 3px 3px;
+    border-radius: 9px;
+  }
+
+  .viewport-laurels.is-quad .viewport-laurel img {
+    height: 30px;
+    max-width: 80px;
+  }
+
+  .viewport-laurels.is-quad .viewport-laurel:first-child img {
+    height: 33px;
+    max-width: 86px;
+  }
+
   .editorial-headline {
     font-size: 22px;
     line-height: 1.18;
@@ -1542,5 +1562,18 @@ html, body {
 @media (max-width: 680px) {
   .viewport-laurels {
     bottom: 48px;
+  }
+}
+
+/* On a phone the centered headline and the reel switcher close the left
+   gutter. Lift the four-badge pyramid above that pair and let the studio
+   line wrap so the stack keeps a clear lane. */
+@media (max-width: 560px) {
+  body.reel-quad .cinema-editorial-copy {
+    width: min(54%, 176px);
+  }
+
+  .viewport-laurels.is-quad {
+    bottom: 136px;
   }
 }

@@ -22,11 +22,15 @@
     },
     {
       num: "02",
-      title: "L'ODYSSÉE · HAUTE HORLOGERIE",
-      bottomRightCredit: "MAISON VAUCHER GENEVA · COMMISSIONED FILM · DIR. ANDREJ KLIMOV",
+      title: "ERA OF GIANTS · PREHISTORIC MICRO DRAMA PILOT",
+      video: "assets/reel-02-era-of-giants.mp4",
+      src: "assets/reel-02-era-of-giants-poster.jpg",
+      bottomRightCredit: "PREHISTORIC MICRO DRAMA PILOT · WRITTEN & DIRECTED BY ANDREJ KLIMOV",
       laurels: [
-        { src: "assets/laurel-cannes-glass.svg", alt: "Cannes Lions Shortlist" },
-        { src: "assets/laurel-annecy-glass.svg", alt: "Annecy Official Selection" },
+        { src: "assets/laurel-metamorph-glass.png", alt: "Shortlist, Metamorph Award 2026" },
+        { src: "assets/laurel-bionic-glass.png", alt: "Finalist, BIONIC Awards 2026" },
+        { src: "assets/laurel-ailondon-glass.png", alt: "Winner, AI London Film Festival 2026" },
+        { src: "assets/laurel-kursaal-glass.png", alt: "Official Selection, Kursaal-AI Film Festival San Sebastián 2026" },
       ],
     },
     {
@@ -645,18 +649,20 @@
     if (elVhudCode) elVhudCode.textContent = data.num;
     if (elVhudTitle) elVhudTitle.textContent = data.title;
     if (elCredit) elCredit.textContent = data.bottomRightCredit;
+    document.body.classList.toggle("reel-quad", !!(data.laurels && data.laurels.length >= 4));
     renderLaurels(data.laurels);
 
-    const flagship = document.getElementById("reel-video");
-    if (flagship) {
-      if (nextIdx === 0) {
-        if (data.video && flagship.getAttribute("src") !== data.video) flagship.src = data.video;
-        const play = flagship.play();
+    document.querySelectorAll(".reel-slide video").forEach((video) => {
+      const slide = video.closest(".reel-slide");
+      const active = slide && slide.classList.contains("is-active");
+      if (active) {
+        if (data.video && video.getAttribute("src") !== data.video) video.src = data.video;
+        const play = video.play();
         if (play && play.catch) play.catch(() => {});
       } else {
-        flagship.pause();
+        video.pause();
       }
-    }
+    });
 
     if (userTriggered) {
       restartAutoCycle();
@@ -668,6 +674,7 @@
   function renderLaurels(laurels) {
     const host = document.getElementById("viewport-laurels");
     if (!host || !laurels) return;
+    host.classList.toggle("is-quad", laurels.length >= 4);
     const markup = laurels
       .map((item) => `<span class="viewport-laurel"><img src="${item.src}" alt="${item.alt}"></span>`)
       .join("");
