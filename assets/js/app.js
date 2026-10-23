@@ -199,6 +199,97 @@
     ].join(" ");
   }
 
+  function layoutIsMobile() {
+    return window.matchMedia("(max-width: 768px)").matches;
+  }
+
+  /**
+   * Taper and fillet lengths for the commission trapezoid.
+   * Top flat is narrower than the bottom by `taper` on each side.
+   * tanTop / tanBot are the tangent lengths of the rounded shoulders.
+   */
+  function ctaMetrics(w, h, inset) {
+    const isMobile = layoutIsMobile();
+    const taper = isMobile ? Math.round(w * 0.11) : Math.round(w * 0.12);
+    const rTop = isMobile ? 14 : 18;
+    const rBot = isMobile ? 14 : 18;
+    const x0 = inset;
+    const y0 = inset;
+    const x1 = w - inset;
+    const y1 = h - inset;
+    const innerW = Math.max(1, x1 - x0);
+    const innerH = Math.max(1, y1 - y0);
+    const t = Math.min(taper, innerW * 0.22);
+    const side = Math.hypot(t, innerH);
+    const ux = t / side;
+    const uy = innerH / side;
+    const interiorTop = Math.acos(Math.max(-1, Math.min(1, -ux)));
+    const interiorBot = Math.acos(Math.max(-1, Math.min(1, ux)));
+    const topRoom = Math.max(8, (innerW - 2 * t) / 2 - 4);
+    const tanTop = Math.min(Math.max(6, rTop * Math.tan((Math.PI - interiorTop) / 2)), topRoom, side * 0.38);
+    const tanBot = Math.min(Math.max(6, rBot * Math.tan((Math.PI - interiorBot) / 2)), innerW / 2 - 4, side * 0.38);
+    return { t, tanTop, tanBot, side, ux, uy, slope: t / innerH, x0, y0, x1, y1 };
+  }
+
+  /**
+   * Symmetrical tapered trapezoid. Every corner is a quadratic fillet
+   * tangent to both edges, so the shoulders stay rounded.
+   */
+  function buildCtaPath(w, h, inset) {
+    const { t, tanTop, tanBot, ux, uy, x0, y0, x1, y1 } = ctaMetrics(w, h, inset);
+    const trX = x1 - t + ux * tanTop;
+    const trY = y0 + uy * tanTop;
+    const brX = x1 - ux * tanBot;
+    const brY = y1 - uy * tanBot;
+    const blX = x0 + ux * tanBot;
+    const blY = y1 - uy * tanBot;
+    const tlX = x0 + t - ux * tanTop;
+    const tlY = y0 + uy * tanTop;
+
+    return [
+      `M ${x0 + t + tanTop} ${y0}`,
+      `L ${x1 - t - tanTop} ${y0}`,
+      `Q ${x1 - t} ${y0} ${trX} ${trY}`,
+      `L ${brX} ${brY}`,
+      `Q ${x1} ${y1} ${x1 - tanBot} ${y1}`,
+      `L ${x0 + tanBot} ${y1}`,
+      `Q ${x0} ${y1} ${blX} ${blY}`,
+      `L ${tlX} ${tlY}`,
+      `Q ${x0 + t} ${y0} ${x0 + t + tanTop} ${y0}`,
+      "Z",
+    ].join(" ");
+  }
+
+  /**
+   * Pocket that mirrors the CTA trapezoid: same slope, ceiling and sides
+   * held a uniform channel off the button's top and shoulders.
+   */
+  function measureCtaNotch(vpEl, btnEl) {
+    const isMobile = layoutIsMobile();
+    const channel = isMobile ? 8 : 9;
+    const v = vpEl.getBoundingClientRect();
+    const b = btnEl.getBoundingClientRect();
+    const W = btnEl.clientWidth;
+    const H = btnEl.clientHeight;
+    if (W < 2 || H < 2 || v.width < 2) return null;
+
+    const shape = ctaMetrics(W, H, 0);
+    const btnTop = b.top - v.top;
+    const overlap = v.height - btnTop;
+    const depth = Math.max(channel + 16, overlap + channel);
+    const topHalf = W / 2 - shape.t;
+    const ceilingHalf = topHalf + (channel * shape.side) / H - shape.slope * channel;
+
+    return {
+      depth,
+      ceilingHalf,
+      slope: shape.slope,
+      shoulder: shape.tanTop,
+      mouthRadius: isMobile ? 8 : 14,
+      center: b.left - v.left + b.width / 2,
+    };
+  }
+
   /**
    * Generates the Sculpted Asymmetrical Cinema Viewport Path:
    * - Top-left tailored diagonal/S-curve chamfer echoing the Creature's ear angle
@@ -207,7 +298,7 @@
    * - Sculpted bottom-center trapezoid S-curve sanctuary notch for the "Commission a Work" CTA dock
    *   (upgraded from Attachment 3's bottom CTA notch)
    */
-  function buildViewportPath(w, h, inset) {
+  function buildViewportPath(w, h, inset, notch) {
     const isMobile = w < 768;
     const r = isMobile ? 20 : 28;
     const rad = Math.max(6, r - inset);
@@ -220,25 +311,51 @@
     const cutX = isMobile ? Math.min(52, Math.round(w * 0.13)) : Math.min(118, Math.round(w * 0.082));
     const cutY = isMobile ? Math.min(34, Math.round(h * 0.065)) : Math.min(68, Math.round(h * 0.095));
 
-    // Bottom-center sculpted notch for the Commission a Work dock.
-    const notchCurve = isMobile ? 26 : 48;
-    const brCutX = isMobile ? 28 : 56;
-    const brCutY = isMobile ? 20 : 42;
-    let notchHalfW = isMobile
-      ? Math.min(122, Math.max(96, Math.round(w * 0.33)))
-      : Math.min(196, Math.max(28, Math.round(w * 0.3)));
-    const notchDepth = isMobile ? 26 : 34;
-    const cx = w * 0.5;
-    // Keep the notch mouth to the left of the bottom-right chamfer.
-    const brLanding = x1 - brCutX - rad * 0.6;
-    const maxHalf = brLanding - cx - notchCurve - 6;
-    if (maxHalf > 48) notchHalfW = Math.min(notchHalfW, maxHalf);
+    // Bottom-center trapezoid notch. Defaults match the tapered CTA;
+    // updateFluidGlassGeometry passes a measured pocket so the channel stays even.
+    let brCutX = isMobile ? 28 : 56;
+    let brCutY = isMobile ? 20 : 42;
+    const notchDepth = notch ? notch.depth : isMobile ? 32 : 44;
+    let ceilingHalf = notch ? notch.ceilingHalf : isMobile ? 108 : 160;
+    const slope = notch ? notch.slope : isMobile ? 0.42 : 0.62;
+    let shoulder = notch ? notch.shoulder : isMobile ? 9 : 12;
+    let mouthR = notch ? notch.mouthRadius : isMobile ? 8 : 14;
+    const cx = notch ? notch.center : w * 0.5;
+    let mouthHalf = ceilingHalf + slope * notchDepth;
 
-    const nLeftStart = cx - notchHalfW - notchCurve;
-    const nLeftInner = cx - notchHalfW + notchCurve * 0.35;
-    const nRightInner = cx + notchHalfW - notchCurve * 0.35;
-    const nRightEnd = cx + notchHalfW + notchCurve;
+    // Keep the bottom-right chamfer outside the notch mouth. On a narrow
+    // phone the tapered button needs the full mouth, so the chamfer yields
+    // instead of pinching the ceiling narrower than the button.
+    const sideRoom = cx - (x0 + rad + mouthR + 8);
+    const rightRoom = x1 - rad * 0.6 - mouthHalf - mouthR - 8 - cx;
+    if (rightRoom < brCutX) brCutX = Math.max(12, rightRoom);
+    if (brCutX < 28 && isMobile) brCutY = Math.max(10, Math.round(brCutY * (brCutX / 28)));
+    if (mouthHalf + mouthR > sideRoom && sideRoom > 48) {
+      mouthHalf = sideRoom - mouthR;
+      ceilingHalf = Math.max(36, mouthHalf - slope * notchDepth);
+    }
+    const sideUnit = Math.hypot(slope, 1);
+    const slopeLen = notchDepth * sideUnit;
+    shoulder = Math.min(shoulder, ceilingHalf - 8, slopeLen * 0.4);
+    mouthR = Math.min(mouthR, slopeLen * 0.36);
+    if (shoulder < 6) shoulder = 6;
+    if (mouthR < 6) mouthR = 6;
+
     const nTopY = y1 - notchDepth;
+    const ux = slope / sideUnit;
+    const uy = 1 / sideUnit;
+    const rCeilX = cx + ceilingHalf;
+    const lCeilX = cx - ceilingHalf;
+    const rMouthX = cx + mouthHalf;
+    const lMouthX = cx - mouthHalf;
+    const rSlopeHighX = rCeilX + ux * shoulder;
+    const rSlopeHighY = nTopY + uy * shoulder;
+    const lSlopeHighX = lCeilX - ux * shoulder;
+    const lSlopeHighY = nTopY + uy * shoulder;
+    const rSlopeLowX = rMouthX - ux * mouthR;
+    const rSlopeLowY = y1 - uy * mouthR;
+    const lSlopeLowX = lMouthX + ux * mouthR;
+    const lSlopeLowY = y1 - uy * mouthR;
 
     return [
       // Start after top-left diagonal sweep
@@ -251,11 +368,15 @@
       `Q ${x1} ${y1 - brCutY} ${x1 - brCutX * 0.35} ${y1 - brCutY * 0.55}`,
       `L ${x1 - brCutX * 0.75} ${y1 - brCutY * 0.15}`,
       `Q ${x1 - brCutX} ${y1} ${x1 - brCutX - rad * 0.6} ${y1}`,
-      // Bottom edge to right side of CTA notch
-      `L ${nRightEnd} ${y1}`,
-      `C ${nRightEnd - notchCurve * 0.55} ${y1}, ${nRightInner + notchCurve * 0.4} ${nTopY}, ${nRightInner} ${nTopY}`,
-      `L ${nLeftInner} ${nTopY}`,
-      `C ${nLeftInner - notchCurve * 0.4} ${nTopY}, ${nLeftStart + notchCurve * 0.55} ${y1}, ${nLeftStart} ${y1}`,
+      // Bottom edge into the tapered CTA notch (rounded mouth, sloped sides, rounded ceiling)
+      `L ${rMouthX + mouthR} ${y1}`,
+      `Q ${rMouthX} ${y1} ${rSlopeLowX} ${rSlopeLowY}`,
+      `L ${rSlopeHighX} ${rSlopeHighY}`,
+      `Q ${rCeilX} ${nTopY} ${rCeilX - shoulder} ${nTopY}`,
+      `L ${lCeilX + shoulder} ${nTopY}`,
+      `Q ${lCeilX} ${nTopY} ${lSlopeHighX} ${lSlopeHighY}`,
+      `L ${lSlopeLowX} ${lSlopeLowY}`,
+      `Q ${lMouthX} ${y1} ${lMouthX - mouthR} ${y1}`,
       // Bottom edge to bottom-left corner
       `L ${x0 + rad} ${y1}`,
       `Q ${x0} ${y1} ${x0} ${y1 - rad}`,
@@ -316,6 +437,7 @@
     const l2 = document.getElementById("glass-layer-2");
     const l3 = document.getElementById("glass-layer-3");
     const vp = document.getElementById("cinema-viewport");
+    const cta = document.getElementById("cta-command-button");
 
     const b1 = elementBox(l1);
     if (b1) {
@@ -344,13 +466,24 @@
       renderDualRimSVG(document.getElementById("svg-layer-3"), dRim, dInset, b3.w, b3.h, true);
     }
 
+    const bcta = elementBox(cta);
+    if (bcta && cta) {
+      const dClip = buildCtaPath(bcta.w, bcta.h, 0.5);
+      const dRim = buildCtaPath(bcta.w, bcta.h, 1.15);
+      const dInset = buildCtaPath(bcta.w, bcta.h, 2.6);
+      applyClip(cta, dClip);
+      renderDualRimSVG(document.getElementById("svg-cta-rim"), dRim, dInset, bcta.w, bcta.h, true);
+    }
+
     // #svg-viewport-rim lives inside #cinema-viewport. Its viewBox is that
     // element's clientWidth × clientHeight, the same box the image fills.
+    // The notch is measured from the CTA so the two rims share a slope.
     const bvp = elementBox(vp);
     if (bvp) {
-      const dClip = buildViewportPath(bvp.w, bvp.h, 0.5);
-      const dRim = buildViewportPath(bvp.w, bvp.h, 1.15);
-      const dInset = buildViewportPath(bvp.w, bvp.h, 2.6);
+      const notch = cta ? measureCtaNotch(vp, cta) : null;
+      const dClip = buildViewportPath(bvp.w, bvp.h, 0.5, notch);
+      const dRim = buildViewportPath(bvp.w, bvp.h, 1.15, notch);
+      const dInset = buildViewportPath(bvp.w, bvp.h, 2.6, notch);
       applyClip(vp, dClip);
       renderDualRimSVG(document.getElementById("svg-viewport-rim"), dRim, dInset, bvp.w, bvp.h, true);
     }
@@ -471,7 +604,7 @@
       const ro = new ResizeObserver(() => {
         window.requestAnimationFrame(updateFluidGlassGeometry);
       });
-      ["stage-assembly", "glass-layer-1", "glass-layer-2", "glass-layer-3", "cinema-viewport"].forEach((id) => {
+      ["stage-assembly", "glass-layer-1", "glass-layer-2", "glass-layer-3", "cinema-viewport", "cta-command-button"].forEach((id) => {
         const el = document.getElementById(id);
         if (el) ro.observe(el);
       });
