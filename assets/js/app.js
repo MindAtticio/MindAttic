@@ -11,6 +11,8 @@
     {
       num: "01",
       title: "EVERCLOSE · FLAGSHIP SERIES",
+      video: "assets/reel-01-everclose.mp4",
+      src: "assets/reel-01-everclose-poster.jpg",
       bottomRightCredit: '"THE BOND THAT SAVES YOU." · WRITTEN & DIRECTED BY ANDREJ KLIMOV',
       laurels: [
         { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026" },
@@ -644,9 +646,15 @@
     if (elCredit) elCredit.textContent = data.bottomRightCredit;
     renderLaurels(data.laurels);
 
-    if (nextIdx === 0) {
-      const flagship = document.querySelector(".reel-video");
-      if (flagship) flagship.play().catch(() => {});
+    const flagship = document.getElementById("reel-video");
+    if (flagship) {
+      if (nextIdx === 0) {
+        if (data.video && flagship.getAttribute("src") !== data.video) flagship.src = data.video;
+        const play = flagship.play();
+        if (play && play.catch) play.catch(() => {});
+      } else {
+        flagship.pause();
+      }
     }
 
     if (userTriggered) {
