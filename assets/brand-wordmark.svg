@@ -15,8 +15,7 @@
       <rect y="2" width="160" height="1" fill="#5C584F" opacity="0.16"/>
     </pattern>
   </defs>
-  <g fill="url(#foil-brush)" fill-rule="evenodd" transform="translate(0.000000,138.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
+  <g fill="url(#foil-brush)" fill-rule="evenodd" transform="translate(0.000000,138.000000) scale(0.100000,-0.100000)">
 <path d="M16368 1264 c-105 -25 -218 -92 -299 -178 -48 -50 -118 -201 -131
 -281 -34 -222 31 -420 183 -559 98 -89 172 -119 329 -136 95 -9 125 -6 260 30
 71 19 230 126 230 155 0 13 -42 55 -54 55 -4 0 -31 -20 -59 -43 -106 -89 -218
