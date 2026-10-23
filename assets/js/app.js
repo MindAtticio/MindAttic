@@ -139,11 +139,9 @@
     const x1 = w - inset;
     const y1 = h - inset;
 
-    // Top-left sanctuary wing. On mobile the wing only covers the logo badge
-    // (about 9px of drop at the top edge). The nav rail sits a full row below.
-    const wingW = isMobile
-      ? Math.min(Math.round(w * 0.64), 270)
-      : Math.min(410, Math.max(280, Math.round(w * 0.27)));
+    // Top-left sanctuary wing. It follows the live logo panel so the longer
+    // lockup, including CINEMATIC ATELIER, sits on the raised glass before the slope.
+    const wingW = measureSanctuaryWing(isMobile, w, x1, rad);
     const slopeW = isMobile ? 42 : 68;
     const drop = isMobile ? 9 : 12;
     const slopeEnd = Math.min(wingW + slopeW, x1 - rad - 8);
@@ -183,6 +181,25 @@
       `Q ${x0} ${y0} ${x0 + rad} ${y0}`,
       "Z",
     ].join(" ");
+  }
+
+  function measureSanctuaryWing(isMobile, w, x1, rad) {
+    const slopeW = isMobile ? 42 : 68;
+    const fallback = isMobile
+      ? Math.min(Math.round(w * 0.78), 295)
+      : Math.max(340, Math.min(440, Math.round(w * 0.29)));
+    const brand = document.getElementById("brand-sanctuary");
+    const layer = document.getElementById("glass-layer-3");
+    let wingW = fallback;
+    if (brand && layer && brand.offsetWidth > 8) {
+      const br = brand.getBoundingClientRect();
+      const lr = layer.getBoundingClientRect();
+      const pad = isMobile ? 14 : 24;
+      wingW = Math.round(br.right - lr.left + pad);
+    }
+    const maxWing = Math.max(140, x1 - rad - slopeW - 10);
+    const minWing = isMobile ? 160 : 300;
+    return Math.max(minWing, Math.min(wingW, maxWing));
   }
 
   function layoutIsMobile() {

@@ -345,7 +345,7 @@ html, body {
   gap: 16px;
   text-decoration: none;
   color: var(--bone-white);
-  padding: 8px 18px 8px 8px;
+  padding: 8px 24px 8px 8px;
   border-radius: 22px 28px 18px 22px;
   background: linear-gradient(180deg, rgba(28, 31, 35, 0.92), rgba(16, 18, 21, 0.84));
   border: 1px solid rgba(228, 226, 221, 0.42);
@@ -418,6 +418,17 @@ html, body {
   display: block;
   flex: 0 0 auto;
   background: transparent;
+}
+
+.brand-atelier-tag {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--platinum-mid);
+  padding-left: 12px;
+  border-left: 1px solid rgba(228, 226, 221, 0.28);
+  white-space: nowrap;
 }
 
 /* Whisper credit between the lockup and the navigation rail */
@@ -613,26 +624,27 @@ html, body {
 /* Top-Left Chamfer Telemetry Badge following the diagonal cut */
 .vhud-chamfer-badge {
   position: absolute;
-  top: 20px;
-  left: 118px;
+  top: 22px;
+  left: 122px;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 6px 14px;
+  gap: 11px;
+  padding: 9px 20px;
   border-radius: 999px;
-  background: rgba(20, 23, 26, 0.52);
+  background: rgba(20, 23, 26, 0.58);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  font-size: 9.5px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 18px rgba(0, 0, 0, 0.35);
+  font-size: 11.5px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--bone-white);
 }
 
 .vhud-pulse {
-  width: 6px;
-  height: 6px;
+  width: 7.5px;
+  height: 7.5px;
   border-radius: 50%;
   background: #E4E2DD;
   box-shadow: 0 0 10px #FFFFFF;
@@ -1111,10 +1123,6 @@ html, body {
   .cta-command-button {
     min-width: 356px;
   }
-  .brand-sanctuary {
-    gap: 12px;
-    padding: 7px 14px 7px 7px;
-  }
 }
 
 @media (max-width: 768px) {
@@ -1162,7 +1170,7 @@ html, body {
     width: auto;
     max-width: 100%;
     justify-self: start;
-    padding: 5px 12px 5px 5px;
+    padding: 5px 16px 5px 5px;
     gap: 10px;
     justify-content: flex-start;
   }
@@ -1188,6 +1196,12 @@ html, body {
 
   .brand-sub-row {
     gap: 10px;
+  }
+
+  .brand-atelier-tag {
+    font-size: 7.5px;
+    letter-spacing: 0.20em;
+    padding-left: 10px;
   }
 
   .hud-nav-rail {
@@ -1226,39 +1240,46 @@ html, body {
 
   .vhud-chamfer-badge {
     top: 14px;
-    left: 48px;
-    padding: 4px 10px;
-    font-size: 8px;
-    max-width: calc(100% - 64px);
-    letter-spacing: 0.12em;
+    left: 46px;
+    padding: 6px 13px;
+    gap: 8px;
+    font-size: 9.2px;
+    max-width: calc(100% - 58px);
+    letter-spacing: 0.14em;
+  }
+
+  .vhud-pulse {
+    width: 6px;
+    height: 6px;
   }
 
   .vhud-reel-title {
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
   }
 
   .cinema-editorial-copy {
-    width: 78%;
-    bottom: 158px;
+    width: 72%;
+    bottom: 240px;
   }
 
   .viewport-laurels {
+    flex-direction: column;
+    align-items: flex-start;
     left: 12px;
     right: auto;
-    bottom: 102px;
+    bottom: 100px;
     gap: 6px;
-    max-width: calc(100% - 24px);
-    align-items: center;
+    max-width: 124px;
   }
 
   .viewport-laurel {
-    padding: 3px 4px 4px;
+    padding: 3px 6px 4px;
     border-radius: 10px;
   }
 
   .viewport-laurel img {
-    height: 34px;
-    max-width: 108px;
+    height: 28px;
+    max-width: 96px;
   }
 
   .editorial-headline {
