@@ -1258,28 +1258,33 @@ html, body {
   }
 
   .cinema-editorial-copy {
-    width: 72%;
-    bottom: 240px;
+    width: 78%;
+    bottom: 195px;
   }
 
   .viewport-laurels {
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: flex-start;
     left: 12px;
     right: auto;
-    bottom: 100px;
+    bottom: 34px;
     gap: 6px;
-    max-width: 124px;
+    max-width: 156px;
   }
 
   .viewport-laurel {
-    padding: 3px 6px 4px;
-    border-radius: 10px;
+    padding: 4px 7px 5px;
+    border-radius: 11px;
   }
 
   .viewport-laurel img {
-    height: 28px;
-    max-width: 96px;
+    height: 34px;
+    max-width: 126px;
+  }
+
+  .viewport-laurel:first-child img {
+    height: 36px;
+    max-width: 132px;
   }
 
   .editorial-headline {
@@ -1293,35 +1298,35 @@ html, body {
     margin-top: 2px;
   }
 
-  /* Sits above the commission notch so the stroke does not cross the pills. */
+  /* Sits on the bottom-right floor so the laurel pyramid can anchor the left ledge. */
   .reel-switcher-rail {
     top: auto;
-    bottom: 44px;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
+    bottom: 34px;
+    left: auto;
+    right: 12px;
+    transform: none;
     flex-direction: row;
-    padding: 5px 8px;
+    padding: 4px 5px;
     border-radius: 16px;
-    gap: 6px;
-    max-width: calc(100% - 28px);
+    gap: 0;
+    max-width: none;
   }
 
   .switcher-buttons {
     flex-direction: row;
-    gap: 10px;
-    padding: 2px 4px;
+    gap: 4px;
+    padding: 2px 0;
   }
 
   .frosted-reel-btn {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 10px;
   }
 
   .frosted-reel-btn.is-active {
-    transform: scale(1.14);
-    margin: 0 3px;
+    transform: scale(1.12);
+    margin: 0 1px;
   }
 
   .frb-num {

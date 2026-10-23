@@ -16,8 +16,8 @@
       category: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
       laurels: [
         { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026" },
-        { src: "assets/laurel-bigscreenhack-glass.svg", alt: "Finalist, Big Screen Hack London 2026" },
         { src: "assets/laurel-aimovie-glass.png", alt: "Official Selection, AI Movie Awards 2026" },
+        { src: "assets/laurel-bigscreenhack-glass.svg", alt: "Finalist, Big Screen Hack London 2026" },
       ],
     },
     {
