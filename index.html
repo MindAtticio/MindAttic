@@ -212,7 +212,34 @@
               <span class="nav-specular-bar" aria-hidden="true"></span>
             </button>
           </nav>
+
+          <button type="button" class="mobile-menu-trigger" id="mobile-menu-trigger" aria-expanded="false" aria-controls="mobile-glass-menu">
+            <span class="mobile-menu-label">Menu</span>
+            <span class="mobile-menu-bars" aria-hidden="true"><span></span><span></span></span>
+          </button>
         </header>
+
+        <nav class="mobile-glass-menu" id="mobile-glass-menu" aria-hidden="true" aria-label="Atelier">
+          <button type="button" class="mobile-menu-row is-active" data-nav="atelier">
+            <span class="mobile-menu-index">01</span>
+            <span class="mobile-menu-name">Atelier</span>
+          </button>
+          <button type="button" class="mobile-menu-row" data-nav="commissions">
+            <span class="mobile-menu-index">02</span>
+            <span class="mobile-menu-name">Commissions</span>
+          </button>
+          <button type="button" class="mobile-menu-row" data-nav="auteur">
+            <span class="mobile-menu-index">03</span>
+            <span class="mobile-menu-name">The Auteur</span>
+          </button>
+          <a class="mobile-menu-inquire" data-nav="inquire" href="mailto:andrej@mindattic.io?subject=Commission%20Inquiry%20%E2%80%94%20Mind%20Attic">
+            <span class="mobile-inquire-dot" aria-hidden="true"></span>
+            <span class="mobile-inquire-text">
+              <span class="mobile-inquire-kicker">Commission inquiry</span>
+              <span class="mobile-inquire-label">Inquire</span>
+            </span>
+          </a>
+        </nav>
 
         <!-- SCULPTED ASYMMETRICAL CINEMA VIEWPORT -->
         <div class="cinema-viewport-wrapper" id="cinema-viewport-wrapper">

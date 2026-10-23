@@ -692,6 +692,54 @@
     }, 6500);
   }
 
+  function setNavActive(name) {
+    if (!name) return;
+    document.querySelectorAll(".hud-nav-item, .mobile-menu-row").forEach((el) => {
+      el.classList.toggle("is-active", el.getAttribute("data-nav") === name);
+    });
+  }
+
+  function initMobileMenu() {
+    const trigger = document.getElementById("mobile-menu-trigger");
+    const menu = document.getElementById("mobile-glass-menu");
+    if (!trigger || !menu) return;
+
+    const setOpen = (open) => {
+      menu.classList.toggle("is-open", open);
+      trigger.classList.toggle("is-open", open);
+      trigger.setAttribute("aria-expanded", open ? "true" : "false");
+      menu.setAttribute("aria-hidden", open ? "false" : "true");
+    };
+
+    trigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setOpen(!menu.classList.contains("is-open"));
+    });
+
+    menu.addEventListener("click", (event) => {
+      const item = event.target.closest("[data-nav]");
+      if (item) setNavActive(item.getAttribute("data-nav"));
+      if (event.target.closest("a, button")) setOpen(false);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!menu.classList.contains("is-open")) return;
+      if (menu.contains(event.target) || trigger.contains(event.target)) return;
+      setOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
+
+    const wide = window.matchMedia("(min-width: 769px)");
+    const closeOnDesktop = () => {
+      if (wide.matches) setOpen(false);
+    };
+    if (wide.addEventListener) wide.addEventListener("change", closeOnDesktop);
+    else wide.addListener(closeOnDesktop);
+  }
+
   function initInteractivity() {
     // 5 Right-Side Frosted Glass Buttons
     document.querySelectorAll(".frosted-reel-btn").forEach((btn) => {
@@ -704,10 +752,11 @@
     // Top-Right Stepped Glass HUD Navigation Rail
     document.querySelectorAll(".hud-nav-item").forEach((navBtn) => {
       navBtn.addEventListener("click", () => {
-        document.querySelectorAll(".hud-nav-item").forEach((b) => b.classList.remove("is-active"));
-        navBtn.classList.add("is-active");
+        setNavActive(navBtn.getAttribute("data-nav"));
       });
     });
+
+    initMobileMenu();
 
     // Bottom Dock Next Reel Cycle Button
     const nextBtn = document.getElementById("dock-cycle-btn");
