@@ -109,7 +109,7 @@
   }
 
   function buildChassisPath(w, h, r, inset, stepXRatio, stepDrop) {
-    const mobile = w < 768;
+    const mobile = layoutIsMobile();
     const x0 = inset;
     const y0 = inset;
     const x1 = w - inset;
@@ -145,7 +145,7 @@
    * - Subtle bottom architectural command dock step
    */
   function buildLayer3Path(w, h, inset) {
-    const isMobile = w < 768;
+    const isMobile = layoutIsMobile();
     const r = isMobile ? 22 : 30;
     const rad = Math.max(8, r - inset);
     const x0 = inset;
@@ -210,9 +210,9 @@
    */
   function ctaMetrics(w, h, inset) {
     const isMobile = layoutIsMobile();
-    const taper = isMobile ? Math.round(w * 0.11) : Math.round(w * 0.12);
-    const rTop = isMobile ? 14 : 18;
-    const rBot = isMobile ? 14 : 18;
+    const taper = isMobile ? Math.round(w * 0.095) : Math.round(w * 0.12);
+    const rTop = isMobile ? 12 : 18;
+    const rBot = isMobile ? 12 : 18;
     const x0 = inset;
     const y0 = inset;
     const x1 = w - inset;
@@ -299,7 +299,7 @@
    *   (upgraded from Attachment 3's bottom CTA notch)
    */
   function buildViewportPath(w, h, inset, notch) {
-    const isMobile = w < 768;
+    const isMobile = layoutIsMobile();
     const r = isMobile ? 20 : 28;
     const rad = Math.max(6, r - inset);
     const x0 = inset;
@@ -432,7 +432,62 @@
     el.style.webkitClipPath = `path("${d}")`;
   }
 
+  /**
+   * The arc SVG uses the emitter's own pixel box as its viewBox, so a radius
+   * is a radius on every screen. preserveAspectRatio meet keeps that 1:1.
+   */
+  function renderLightArcs() {
+    const emitter = document.getElementById("light-emitter-layer");
+    const svg = document.getElementById("svg-light-arcs");
+    if (!emitter || !svg) return;
+    const w = Math.round(emitter.clientWidth);
+    const h = Math.round(emitter.clientHeight);
+    if (w < 2 || h < 2) return;
+
+    const isMobile = layoutIsMobile();
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    svg.setAttribute("width", String(w));
+    svg.setAttribute("height", String(h));
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+    const rTop = isMobile ? Math.round(Math.min(w * 0.24, 95)) : 155;
+    const cx = Math.round(w * (isMobile ? 0.74 : 0.78));
+    const cy = isMobile ? 110 : 180;
+    const rLeft = isMobile ? 110 : 190;
+    const xLeft = isMobile ? 28 : 55;
+    const rRight = isMobile ? 95 : 155;
+    const xRight = w - (isMobile ? 28 : 62);
+    const cyLeft = Math.round(h * 0.56);
+    const cyRight = Math.round(h * 0.39);
+
+    const topD = `M ${cx - rTop} ${cy} A ${rTop} ${rTop} 0 0 1 ${cx + rTop} ${cy}`;
+    const leftD = `M ${xLeft} ${cyLeft - rLeft} A ${rLeft} ${rLeft} 0 0 0 ${xLeft} ${cyLeft + rLeft}`;
+    const rightD = `M ${xRight} ${cyRight - rRight} A ${rRight} ${rRight} 0 0 1 ${xRight} ${cyRight + rRight}`;
+
+    svg.innerHTML = `
+      <path d="${leftD}" fill="none" stroke="url(#champagne-arc-grad-vert)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--left" />
+      <path d="${leftD}" fill="none" stroke="url(#champagne-core-vert)" stroke-width="2" stroke-linecap="round" />
+      <path d="${rightD}" fill="none" stroke="url(#champagne-arc-grad-vert)" stroke-width="5" stroke-linecap="round" class="caustic-arc caustic-arc--right" />
+      <path d="${rightD}" fill="none" stroke="url(#champagne-core-vert)" stroke-width="1.8" stroke-linecap="round" />
+      <path d="${topD}" fill="none" stroke="url(#champagne-arc-grad-top)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--top" />
+      <path d="${topD}" fill="none" stroke="url(#champagne-core-grad)" stroke-width="2" stroke-linecap="round" />
+    `;
+
+    const x1 = cx - rTop;
+    const x2 = cx + rTop;
+    ["champagne-arc-grad-top", "champagne-core-grad"].forEach((id) => {
+      const grad = document.getElementById(id);
+      if (!grad) return;
+      grad.setAttribute("gradientUnits", "userSpaceOnUse");
+      grad.setAttribute("x1", String(x1));
+      grad.setAttribute("y1", String(cy));
+      grad.setAttribute("x2", String(x2));
+      grad.setAttribute("y2", String(cy));
+    });
+  }
+
   function updateFluidGlassGeometry() {
+    renderLightArcs();
     const l1 = document.getElementById("glass-layer-1");
     const l2 = document.getElementById("glass-layer-2");
     const l3 = document.getElementById("glass-layer-3");
@@ -607,7 +662,7 @@
       const ro = new ResizeObserver(() => {
         window.requestAnimationFrame(updateFluidGlassGeometry);
       });
-      ["stage-assembly", "glass-layer-1", "glass-layer-2", "glass-layer-3", "cinema-viewport", "cta-command-button"].forEach((id) => {
+      ["stage-assembly", "light-emitter-layer", "glass-layer-1", "glass-layer-2", "glass-layer-3", "cinema-viewport", "cta-command-button"].forEach((id) => {
         const el = document.getElementById(id);
         if (el) ro.observe(el);
       });

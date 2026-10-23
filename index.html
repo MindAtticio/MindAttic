@@ -71,8 +71,30 @@
         <stop offset="80%" stop-color="#E4E2DD" stop-opacity="0.75" />
         <stop offset="100%" stop-color="#C5C2B8" stop-opacity="0" />
       </linearGradient>
-      <!-- Top-right crest core: aligned to the arc span so both tips dissolve -->
-      <linearGradient id="champagne-core-grad" gradientUnits="userSpaceOnUse" x1="1102" y1="180" x2="1412" y2="180">
+      <!-- Side arcs: fade along the vertical span so the tips dissolve -->
+      <linearGradient id="champagne-arc-grad-vert" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#E4E2DD" stop-opacity="0" />
+        <stop offset="25%" stop-color="#F4F1EA" stop-opacity="0.88" />
+        <stop offset="55%" stop-color="#DFC8A2" stop-opacity="0.96" />
+        <stop offset="80%" stop-color="#E4E2DD" stop-opacity="0.75" />
+        <stop offset="100%" stop-color="#C5C2B8" stop-opacity="0" />
+      </linearGradient>
+      <linearGradient id="champagne-core-vert" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#F4F1EA" stop-opacity="0" />
+        <stop offset="22%" stop-color="#F4F1EA" stop-opacity="0.92" />
+        <stop offset="50%" stop-color="#F4F1EA" stop-opacity="0.96" />
+        <stop offset="78%" stop-color="#F4F1EA" stop-opacity="0.92" />
+        <stop offset="100%" stop-color="#F4F1EA" stop-opacity="0" />
+      </linearGradient>
+      <!-- Top crest: user space is rewritten to the arc's pixel span -->
+      <linearGradient id="champagne-arc-grad-top" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#E4E2DD" stop-opacity="0" />
+        <stop offset="25%" stop-color="#F4F1EA" stop-opacity="0.88" />
+        <stop offset="55%" stop-color="#DFC8A2" stop-opacity="0.96" />
+        <stop offset="80%" stop-color="#E4E2DD" stop-opacity="0.75" />
+        <stop offset="100%" stop-color="#C5C2B8" stop-opacity="0" />
+      </linearGradient>
+      <linearGradient id="champagne-core-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0">
         <stop offset="0%" stop-color="#F4F1EA" stop-opacity="0" />
         <stop offset="18%" stop-color="#F4F1EA" stop-opacity="0.92" />
         <stop offset="50%" stop-color="#F4F1EA" stop-opacity="0.96" />
@@ -123,22 +145,11 @@
       <!-- =================================================================
            REFRACTIVE LIGHT TUBES & ARCS BEHIND THE GLASS STACK (Like Ref 2)
            ================================================================= -->
-      <div class="light-emitter-layer" aria-hidden="true">
+      <div class="light-emitter-layer" id="light-emitter-layer" aria-hidden="true">
         <!-- Soft circular halo behind the top-right caustic arc -->
         <div class="caustic-halo caustic-halo--top-right"></div>
-        <!-- Glowing semi-circular caustic arcs (left edge, right rail, top-right terrace) -->
-        <svg class="light-arcs-svg" viewBox="0 0 1600 940" preserveAspectRatio="none">
-          <!-- Left luminous platinum semi-circular arc bleeding through frosted left edge -->
-          <path d="M 55 340 A 190 190 0 0 0 55 710" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--left" />
-          <path d="M 55 340 A 190 190 0 0 0 55 710" fill="none" stroke="#F4F1EA" stroke-width="2" stroke-linecap="round" opacity="0.92" />
-          <!-- Right luminous platinum arc behind the 5-button switcher rail -->
-          <path d="M 1538 220 A 155 155 0 0 1 1538 510" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5" stroke-linecap="round" class="caustic-arc caustic-arc--right" />
-          <path d="M 1538 220 A 155 155 0 0 1 1538 510" fill="none" stroke="#F4F1EA" stroke-width="1.8" stroke-linecap="round" opacity="0.88" />
-          <!-- Top-right crest: semicircle behind the nav terrace. The shared gradient runs
-               along this arc's horizontal span and fades to opacity 0 at both tips. -->
-          <path d="M 1102 180 A 155 155 0 0 1 1412 180" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--top" />
-          <path d="M 1102 180 A 155 155 0 0 1 1412 180" fill="none" stroke="url(#champagne-core-grad)" stroke-width="2" stroke-linecap="round" />
-        </svg>
+        <!-- Arcs are redrawn in 1:1 pixel space so they stay circles at every width -->
+        <svg class="light-arcs-svg" id="svg-light-arcs" aria-hidden="true"></svg>
       </div>
 
       <!-- =================================================================
