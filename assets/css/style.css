@@ -1258,18 +1258,26 @@ html, body {
   }
 
   .cinema-editorial-copy {
-    width: 78%;
-    bottom: 195px;
+    z-index: 15;
+    left: 50%;
+    right: auto;
+    bottom: 96px;
+    transform: translateX(-50%);
+    width: min(88%, 420px);
+    text-align: center;
+    pointer-events: none;
   }
 
   .viewport-laurels {
+    z-index: 14;
     flex-direction: column-reverse;
     align-items: flex-start;
-    left: 12px;
+    left: 14px;
     right: auto;
-    bottom: 34px;
+    bottom: 18px;
     gap: 6px;
     max-width: 156px;
+    pointer-events: none;
   }
 
   .viewport-laurel {
@@ -1298,24 +1306,26 @@ html, body {
     margin-top: 2px;
   }
 
-  /* Sits on the bottom-right floor so the laurel pyramid can anchor the left ledge. */
+  /* Own layer, dead-center above the notch. Laurels and the headline do not move it. */
   .reel-switcher-rail {
+    position: absolute;
+    z-index: 16;
+    right: auto;
     top: auto;
-    bottom: 34px;
-    left: auto;
-    right: 12px;
-    transform: none;
+    left: 50%;
+    bottom: 42px;
+    transform: translateX(-50%);
     flex-direction: row;
-    padding: 4px 5px;
-    border-radius: 16px;
-    gap: 0;
+    gap: 7px;
+    padding: 5px 8px;
+    border-radius: 14px;
     max-width: none;
   }
 
   .switcher-buttons {
     flex-direction: row;
-    gap: 4px;
-    padding: 2px 0;
+    gap: 7px;
+    padding: 0;
   }
 
   .frosted-reel-btn {
@@ -1381,5 +1391,12 @@ html, body {
 
   .dock-wing--right {
     display: none;
+  }
+}
+
+/* The centered notch reaches the left ledge only on the narrowest phones. */
+@media (max-width: 440px) {
+  .viewport-laurels {
+    bottom: 32px;
   }
 }
