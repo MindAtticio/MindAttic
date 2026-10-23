@@ -136,42 +136,6 @@ html, body {
 }
 
 /* ==========================================================================
-   OUTER ARCHITECTURAL NEGATIVE-SPACE TELEMETRY
-   ========================================================================== */
-.outer-telemetry {
-  position: fixed;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-sans);
-  font-size: 9.5px;
-  font-weight: 400;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(197, 194, 184, 0.42);
-  pointer-events: none;
-  user-select: none;
-}
-
-.outer-telemetry--tl { top: 22px; left: 38px; }
-.outer-telemetry--tr { top: 22px; right: 38px; }
-.outer-telemetry--bl { bottom: 20px; left: 38px; }
-.outer-telemetry--br { bottom: 20px; right: 38px; }
-
-.ot-sep {
-  color: rgba(228, 226, 221, 0.24);
-}
-
-.ot-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--platinum-bright);
-  box-shadow: 0 0 8px rgba(244, 241, 234, 0.8);
-}
-
-/* ==========================================================================
    HERO SECTION STAGE & 3-LAYERED ASYMMETRICAL GLASS ARCHITECTURE
    ========================================================================== */
 .hero-section {
@@ -328,16 +292,6 @@ html, body {
   -webkit-backdrop-filter: blur(6px);
 }
 
-.layer-1-corner-mark {
-  position: absolute;
-  bottom: 14px;
-  left: 28px;
-  font-size: 8.5px;
-  letter-spacing: 0.26em;
-  color: rgba(228, 226, 221, 0.36);
-  text-transform: uppercase;
-}
-
 /* ==========================================================================
    LAYER 2: MIDDLE ARCHITECTURAL GLASS CHASSIS
    transform: rotate(0.6deg) translate(14px, 10px)
@@ -349,56 +303,6 @@ html, body {
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   pointer-events: none;
-}
-
-.layer-2-telemetry-bar {
-  position: absolute;
-  top: 11px;
-  left: 340px;
-  right: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 9px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(228, 226, 221, 0.56);
-}
-
-.l2-telemetry-left,
-.l2-telemetry-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.l2-Diamond {
-  color: var(--platinum-bright);
-  font-size: 10px;
-}
-
-.l2-code {
-  color: var(--bone-white);
-  font-weight: 500;
-}
-
-.l2-divider {
-  width: 18px;
-  height: 1px;
-  background: rgba(228, 226, 221, 0.28);
-}
-
-.layer-2-bottom-telemetry {
-  position: absolute;
-  bottom: 10px;
-  right: 34px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 8.5px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(197, 194, 184, 0.45);
 }
 
 /* ==========================================================================
@@ -516,55 +420,20 @@ html, body {
   background: transparent;
 }
 
-.brand-atelier-tag {
-  font-size: 8.5px;
-  font-weight: 500;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--platinum-mid);
-  padding-left: 10px;
-  border-left: 1px solid rgba(228, 226, 221, 0.28);
-}
-
-/* Center-Left Slope Bridge Telemetry */
+/* Whisper credit between the lockup and the navigation rail */
 .deck-slope-telemetry {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding-left: 14px;
-  border-left: 1px solid rgba(228, 226, 221, 0.20);
-}
-
-.slope-line-group {
-  display: flex;
   align-items: center;
-  gap: 8px;
+  padding-left: 18px;
+  border-left: 1px solid rgba(228, 226, 221, 0.16);
 }
 
-.slope-tick {
-  width: 14px;
-  height: 1px;
-  background: var(--platinum-bright);
-}
-
-.slope-label {
+.slope-credit {
   font-size: 9px;
   font-weight: 500;
-  letter-spacing: 0.26em;
-  color: var(--platinum-mid);
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-}
-
-.slope-coords {
-  font-size: 10px;
-  letter-spacing: 0.20em;
-  color: rgba(244, 241, 234, 0.78);
-  text-transform: uppercase;
-}
-
-.slope-coords strong {
-  color: var(--bone-white);
-  font-weight: 600;
+  color: rgba(197, 194, 184, 0.62);
 }
 
 /* Top-Right Stepped Glass HUD Navigation Rail */
@@ -609,17 +478,6 @@ html, body {
   color: var(--bone-white);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(228, 226, 221, 0.05) 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
-}
-
-.nav-index {
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  color: var(--platinum-muted);
-}
-
-.hud-nav-item.is-active .nav-index {
-  color: var(--platinum-bright);
 }
 
 .nav-label {
@@ -721,7 +579,8 @@ html, body {
   transform: scale(1);
 }
 
-.reel-image {
+.reel-image,
+.reel-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -792,60 +651,14 @@ html, body {
   color: rgba(244, 241, 234, 0.86);
 }
 
-/* Top-Right Timecode Pill */
-.vhud-top-right {
-  position: absolute;
-  top: 20px;
-  right: 112px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(20, 23, 26, 0.52);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.26);
-  font-size: 9.5px;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: rgba(244, 241, 234, 0.84);
-}
-
-.vhud-tc-label {
-  color: var(--platinum-muted);
-  font-weight: 600;
-}
-
-.vhud-timecode {
-  font-variant-numeric: tabular-nums;
-  color: var(--bone-white);
-  font-weight: 500;
-}
-
-/* Precision Leica/Hasselblad Corner Hairline Crosshairs */
-.vhud-crosshair {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-color: rgba(244, 241, 234, 0.38);
-  border-style: solid;
-  border-width: 0;
-}
-
-.vhud-crosshair--tl { top: 64px; left: 42px; border-top-width: 1px; border-left-width: 1px; }
-.vhud-crosshair--tr { top: 64px; right: 118px; border-top-width: 1px; border-right-width: 1px; }
-.vhud-crosshair--bl { bottom: 64px; left: 42px; border-bottom-width: 1px; border-left-width: 1px; }
-.vhud-crosshair--br { bottom: 64px; right: 118px; border-bottom-width: 1px; border-right-width: 1px; }
-
 /* ==========================================================================
    QUIET-LUXURY EDITORIAL COPY OVERLAY
-   "Without narrative, it is just stone and steel. We craft mythology."
+   One short headline, low in the frame, so the picture can breathe.
    ========================================================================== */
 .cinema-editorial-copy {
   position: absolute;
   left: 50%;
-  bottom: 58px;
+  bottom: 54px;
   transform: translateX(-50%);
   width: min(860px, 82%);
   text-align: center;
@@ -853,25 +666,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-}
-
-.editorial-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 9.5px;
-  font-weight: 500;
-  letter-spacing: 0.30em;
-  text-transform: uppercase;
-  color: var(--platinum-bright);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.75);
-}
-
-.eyebrow-line {
-  width: 28px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--platinum-bright), transparent);
+  pointer-events: none;
 }
 
 .editorial-headline {
@@ -899,17 +694,6 @@ html, body {
   color: transparent;
 }
 
-.editorial-subline {
-  max-width: 640px;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 1.55;
-  letter-spacing: 0.06em;
-  color: rgba(244, 241, 234, 0.82);
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
-}
-
 /* ==========================================================================
    5 VERTICAL FROSTED GLASS SWITCHER BUTTONS ON THE RIGHT
    Active button scales 1.4x with platinum specular rim & progress hair-ring
@@ -933,34 +717,6 @@ html, body {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     0 16px 40px rgba(0, 0, 0, 0.45);
-}
-
-.switcher-rail-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-  width: 100%;
-}
-
-.sr-label {
-  font-size: 8px;
-  letter-spacing: 0.28em;
-  color: var(--platinum-muted);
-}
-
-.sr-count {
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: rgba(244, 241, 234, 0.72);
-  font-variant-numeric: tabular-nums;
-}
-
-.sr-count b {
-  color: var(--bone-white);
-  font-weight: 600;
 }
 
 .switcher-buttons {
@@ -1070,49 +826,6 @@ html, body {
   line-height: 1;
 }
 
-.frb-caption {
-  position: relative;
-  z-index: 2;
-  font-size: 5.5px;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  color: var(--platinum-bright);
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.25s ease, max-height 0.25s ease;
-}
-
-.frosted-reel-btn.is-active .frb-caption {
-  opacity: 0.92;
-  max-height: 10px;
-  margin-top: 2px;
-}
-
-.switcher-rail-footer {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding-top: 6px;
-  border-top: 1px solid rgba(255, 255, 255, 0.16);
-  width: 100%;
-  justify-content: center;
-}
-
-.sr-auto-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--platinum-bright);
-  box-shadow: 0 0 6px #FFFFFF;
-}
-
-.sr-auto-text {
-  font-size: 7.5px;
-  letter-spacing: 0.22em;
-  color: rgba(228, 226, 221, 0.68);
-}
-
 /* ==========================================================================
    BOTTOM ASYMMETRICAL GLASS COMMAND DOCK & SCULPTED NOTCH CTA
    ========================================================================== */
@@ -1146,36 +859,70 @@ html, body {
 .dock-wing-label {
   font-size: 8.5px;
   font-weight: 600;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--platinum-mid);
+  white-space: nowrap;
 }
 
-.dock-wing-meta {
+.glass-laurel-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(244, 241, 234, 0.68);
+  gap: 10px;
+  flex-wrap: nowrap;
 }
 
-.dock-dot {
-  color: rgba(228, 226, 221, 0.35);
+.glass-laurel-badge {
+  height: 44px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  background: rgba(230, 230, 250, 0.09);
+  backdrop-filter: blur(4px) saturate(130%);
+  -webkit-backdrop-filter: blur(4px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.38),
+    -17.78px -2.82px 5px rgba(0, 0, 0, 0.20),
+    0 6px 16px rgba(0, 0, 0, 0.32);
 }
 
-.dock-active-reel-info {
+.laurel-branch {
+  width: 16px;
+  height: 30px;
+  flex: 0 0 auto;
+  display: block;
+  overflow: visible;
+}
+
+.laurel-copy {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.dock-wing-sub {
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  color: rgba(244, 241, 234, 0.72);
+.laurel-tier {
+  font-size: 7.5px;
+  font-weight: 600;
+  letter-spacing: 0.20em;
+  color: var(--bone-white);
+}
+
+.laurel-fest {
+  font-size: 6.5px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: var(--platinum-mid);
 }
 
 /* Center Sculpted Glass Command CTA Dock ("Commission a Work")
@@ -1195,7 +942,7 @@ html, body {
   justify-content: center;
   gap: 3px;
   min-width: 356px;
-  padding: 14px 48px 15px;
+  padding: 15px 46px 16px;
   background: linear-gradient(165deg, rgba(32, 36, 41, 0.84) 0%, rgba(20, 23, 27, 0.92) 100%);
   backdrop-filter: blur(8px) saturate(140%);
   -webkit-backdrop-filter: blur(8px) saturate(140%);
@@ -1239,16 +986,6 @@ html, body {
   mix-blend-mode: soft-light;
   opacity: 0.85;
   pointer-events: none;
-}
-
-.cta-kicker {
-  position: relative;
-  z-index: 2;
-  font-size: 8px;
-  font-weight: 500;
-  letter-spacing: 0.30em;
-  text-transform: uppercase;
-  color: var(--platinum-mid);
 }
 
 .cta-main-row {
@@ -1359,8 +1096,22 @@ html, body {
     grid-template-columns: auto auto;
     justify-content: space-between;
   }
-  .layer-2-telemetry-bar {
-    left: 260px;
+  .glass-laurel-badge {
+    height: 40px;
+    padding: 5px 10px;
+    gap: 5px;
+  }
+  .laurel-branch {
+    width: 13px;
+    height: 26px;
+  }
+  .laurel-tier {
+    font-size: 6.5px;
+    letter-spacing: 0.14em;
+  }
+  .laurel-fest {
+    font-size: 5.5px;
+    letter-spacing: 0.12em;
   }
 }
 
@@ -1387,20 +1138,6 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .outer-telemetry {
-    display: none;
-  }
-  .outer-telemetry--tl {
-    top: 10px;
-    left: 16px;
-    font-size: 8px;
-  }
-  .outer-telemetry--bl {
-    bottom: 8px;
-    left: 16px;
-    font-size: 8px;
-  }
-
   .hero-section {
     height: 100vh;
     height: 100dvh;
@@ -1425,17 +1162,6 @@ html, body {
   }
   .glass-layer--2 {
     transform: rotate(0.45deg) translate(5px, 4px);
-  }
-
-  .layer-2-telemetry-bar {
-    top: 7px;
-    left: 20px;
-    right: 20px;
-    font-size: 7.5px;
-  }
-  .l2-sub,
-  .l2-telemetry-right {
-    display: none;
   }
 
   .glass-layer--3 {
@@ -1484,11 +1210,6 @@ html, body {
     gap: 10px;
   }
 
-  .brand-atelier-tag {
-    font-size: 7.5px;
-    letter-spacing: 0.20em;
-  }
-
   .hud-nav-rail {
     width: 100%;
     height: 36px;
@@ -1502,10 +1223,6 @@ html, body {
     padding: 5px 6px;
     gap: 0;
     min-width: 0;
-  }
-
-  .nav-index {
-    display: none;
   }
 
   .nav-label {
@@ -1532,40 +1249,17 @@ html, body {
     left: 48px;
     padding: 4px 10px;
     font-size: 8px;
+    max-width: calc(100% - 64px);
+    letter-spacing: 0.12em;
   }
 
   .vhud-reel-title {
-    display: none;
-  }
-
-  .vhud-top-right {
-    top: 14px;
-    right: 14px;
-    padding: 4px 10px;
-    font-size: 8px;
-  }
-
-  .vhud-format {
-    display: none;
-  }
-
-  .vhud-crosshair {
-    display: none;
+    letter-spacing: 0.12em;
   }
 
   .cinema-editorial-copy {
     width: 88%;
-    bottom: 100px;
-    gap: 6px;
-  }
-
-  .editorial-eyebrow {
-    font-size: 8px;
-    letter-spacing: 0.22em;
-  }
-
-  .eyebrow-line {
-    width: 14px;
+    bottom: 92px;
   }
 
   .editorial-headline {
@@ -1577,11 +1271,6 @@ html, body {
     display: block;
     margin-left: 0;
     margin-top: 2px;
-  }
-
-  .editorial-subline {
-    font-size: 11px;
-    line-height: 1.45;
   }
 
   /* Sits above the commission notch so the stroke does not cross the pills. */
@@ -1596,11 +1285,6 @@ html, body {
     border-radius: 16px;
     gap: 6px;
     max-width: calc(100% - 28px);
-  }
-
-  .switcher-rail-header,
-  .switcher-rail-footer {
-    display: none;
   }
 
   .switcher-buttons {
@@ -1622,10 +1306,6 @@ html, body {
 
   .frb-num {
     font-size: 9.5px;
-  }
-
-  .frb-caption {
-    display: none;
   }
 
   .stage-bottom-dock {
@@ -1653,15 +1333,9 @@ html, body {
 
   .cta-command-button {
     min-width: 0;
-    width: 216px;
-    max-width: 64vw;
-    padding: 7px 18px 8px;
-  }
-
-  .cta-kicker {
-    font-size: 7px;
-    letter-spacing: 0.18em;
-    white-space: nowrap;
+    width: max-content;
+    max-width: 72vw;
+    padding: 9px 22px 10px;
   }
 
   .cta-title {
@@ -1682,12 +1356,40 @@ html, body {
 
   .dock-wing--left {
     align-items: center;
+    min-width: 0;
   }
 
-  .dock-wing-meta {
-    font-size: 8px;
-    flex-wrap: wrap;
+  .glass-laurel-row {
+    width: 100%;
+    gap: 6px;
     justify-content: center;
+  }
+
+  .glass-laurel-badge {
+    height: 30px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .laurel-branch {
+    width: 9px;
+    height: 20px;
+  }
+
+  .laurel-copy {
+    gap: 1px;
+  }
+
+  .laurel-tier {
+    font-size: 5px;
+    letter-spacing: 0.08em;
+  }
+
+  .laurel-fest {
+    font-size: 4.4px;
+    letter-spacing: 0.06em;
   }
 
   .dock-wing--right {

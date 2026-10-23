@@ -10,73 +10,38 @@
   const REELS = [
     {
       num: "01",
-      title: "THE OCULUS · MEMORY ARCHIVE",
-      eyebrow: "FRAME I — THE OCULUS · STORY FIRST",
-      headlinePrimary: "Without narrative, it is just stone and steel.",
-      headlineItalic: "We craft mythology.",
-      subline:
-        "A cinematic atelier. Eleven-time festival-selected authorship for maisons and founders that build for legacy.",
-      timecode: "00:14:08:22",
-      format: "35MM ANAMORPHIC",
-      category: "ARCHIVE 01 // THE OCULUS",
-      desc: "Golden-hour corneal reflection · Memory & origin study",
-      laurel: "CANNES · TRIBECA · ANNECY HERITAGE",
+      title: "EVERCLOSE · FLAGSHIP SERIES",
+      headlinePrimary: "The bond that saves you.",
+      headlineItalic: "The bond that breaks you.",
+      category: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
     },
     {
       num: "02",
-      title: "THE RAW · UNCUT OBSIDIAN AT DAWN",
-      eyebrow: "FRAME II — THE RAW · ORIGIN SLATE",
-      headlinePrimary: "A blank slate. A silent room.",
-      headlineItalic: "Before the first cut.",
-      subline:
-        "The finest materials — marble, steel, silk, timber — find their meaning through narrative. We give them mythology.",
-      timecode: "00:29:16:04",
-      format: "65MM LARGE FORMAT",
-      category: "ARCHIVE 02 // THE RAW",
-      desc: "Monolithic obsidian marble · Still horizon at first light",
-      laurel: "OFFICIAL SELECTION · AI MOVIE AWARDS 2026",
+      title: "THE OCULUS · MEMORY ARCHIVE",
+      headlinePrimary: "Without narrative, it is just stone and steel.",
+      headlineItalic: "We craft mythology.",
+      category: "ATELIER ARCHIVE // ORIGIN STUDY",
     },
     {
       num: "03",
-      title: "THE MARK · PLATINUM LINE & SKETCH",
-      eyebrow: "FRAME III — THE MARK · ARCHITECTURAL PRECISION",
-      headlinePrimary: "Without narrative, it is just stone and steel.",
-      headlineItalic: "Authorship is the edge.",
-      subline:
-        "Every engagement is a personal commission with a named director. Uncompromising craft from first line to final master.",
-      timecode: "00:42:51:18",
-      format: "MACRO PRIME · 50MM",
-      category: "ARCHIVE 03 // THE MARK",
-      desc: "Brushed platinum elevation · Superyacht & horology study",
-      laurel: "FINALIST · BIG SCREEN HACK LONDON 2026",
+      title: "THE RAW · ORIGIN SLATE",
+      headlinePrimary: "A blank slate. A silent room.",
+      headlineItalic: "Before the first cut.",
+      category: "ATELIER ARCHIVE // MATERIAL STUDY",
     },
     {
       num: "04",
-      title: "THE LEGACY · SUPERYACHT TWILIGHT",
-      eyebrow: "FRAME IV — THE LEGACY · SOVEREIGN WORLDS",
-      headlinePrimary: "Built for those who shape permanence.",
-      headlineItalic: "We craft mythology.",
-      subline:
-        "Bespoke cinema for superyacht builders, luxury maisons, high jewelry, and private architectural sanctuaries.",
-      timecode: "01:04:19:09",
-      format: "ANAMORPHIC 2.39:1",
-      category: "ARCHIVE 04 // THE LEGACY",
-      desc: "Cantilevered smoked crystal · Mediterranean twilight cove",
-      laurel: "WINNER · LONDON AI FILM FESTIVAL",
+      title: "THE MARK · ARCHITECTURAL PRECISION",
+      headlinePrimary: "Every line is deliberate.",
+      headlineItalic: "Authorship is the edge.",
+      category: "ATELIER ARCHIVE // BESPOKE COMMISSION",
     },
     {
       num: "05",
-      title: "EVERCLOSE · AUTEUR ANIMATED SERIES",
-      eyebrow: "FRAME V — EVERCLOSE · ORIGINAL MYTHOLOGY",
-      headlinePrimary: "The bond that saves you.",
-      headlineItalic: "The bond that breaks you.",
-      subline:
-        "Written, directed, animated, and scored by Andrej Klimov. 27-minute flagship season — eleven-time festival selected.",
-      timecode: "01:19:44:12",
-      format: "DIGITAL ARTISTRY · 24FPS",
-      category: "ARCHIVE 05 // EVERCLOSE",
-      desc: "Siera & Anora · Flagship auteur animated drama",
-      laurel: "BEST ANIMATION · SHAIKE FILM FESTIVAL LA CIOTAT",
+      title: "THE LEGACY · SOVEREIGN WORLDS",
+      headlinePrimary: "Built for those who shape permanence.",
+      headlineItalic: "We craft mythology.",
+      category: "ATELIER ARCHIVE // SOVEREIGN WORLDS",
     },
   ];
 
@@ -570,34 +535,22 @@
       b.classList.toggle("is-active", i === nextIdx);
     });
 
-    // Update HUD telemetry readouts
-    const elTopIdx = document.getElementById("hud-top-reel-idx");
-    const elTopLaurel = document.getElementById("hud-top-laurel");
     const elVhudCode = document.getElementById("vhud-reel-code");
     const elVhudTitle = document.getElementById("vhud-reel-title");
-    const elVhudTc = document.getElementById("vhud-timecode");
-    const elVhudFormat = document.getElementById("vhud-format");
-    const elSrNum = document.getElementById("sr-active-num");
-    const elEyebrow = document.getElementById("editorial-eyebrow-text");
     const elHeadline = document.getElementById("editorial-headline");
-    const elSubline = document.getElementById("editorial-subline");
     const elDockCat = document.getElementById("dock-reel-category");
-    const elDockDesc = document.getElementById("dock-reel-desc");
 
-    if (elTopIdx) elTopIdx.textContent = data.num;
-    if (elTopLaurel) elTopLaurel.textContent = data.laurel;
-    if (elVhudCode) elVhudCode.textContent = `REEL ${data.num} / 05`;
+    if (elVhudCode) elVhudCode.textContent = data.num;
     if (elVhudTitle) elVhudTitle.textContent = data.title;
-    if (elVhudTc) elVhudTc.textContent = data.timecode;
-    if (elVhudFormat) elVhudFormat.textContent = data.format;
-    if (elSrNum) elSrNum.textContent = data.num;
-    if (elEyebrow) elEyebrow.textContent = data.eyebrow;
     if (elHeadline) {
-      elHeadline.innerHTML = `<span class="headline-primary">${data.headlinePrimary}</span><em class="headline-italic">${data.headlineItalic}</em>`;
+      elHeadline.innerHTML = `<span class="headline-primary">${data.headlinePrimary}</span> <em class="headline-italic">${data.headlineItalic}</em>`;
     }
-    if (elSubline) elSubline.textContent = data.subline;
     if (elDockCat) elDockCat.textContent = data.category;
-    if (elDockDesc) elDockDesc.textContent = data.desc;
+
+    if (nextIdx === 0) {
+      const flagship = document.querySelector(".reel-video");
+      if (flagship) flagship.play().catch(() => {});
+    }
 
     if (userTriggered) {
       restartAutoCycle();
