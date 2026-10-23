@@ -15,9 +15,9 @@
       src: "assets/reel-01-everclose-poster.jpg",
       bottomRightCredit: '"THE BOND THAT SAVES YOU." · WRITTEN & DIRECTED BY ANDREJ KLIMOV',
       laurels: [
-        { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026" },
-        { src: "assets/laurel-aimovie-glass.png", alt: "Official Selection, AI Movie Awards 2026" },
-        { src: "assets/laurel-bigscreenhack-glass.svg", alt: "Finalist, Big Screen Hack London 2026" },
+        { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026", width: 2485, height: 843 },
+        { src: "assets/laurel-aimovie-glass.png", alt: "Official Selection, AI Movie Awards 2026", width: 1735, height: 1152 },
+        { src: "assets/laurel-bigscreenhack-glass.svg", alt: "Finalist, Big Screen Hack London 2026", width: 808, height: 672 },
       ],
     },
     {
@@ -27,10 +27,10 @@
       src: "assets/reel-02-era-of-giants-poster.jpg",
       bottomRightCredit: "PREHISTORIC MICRO DRAMA PILOT · WRITTEN & DIRECTED BY ANDREJ KLIMOV",
       laurels: [
-        { src: "assets/laurel-metamorph-glass.png", alt: "Shortlist, Metamorph Award 2026" },
-        { src: "assets/laurel-bionic-glass.png", alt: "Finalist, BIONIC Awards 2026" },
-        { src: "assets/laurel-ailondon-glass.png", alt: "Winner, AI London Film Festival 2026" },
-        { src: "assets/laurel-kursaal-glass.png", alt: "Official Selection, Kursaal-AI Film Festival San Sebastián 2026" },
+        { src: "assets/laurel-metamorph-glass.png", alt: "Shortlist, Metamorph Award 2026", width: 2024, height: 1100 },
+        { src: "assets/laurel-bionic-glass.png", alt: "Finalist, BIONIC Awards 2026", width: 1665, height: 1078 },
+        { src: "assets/laurel-ailondon-glass.png", alt: "Winner, AI London Film Festival 2026", width: 1698, height: 1100 },
+        { src: "assets/laurel-kursaal-glass.png", alt: "Official Selection, Kursaal-AI Film Festival San Sebastián 2026", width: 1128, height: 863 },
       ],
     },
     {
@@ -44,13 +44,13 @@
       posterSrc: "assets/reel-03-ashes-poster.jpg",
       src: "assets/reel-03-ashes-poster.jpg",
       laurels: [
-        { src: "assets/laurel-kursaal-finalist-glass.png", alt: "Finalist Nominee, Kursaal-AI Film Festival San Sebastián 2026" },
-        { src: "assets/laurel-ashes-aimovie-glass.png", alt: "Official Selection, AI Movie Awards Magaluf, Spain 2026" },
-        { src: "assets/laurel-ashes-shaike-glass.png", alt: "SHAIKE Best Animation TOP10 2025" },
-        { src: "assets/laurel-aifilm3-glass.png", alt: "Official Selection, AI Film 3 - AI Film and Art Festival | Arizona | Year II 2025" },
-        { src: "assets/laurel-aifj-glass.png", alt: "Official Selection, AI-FJ | AI Film Festival Japan 2025" },
-        { src: "assets/laurel-lifeart-glass.png", alt: "Official Selection, LifeArt Festival 2026" },
-        { src: "assets/laurel-monaco-glass.png", alt: "Official Selection, AI Film Fest Monaco" },
+        { src: "assets/laurel-kursaal-finalist-glass.png", alt: "Finalist Nominee, Kursaal-AI Film Festival San Sebastián 2026", width: 549, height: 420 },
+        { src: "assets/laurel-ashes-aimovie-glass.png", alt: "Official Selection, AI Movie Awards Magaluf, Spain 2026", width: 620, height: 420 },
+        { src: "assets/laurel-ashes-shaike-glass.png", alt: "SHAIKE Best Animation TOP10 2025", width: 647, height: 420 },
+        { src: "assets/laurel-aifilm3-glass.png", alt: "Official Selection, AI Film 3 - AI Film and Art Festival | Arizona | Year II 2025", width: 649, height: 420 },
+        { src: "assets/laurel-aifj-glass.png", alt: "Official Selection, AI-FJ | AI Film Festival Japan 2025", width: 649, height: 420 },
+        { src: "assets/laurel-lifeart-glass.png", alt: "Official Selection, LifeArt Festival 2026", width: 649, height: 420 },
+        { src: "assets/laurel-monaco-glass.png", alt: "Official Selection, AI Film Fest Monaco", width: 835, height: 420 },
       ],
     },
     {
@@ -58,8 +58,8 @@
       title: "VESPERS · BESPOKE AUTOMOTIVE",
       bottomRightCredit: "COACHBUILT ONE-OFF · LAKE COMO COMMISSION · DIR. ANDREJ KLIMOV",
       laurels: [
-        { src: "assets/laurel-venice-glass.svg", alt: "Venice Design Biennial" },
-        { src: "assets/laurel-reddot-glass.svg", alt: "Red Dot Luminary" },
+        { src: "assets/laurel-venice-glass.svg", alt: "Venice Design Biennial", width: 808, height: 672 },
+        { src: "assets/laurel-reddot-glass.svg", alt: "Red Dot Luminary", width: 808, height: 672 },
       ],
     },
     {
@@ -67,8 +67,8 @@
       title: "NOCTURNE IX · PRIVATE AVIATION",
       bottomRightCredit: "BESPOKE CABIN STUDY · GENEVA COMMISSION · DIR. ANDREJ KLIMOV",
       laurels: [
-        { src: "assets/laurel-monaco-glass.svg", alt: "Monaco Yacht Show Grand Prix" },
-        { src: "assets/laurel-lia-glass.svg", alt: "London International Awards" },
+        { src: "assets/laurel-monaco-glass.svg", alt: "Monaco Yacht Show Grand Prix", width: 808, height: 672 },
+        { src: "assets/laurel-lia-glass.svg", alt: "London International Awards", width: 808, height: 672 },
       ],
     },
   ];
@@ -683,14 +683,15 @@
 
   function laurelSpan(item, extra) {
     const cls = extra ? `viewport-laurel ${extra}` : "viewport-laurel";
-    return `<span class="${cls}"><img src="${item.src}" alt="${item.alt}"></span>`;
+    const width = item.width ? ` width="${item.width}"` : "";
+    const height = item.height ? ` height="${item.height}"` : "";
+    return `<span class="${cls}"><img src="${item.src}" alt="${item.alt}"${width}${height} decoding="sync" loading="eager"></span>`;
   }
 
   function renderLaurels(laurels) {
     const host = document.getElementById("viewport-laurels");
     if (!host || !laurels) return;
     const count = laurels.length;
-    host.dataset.laurelCount = String(count);
     let markup;
     if (count > 4) {
       const spans = laurels.map((item, i) => laurelSpan(item, i === count - 1 ? "is-base" : ""));
@@ -699,19 +700,26 @@
     } else {
       markup = laurels.map((item) => laurelSpan(item)).join("");
     }
-    if (markup === laurelsMarkup) return;
-    const first = laurelsMarkup === "";
+    if (markup === laurelsMarkup && host.dataset.laurelCount === String(count)) return;
+    host.dataset.laurelCount = String(count);
+    host.innerHTML = markup;
     laurelsMarkup = markup;
-    if (first) {
-      host.innerHTML = markup;
-      return;
-    }
-    host.classList.add("is-out");
-    window.setTimeout(() => {
-      if (laurelsMarkup !== markup) return;
-      host.innerHTML = markup;
-      host.classList.remove("is-out");
-    }, 240);
+  }
+
+  function preloadLaurels() {
+    const seen = Object.create(null);
+    REELS.forEach((reel) => {
+      (reel.laurels || []).forEach((item) => {
+        if (!item.src || seen[item.src]) return;
+        seen[item.src] = true;
+        const img = new Image();
+        img.decoding = "sync";
+        if (item.width) img.width = item.width;
+        if (item.height) img.height = item.height;
+        img.src = item.src;
+        if (typeof img.decode === "function") img.decode().catch(() => {});
+      });
+    });
   }
 
   function restartAutoCycle() {
@@ -812,6 +820,8 @@
     setActiveReel,
     updateFluidGlassGeometry,
   };
+
+  preloadLaurels();
 
   window.addEventListener("DOMContentLoaded", () => {
     updateFluidGlassGeometry();

@@ -663,12 +663,6 @@ html, body {
   gap: 12px;
   max-width: calc(50% - 210px);
   pointer-events: none;
-  opacity: 1;
-  transition: opacity 0.28s ease;
-}
-
-.viewport-laurels.is-out {
-  opacity: 0;
 }
 
 .viewport-laurel {
