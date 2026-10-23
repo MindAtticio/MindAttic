@@ -72,8 +72,11 @@ html, body {
 
 .svg-defs {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 0;
   height: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -258,9 +261,13 @@ html, body {
   inset: 0;
   border-radius: var(--glass-radius);
   background: var(--glass-fill);
+  /* backdrop-filter and CSS filter cannot share this element: a filter
+     (drop-shadow or url(#ma-organic-glass-filter)) replaces the backdrop
+     sample with an empty plate and the smoked glass goes milky grey.
+     The cast shadow lives on box-shadow instead. */
   backdrop-filter: blur(var(--glass-blur)) saturate(125%);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(125%);
-  filter: drop-shadow(-17.78px -2.82px 5px rgba(0, 0, 0, 0.20));
+  box-shadow: -17.78px -2.82px 5px rgba(0, 0, 0, 0.20);
 }
 
 /* Organic turbulence noise refraction texture inside each glass sheet */
@@ -274,7 +281,8 @@ html, body {
     radial-gradient(500px 360px at 6% 56%, rgba(228, 226, 221, 0.10), transparent 68%),
     linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(230, 230, 250, 0.02) 48%, rgba(255, 255, 255, 0.05) 100%);
   filter: url(#ma-organic-glass-filter);
-  opacity: 0.92;
+  opacity: 0.55;
+  mix-blend-mode: soft-light;
 }
 
 .glass-caustic-bleed {
@@ -325,6 +333,7 @@ html, body {
   pointer-events: none;
   overflow: visible;
   z-index: 4;
+  display: block;
 }
 
 /* ==========================================================================
@@ -501,13 +510,16 @@ html, body {
 .brand-wordmark-row {
   display: flex;
   align-items: center;
+  background: transparent;
 }
 
 .brand-name-img {
   height: 14px;
   width: auto;
   display: block;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+  background: transparent;
+  /* No CSS filter here: a filter rasterizes the foil PNG's straight-alpha
+     matte and draws a grey rectangle behind the wordmark. */
 }
 
 .brand-sub-row {
@@ -521,7 +533,7 @@ html, body {
   width: auto;
   display: block;
   margin-top: -2px;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+  background: transparent;
 }
 
 .brand-atelier-tag {
@@ -677,12 +689,13 @@ html, body {
   width: 100%;
   height: 100%;
   min-height: 0;
-  display: flex;
-  align-items: stretch;
 }
 
+/* The image, clip, and specular rim are one box: the viewport is absolutely
+   inset on the wrapper, and #svg-viewport-rim is absolutely inset on the viewport. */
 .cinema-viewport {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border-radius: 26px;
@@ -699,8 +712,9 @@ html, body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 12;
+  z-index: 8;
   overflow: visible;
+  display: block;
 }
 
 /* 5-Reel Crossfading Visual Slides */
@@ -1013,7 +1027,8 @@ html, body {
   border-radius: inherit;
   background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.22), rgba(230, 230, 250, 0.04) 70%);
   filter: url(#ma-organic-glass-filter);
-  opacity: 0.85;
+  opacity: 0.7;
+  mix-blend-mode: soft-light;
   pointer-events: none;
 }
 
@@ -1232,6 +1247,8 @@ html, body {
   inset: 0;
   background: radial-gradient(240px 80px at 50% 0%, rgba(244, 241, 234, 0.22), rgba(230, 230, 250, 0.09) 65%, transparent 100%);
   filter: url(#ma-organic-glass-filter);
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
   pointer-events: none;
 }
 
@@ -1359,8 +1376,7 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .outer-telemetry--tr,
-  .outer-telemetry--br {
+  .outer-telemetry {
     display: none;
   }
   .outer-telemetry--tl {
@@ -1375,14 +1391,19 @@ html, body {
   }
 
   .hero-section {
-    padding: 28px 14px 24px;
+    height: 100vh;
+    height: 100dvh;
     min-height: 100vh;
+    min-height: 100dvh;
+    padding: 10px 10px 8px;
     align-items: stretch;
+    overflow: hidden;
   }
 
   .stage-assembly {
-    height: auto;
-    min-height: calc(100vh - 52px);
+    width: 100%;
+    height: 100%;
+    min-height: 0;
     max-height: none;
   }
 
@@ -1405,10 +1426,33 @@ html, body {
     display: none;
   }
 
+  .glass-layer--1,
+  .glass-layer--2 {
+    background: rgba(12, 14, 16, 0.46);
+  }
+
   .glass-layer--3 {
-    grid-template-rows: auto 1fr auto;
-    padding: 12px 14px 16px;
-    gap: 10px;
+    height: 100%;
+    min-height: 0;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    padding: 8px 10px 8px;
+    gap: 8px;
+    /* Smoked obsidian, not the stacked lavender wash that goes milky on small screens. */
+    background:
+      linear-gradient(180deg, rgba(230, 230, 250, 0.05), rgba(230, 230, 250, 0.02)),
+      rgba(12, 14, 16, 0.72);
+  }
+
+  .glass-refraction-noise {
+    opacity: 0.16;
+  }
+
+  .glass-caustic-bleed--primary {
+    opacity: 0.28;
+  }
+
+  .light-emitter-layer {
+    opacity: 0.22;
   }
 
   .stage-top-deck {
@@ -1418,8 +1462,16 @@ html, body {
   }
 
   .brand-sanctuary {
-    padding: 7px 12px 7px 8px;
+    width: auto;
+    max-width: 100%;
+    justify-self: start;
+    padding: 6px 12px 6px 6px;
     justify-content: flex-start;
+    background: linear-gradient(180deg, rgba(24, 27, 31, 0.82), rgba(14, 16, 18, 0.7));
+    border-color: rgba(228, 226, 221, 0.42);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.28),
+      0 8px 18px rgba(0, 0, 0, 0.35);
   }
 
   .brand-mark-pedestal {
@@ -1443,33 +1495,39 @@ html, body {
 
   .hud-nav-rail {
     width: 100%;
-    height: 44px;
+    height: 40px;
     justify-content: space-between;
-    padding: 4px 6px;
+    padding: 3px 4px;
     border-radius: 16px;
+    overflow: hidden;
   }
 
   .hud-nav-item {
-    padding: 6px 9px;
-    gap: 4px;
+    padding: 6px 6px;
+    gap: 0;
+    min-width: 0;
   }
 
   .nav-index {
-    font-size: 8px;
+    display: none;
   }
 
   .nav-label {
-    font-size: 9.5px;
-    letter-spacing: 0.12em;
+    font-size: 8.5px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .hud-nav-divider {
+    flex: 0 0 auto;
   }
 
   .cinema-viewport-wrapper {
-    min-height: 460px;
-    flex-direction: column;
+    min-height: 0;
+    height: 100%;
   }
 
   .cinema-viewport {
-    height: 460px;
     border-radius: 22px;
   }
 
@@ -1500,9 +1558,9 @@ html, body {
   }
 
   .cinema-editorial-copy {
-    width: 90%;
-    bottom: 84px;
-    gap: 8px;
+    width: 92%;
+    bottom: 92px;
+    gap: 6px;
   }
 
   .editorial-eyebrow {
@@ -1530,16 +1588,18 @@ html, body {
     line-height: 1.45;
   }
 
-  /* On mobile, the 5 frosted glass buttons dock cleanly as a horizontal floating rail inside the lower viewport */
+  /* Horizontal rail inside the cinema frame, above the bottom notch and the CTA. */
   .reel-switcher-rail {
     top: auto;
-    bottom: 14px;
-    right: 50%;
-    transform: translateX(50%);
+    bottom: 22px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
     flex-direction: row;
-    padding: 7px 12px;
-    border-radius: 20px;
-    gap: 10px;
+    padding: 6px 10px;
+    border-radius: 18px;
+    gap: 8px;
+    max-width: calc(100% - 24px);
   }
 
   .switcher-rail-header,
@@ -1581,7 +1641,7 @@ html, body {
 
   .cta-command-dock-wrap {
     order: -1;
-    margin-top: -12px;
+    margin-top: -14px;
     display: flex;
     justify-content: center;
   }

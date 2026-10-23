@@ -123,7 +123,7 @@
    * - Subtle bottom architectural command dock step
    */
   function buildLayer3Path(w, h, inset) {
-    const isMobile = w < 640;
+    const isMobile = w < 768;
     const r = isMobile ? 22 : 30;
     const rad = Math.max(8, r - inset);
     const x0 = inset;
@@ -161,7 +161,7 @@
    *   (upgraded from Attachment 3's bottom CTA notch)
    */
   function buildViewportPath(w, h, inset) {
-    const isMobile = w < 640;
+    const isMobile = w < 768;
     const r = isMobile ? 20 : 28;
     const rad = Math.max(6, r - inset);
     const x0 = inset;
@@ -173,10 +173,14 @@
     const cutX = isMobile ? 54 : Math.min(118, Math.round(w * 0.082));
     const cutY = isMobile ? 34 : Math.min(68, Math.round(h * 0.095));
 
-    // Bottom-center sculpted notch for the floating glass CTA dock
-    const notchHalfW = isMobile ? Math.min(130, Math.round(w * 0.36)) : 196;
-    const notchDepth = isMobile ? 16 : 34;
-    const notchCurve = isMobile ? 26 : 48;
+    // Bottom-center sculpted notch for the floating glass CTA dock.
+    // Clamp so the notch stays inside the side corners on narrow screens.
+    const notchHalfW = Math.min(
+      isMobile ? Math.min(108, Math.round(w * 0.24)) : 196,
+      Math.max(28, Math.round(w * 0.3))
+    );
+    const notchDepth = isMobile ? 12 : 34;
+    const notchCurve = isMobile ? 18 : 48;
     const cx = w * 0.5;
 
     const nLeftStart = cx - notchHalfW - notchCurve;
@@ -221,20 +225,43 @@
    * Renders the dual specular rims (1px #FFFFFF outer rim at opacity 1.0 +
    * 1px #FFFFFF inset border at opacity 0.50 + platinum accent arc) into an SVG element.
    */
+  /**
+   * The rim SVG must use the same pixel box as the element it outlines.
+   * viewBox is that box in CSS pixels and preserveAspectRatio="none" prevents
+   * a mismatched SVG viewport from letterboxing the stroke.
+   * The visible stroke is inset by half its width so clip-path does not eat it,
+   * while the clip itself is the element's exact perimeter.
+   */
   function renderDualRimSVG(svgEl, outerD, insetD, w, h, showTopHighlight) {
     if (!svgEl) return;
     svgEl.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    svgEl.setAttribute("width", String(w));
+    svgEl.setAttribute("height", String(h));
+    svgEl.setAttribute("preserveAspectRatio", "none");
     svgEl.innerHTML = `
-      <path d="${insetD}" fill="none" stroke="rgba(255,255,255,0.50)" stroke-width="1" />
-      <path d="${outerD}" fill="none" stroke="url(#platinum-rim-grad)" stroke-width="1.25" />
+      <path d="${insetD}" fill="none" stroke="rgba(255,255,255,0.50)" stroke-width="1" vector-effect="non-scaling-stroke" />
+      <path d="${outerD}" fill="none" stroke="url(#platinum-rim-grad)" stroke-width="1.25" vector-effect="non-scaling-stroke" />
       ${
         showTopHighlight
-          ? `<path d="${outerD}" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.95" stroke-dasharray="${Math.round(
+          ? `<path d="${outerD}" fill="none" stroke="#FFFFFF" stroke-width="1" stroke-opacity="0.95" vector-effect="non-scaling-stroke" stroke-dasharray="${Math.round(
               w * 0.42
             )} ${Math.round(w * 2 + h * 2)}" stroke-dashoffset="-${Math.round(w * 0.04)}" />`
           : ""
       }
     `;
+  }
+
+  function elementBox(el) {
+    if (!el) return null;
+    const w = Math.round(el.clientWidth);
+    const h = Math.round(el.clientHeight);
+    if (w < 2 || h < 2) return null;
+    return { w, h };
+  }
+
+  function applyClip(el, d) {
+    el.style.clipPath = `path("${d}")`;
+    el.style.webkitClipPath = `path("${d}")`;
   }
 
   function updateFluidGlassGeometry() {
@@ -243,45 +270,42 @@
     const l3 = document.getElementById("glass-layer-3");
     const vp = document.getElementById("cinema-viewport");
 
-    if (l1) {
-      const r = l1.getBoundingClientRect();
-      const w = Math.max(300, Math.round(l1.offsetWidth || r.width));
-      const h = Math.max(300, Math.round(l1.offsetHeight || r.height));
-      const dOuter = buildChassisPath(w, h, 30, 0.5, 0.58, -8);
-      const dInset = buildChassisPath(w, h, 30, 2.5, 0.58, -8);
-      l1.style.clipPath = `path("${dOuter}")`;
-      l1.style.webkitClipPath = `path("${dOuter}")`;
-      renderDualRimSVG(document.getElementById("svg-layer-1"), dOuter, dInset, w, h, true);
+    const b1 = elementBox(l1);
+    if (b1) {
+      const dOuter = buildChassisPath(b1.w, b1.h, 30, 0.5, 0.58, -8);
+      const dInset = buildChassisPath(b1.w, b1.h, 30, 2.5, 0.58, -8);
+      applyClip(l1, dOuter);
+      renderDualRimSVG(document.getElementById("svg-layer-1"), dOuter, dInset, b1.w, b1.h, true);
     }
 
-    if (l2) {
-      const w = Math.max(300, Math.round(l2.offsetWidth));
-      const h = Math.max(300, Math.round(l2.offsetHeight));
-      const dOuter = buildChassisPath(w, h, 30, 0.5, 0.24, 8);
-      const dInset = buildChassisPath(w, h, 30, 2.5, 0.24, 8);
-      l2.style.clipPath = `path("${dOuter}")`;
-      l2.style.webkitClipPath = `path("${dOuter}")`;
-      renderDualRimSVG(document.getElementById("svg-layer-2"), dOuter, dInset, w, h, true);
+    const b2 = elementBox(l2);
+    if (b2) {
+      const dOuter = buildChassisPath(b2.w, b2.h, 30, 0.5, 0.24, 8);
+      const dInset = buildChassisPath(b2.w, b2.h, 30, 2.5, 0.24, 8);
+      applyClip(l2, dOuter);
+      renderDualRimSVG(document.getElementById("svg-layer-2"), dOuter, dInset, b2.w, b2.h, true);
     }
 
-    if (l3) {
-      const w = Math.max(300, Math.round(l3.offsetWidth));
-      const h = Math.max(300, Math.round(l3.offsetHeight));
-      const dOuter = buildLayer3Path(w, h, 0.5);
-      const dInset = buildLayer3Path(w, h, 2.5);
-      l3.style.clipPath = `path("${dOuter}")`;
-      l3.style.webkitClipPath = `path("${dOuter}")`;
-      renderDualRimSVG(document.getElementById("svg-layer-3"), dOuter, dInset, w, h, true);
+    // #svg-layer-3 is absolutely inset on #glass-layer-3, so the path uses that
+    // element's client box — not a padded or minimum height.
+    const b3 = elementBox(l3);
+    if (b3) {
+      const dClip = buildLayer3Path(b3.w, b3.h, 0.5);
+      const dRim = buildLayer3Path(b3.w, b3.h, 1.15);
+      const dInset = buildLayer3Path(b3.w, b3.h, 2.6);
+      applyClip(l3, dClip);
+      renderDualRimSVG(document.getElementById("svg-layer-3"), dRim, dInset, b3.w, b3.h, true);
     }
 
-    if (vp) {
-      const w = Math.max(260, Math.round(vp.offsetWidth));
-      const h = Math.max(260, Math.round(vp.offsetHeight));
-      const dOuter = buildViewportPath(w, h, 0.5);
-      const dInset = buildViewportPath(w, h, 2.5);
-      vp.style.clipPath = `path("${dOuter}")`;
-      vp.style.webkitClipPath = `path("${dOuter}")`;
-      renderDualRimSVG(document.getElementById("svg-viewport-rim"), dOuter, dInset, w, h, true);
+    // #svg-viewport-rim lives inside #cinema-viewport. Its viewBox is that
+    // element's clientWidth × clientHeight, the same box the image fills.
+    const bvp = elementBox(vp);
+    if (bvp) {
+      const dClip = buildViewportPath(bvp.w, bvp.h, 0.5);
+      const dRim = buildViewportPath(bvp.w, bvp.h, 1.15);
+      const dInset = buildViewportPath(bvp.w, bvp.h, 2.6);
+      applyClip(vp, dClip);
+      renderDualRimSVG(document.getElementById("svg-viewport-rim"), dRim, dInset, bvp.w, bvp.h, true);
     }
   }
 
@@ -400,11 +424,15 @@
       const ro = new ResizeObserver(() => {
         window.requestAnimationFrame(updateFluidGlassGeometry);
       });
-      const stage = document.getElementById("stage-assembly");
-      const vp = document.getElementById("cinema-viewport");
-      if (stage) ro.observe(stage);
-      if (vp) ro.observe(vp);
+      ["stage-assembly", "glass-layer-1", "glass-layer-2", "glass-layer-3", "cinema-viewport"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) ro.observe(el);
+      });
     }
     window.addEventListener("resize", updateFluidGlassGeometry);
+    window.addEventListener("load", updateFluidGlassGeometry);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(updateFluidGlassGeometry);
+    }
   });
 })();

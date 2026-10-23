@@ -8,22 +8,25 @@
 </head>
 <body>
   <!-- Global SVG Defs: Andrej's Exact Organic Noise Frosted Glass Engine & Brushed Platinum Gradients -->
-  <svg class="svg-defs" aria-hidden="true" width="0" height="0">
+  <!-- width/height stay non-zero so userSpaceOnUse primitives (blur 4, distort 8)
+       are not resolved against a 0×0 viewport. CSS hides the sprite. -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false" width="1440" height="900">
     <defs>
-      <!-- Exact Organic Noise Displacement Filter:
-           feTurbulence fractalNoise baseFrequency="0.02" numOctaves="2" seed="5"
-           feComponentTransfer slope="2" intercept="-0.5"
-           feGaussianBlur stdDeviation="4"
-           feDisplacementMap scale="8" -->
-      <filter id="ma-organic-glass-filter" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <!-- Organic refraction: fractal noise, contrast, blur 4, distort 8.
+           The region is the element box only, and feComposite "in" restores
+           SourceGraphic alpha so the displacement map cannot paint an opaque
+           grey plate over backdrop-filter. -->
+      <filter id="ma-organic-glass-filter" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
         <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="5" result="rawNoise" />
         <feComponentTransfer in="rawNoise" result="contrastedNoise">
           <feFuncR type="linear" slope="2" intercept="-0.5" />
           <feFuncG type="linear" slope="2" intercept="-0.5" />
           <feFuncB type="linear" slope="2" intercept="-0.5" />
+          <feFuncA type="discrete" tableValues="1" />
         </feComponentTransfer>
         <feGaussianBlur in="contrastedNoise" stdDeviation="4" result="smoothNoise" />
         <feDisplacementMap in="SourceGraphic" in2="smoothNoise" scale="8" xChannelSelector="R" yChannelSelector="G" result="refracted" />
+        <feComposite in="refracted" in2="SourceGraphic" operator="in" />
       </filter>
 
       <!-- Outside-Only Cast Shadow Filter:
@@ -313,10 +316,11 @@
                 A cinematic atelier. Eleven-time festival-selected authorship for maisons and founders that build for legacy.
               </p>
             </div>
-          </div>
 
-          <!-- Dynamic Parametric SVG Rim around the Sculpted Asymmetrical Cinema Viewport -->
-          <svg class="viewport-rim-svg" id="svg-viewport-rim" aria-hidden="true"></svg>
+            <!-- Specular rim shares #cinema-viewport's border box. It must stay
+                 inside this element so viewBox, clip-path, and the image cannot diverge. -->
+            <svg class="viewport-rim-svg" id="svg-viewport-rim" aria-hidden="true"></svg>
+          </div>
 
           <!-- ===============================================================
                5 VERTICAL FROSTED GLASS SWITCHER BUTTONS ON THE RIGHT
