@@ -1609,18 +1609,6 @@ html, body {
   max-width: 150px;
 }
 
-@media (min-width: 1181px) {
-  body.reel-septet #vhud-director-tag {
-    position: absolute;
-    right: 56px;
-    bottom: 200px;
-    z-index: 12;
-    max-width: min(280px, 22vw);
-    text-align: right;
-    pointer-events: none;
-  }
-}
-
 @media (max-width: 1180px) {
   .viewport-laurels[data-laurel-count="7"] {
     left: 16px;
