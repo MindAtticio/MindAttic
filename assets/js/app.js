@@ -84,6 +84,40 @@
     ].join(" ");
   }
 
+  /**
+   * Layer 2 on a phone. The sheet is already larger than the main panel;
+   * this contour keeps the outer top-right and bottom-left on that larger
+   * box and steps the opposite corners in, so both wings read from behind
+   * the main frame.
+   */
+  function buildRearPanelPath(w, h, inset) {
+    const rad = Math.max(10, 22 - inset);
+    const x0 = inset;
+    const y0 = inset;
+    const x1 = w - inset;
+    const y1 = h - inset;
+    const rise = Math.round(Math.min(16, Math.max(11, h * 0.014)));
+    const step = Math.round(Math.min(26, Math.max(16, w * 0.048)));
+    const topJoin = Math.round(Math.min(w * 0.64, x1 - rad - step - 12));
+    const botJoin = Math.round(Math.max(w * 0.32, x0 + rad + step + 12));
+    return [
+      `M ${x0 + rad} ${y0 + rise}`,
+      `L ${topJoin - step} ${y0 + rise}`,
+      `C ${topJoin - step * 0.35} ${y0 + rise}, ${topJoin - step * 0.12} ${y0}, ${topJoin + step * 0.4} ${y0}`,
+      `L ${x1 - rad} ${y0}`,
+      `Q ${x1} ${y0} ${x1} ${y0 + rad}`,
+      `L ${x1} ${y1 - rise - rad}`,
+      `Q ${x1} ${y1 - rise} ${x1 - rad} ${y1 - rise}`,
+      `L ${botJoin + step} ${y1 - rise}`,
+      `C ${botJoin + step * 0.35} ${y1 - rise}, ${botJoin + step * 0.12} ${y1}, ${botJoin - step * 0.4} ${y1}`,
+      `L ${x0 + rad} ${y1}`,
+      `Q ${x0} ${y1} ${x0} ${y1 - rad}`,
+      `L ${x0} ${y0 + rise + rad}`,
+      `Q ${x0} ${y0 + rise} ${x0 + rad} ${y0 + rise}`,
+      "Z",
+    ].join(" ");
+  }
+
   function buildChassisPath(w, h, r, inset, stepXRatio, stepDrop) {
     const mobile = layoutIsMobile();
     const x0 = inset;
@@ -267,9 +301,12 @@
     if (W < 2 || H < 2 || v.width < 2) return null;
 
     const shape = ctaMetrics(W, H, 0);
-    const btnTop = b.top - v.top;
-    const overlap = v.height - btnTop;
-    const depth = Math.max(channel + 16, overlap + channel);
+    const overlap = v.bottom - b.top;
+    // Ceiling sits one channel above the button. Raising the button deepens
+    // the notch by the same amount, so the gap stays 8px on mobile / 9px on desktop.
+    const depth = overlap > 0
+      ? Math.round(Math.min(Math.max(overlap + channel, 28), 58))
+      : (isMobile ? 42 : 44);
     const topHalf = W / 2 - shape.t;
     const ceilingHalf = topHalf + (channel * shape.side) / H - shape.slope * channel;
 
@@ -534,8 +571,9 @@
 
     const b2 = elementBox(l2);
     if (b2) {
-      const dOuter = roundedRectPath(b2.w, b2.h, 30, 0.5);
-      const dInset = roundedRectPath(b2.w, b2.h, 30, 2.5);
+      const rear = layoutIsMobile();
+      const dOuter = rear ? buildRearPanelPath(b2.w, b2.h, 0.5) : roundedRectPath(b2.w, b2.h, 30, 0.5);
+      const dInset = rear ? buildRearPanelPath(b2.w, b2.h, 2.5) : roundedRectPath(b2.w, b2.h, 30, 2.5);
       applyClip(l2, dOuter);
       renderDualRimSVG(document.getElementById("svg-layer-2"), dOuter, dInset, b2.w, b2.h, true);
     }

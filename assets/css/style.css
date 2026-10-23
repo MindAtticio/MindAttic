@@ -1108,9 +1108,9 @@ html, body {
     height: 100dvh;
     min-height: 100vh;
     min-height: 100dvh;
-    /* Obsidian margin so the glass stack floats clear of the screen edge
-       and of mobile browser / preview chrome. */
-    padding: 16px 16px 28px;
+    /* Dark margin around the main sheet. Rear sheets overflow the stage
+       into this padding, and still stay inside the screen. */
+    padding: clamp(18px, 2.4vh, 26px) clamp(16px, 3.8vw, 24px);
     align-items: stretch;
     overflow: hidden;
   }
@@ -1123,17 +1123,25 @@ html, body {
   }
 
   .glass-layer--1 {
-    transform: rotate(-0.65deg) translate(-5px, -4px);
+    top: clamp(-14px, -1.35vh, -10px);
+    right: clamp(-6px, -1vw, -3px);
+    bottom: clamp(-7px, -0.65vh, -4px);
+    left: clamp(-11px, -2.05vw, -8px);
+    transform: rotate(-0.2deg);
   }
   .glass-layer--2 {
-    transform: rotate(0.45deg) translate(5px, 4px);
+    top: clamp(-4px, -0.3vh, -2px);
+    right: clamp(-11px, -2.05vw, -8px);
+    bottom: clamp(-11px, -1.05vh, -8px);
+    left: clamp(-11px, -2.05vw, -8px);
+    transform: rotate(0.15deg);
   }
 
   .glass-layer--3 {
     height: 100%;
     min-height: 0;
     grid-template-rows: auto minmax(0, 1fr) auto;
-    padding: 14px 12px 12px;
+    padding: 14px 12px 0;
     gap: 12px;
   }
 
@@ -1220,7 +1228,7 @@ html, body {
     z-index: 15;
     left: 50%;
     right: auto;
-    bottom: 122px;
+    bottom: 124px;
     transform: translateX(-50%);
     width: min(88%, 420px);
     text-align: center;
@@ -1270,7 +1278,7 @@ html, body {
     right: auto;
     top: auto;
     left: 50%;
-    bottom: 52px;
+    bottom: 58px;
     transform: translateX(-50%);
     flex-direction: row;
     gap: clamp(7px, 1.8vw, 10px);
@@ -1315,8 +1323,10 @@ html, body {
   }
 
   .cta-command-dock-wrap {
+    top: auto;
+    bottom: 9px;
     margin-top: 0;
-    transform: translate(-50%, -28px);
+    transform: translateX(-50%);
   }
 
   .cta-command-button {
@@ -1351,6 +1361,6 @@ html, body {
 /* The wider mobile notch reaches the laurel stack through about 680px. */
 @media (max-width: 680px) {
   .viewport-laurels {
-    bottom: 42px;
+    bottom: 48px;
   }
 }
