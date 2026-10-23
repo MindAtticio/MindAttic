@@ -1,0 +1,1612 @@
+/* ==========================================================================
+   MIND ATTIC — SECTION 1 (HERO)
+   Luxury Blend of HUD, Minimalism & Sexy Asymmetry
+   Brand Guide Palette + Organic Noise Frosted Glass Engine
+   ========================================================================== */
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/CormorantGaramond-variable.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/CormorantGaramond-italic-variable.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("../fonts/DMSans-variable.woff2") format("woff2");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Brand Guide Palette */
+  --obsidian: #1A1D20;
+  --obsidian-deep: #121417;
+  --midnight-indigo: #161B24;
+  --bone-white: #F4F1EA;
+  --platinum-bright: #E4E2DD;
+  --platinum-mid: #C5C2B8;
+  --platinum-muted: #8E8C84;
+  --champagne-glow: #DFC8A2;
+
+  /* Andrej's Exact Frosted Glass Parameters */
+  --glass-fill: rgba(230, 230, 250, 0.09);      /* #E6E6FA at 0.09 opacity */
+  --glass-fill-elevated: rgba(230, 230, 250, 0.12);
+  --glass-blur: 4px;                            /* Blur Level: 4 */
+  --glass-radius: 30px;                         /* Corner Radius: 30 */
+  --glass-outline: #FFFFFF;                     /* Outline: #FFFFFF Opacity 1 */
+  --glass-inset: rgba(255, 255, 255, 0.50);     /* Inset Border: #FFFFFF Opacity 0.5 */
+  /* Angle -171° -> dx = -17.78px, dy = -2.82px, Blur = 5px, #000000 @ 0.20 */
+  --glass-shadow: -17.78px -2.82px 5px rgba(0, 0, 0, 0.20), 0 28px 64px rgba(0, 0, 0, 0.55);
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--obsidian);
+  color: var(--bone-white);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   MATTE OBSIDIAN CHARCOAL CANVAS (#1A1D20) & AMBIENT CAUSTICS
+   ========================================================================== */
+.obsidian-canvas {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(1100px 640px at 74% 14%, rgba(228, 226, 221, 0.065), transparent 65%),
+    radial-gradient(900px 580px at 18% 82%, rgba(197, 194, 184, 0.045), transparent 65%),
+    radial-gradient(1400px 900px at 50% 50%, #1F2327 0%, #1A1D20 58%, #131619 100%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.grain-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.ambient-caustic {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(68px);
+  pointer-events: none;
+}
+
+.ambient-caustic--top-right {
+  width: 560px;
+  height: 220px;
+  top: 4%;
+  right: 11%;
+  background: linear-gradient(125deg, rgba(244, 241, 234, 0.14), rgba(223, 200, 162, 0.11), transparent);
+  transform: rotate(-16deg);
+}
+
+.ambient-caustic--bottom-left {
+  width: 480px;
+  height: 240px;
+  bottom: 7%;
+  left: 7%;
+  background: linear-gradient(45deg, rgba(228, 226, 221, 0.10), rgba(197, 194, 184, 0.05), transparent);
+  transform: rotate(12deg);
+}
+
+.ambient-caustic--center {
+  width: 880px;
+  height: 460px;
+  top: 28%;
+  left: 26%;
+  background: radial-gradient(circle, rgba(22, 27, 36, 0.55), transparent 70%);
+}
+
+/* ==========================================================================
+   OUTER ARCHITECTURAL NEGATIVE-SPACE TELEMETRY
+   ========================================================================== */
+.outer-telemetry {
+  position: fixed;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(197, 194, 184, 0.42);
+  pointer-events: none;
+  user-select: none;
+}
+
+.outer-telemetry--tl { top: 22px; left: 38px; }
+.outer-telemetry--tr { top: 22px; right: 38px; }
+.outer-telemetry--bl { bottom: 20px; left: 38px; }
+.outer-telemetry--br { bottom: 20px; right: 38px; }
+
+.ot-sep {
+  color: rgba(228, 226, 221, 0.24);
+}
+
+.ot-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--platinum-bright);
+  box-shadow: 0 0 8px rgba(244, 241, 234, 0.8);
+}
+
+/* ==========================================================================
+   HERO SECTION STAGE & 3-LAYERED ASYMMETRICAL GLASS ARCHITECTURE
+   ========================================================================== */
+.hero-section {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Generous negative space around the stage so the matte obsidian breathes */
+  padding: 58px 88px 54px;
+}
+
+.stage-assembly {
+  position: relative;
+  width: 100%;
+  max-width: 1580px;
+  height: calc(100vh - 112px);
+  min-height: 760px;
+  max-height: 940px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   REFRACTIVE LIGHT TUBES & CAUSTIC ARCS BEHIND THE GLASS LAYERS (Ref 2)
+   ========================================================================== */
+.light-emitter-layer {
+  position: absolute;
+  inset: -26px -34px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.light-arcs-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.caustic-arc,
+.caustic-bar-glow {
+  filter: blur(4px) drop-shadow(0 0 14px rgba(244, 241, 234, 0.58)) drop-shadow(0 0 28px rgba(223, 200, 162, 0.36));
+}
+
+.light-tube {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 999px;
+}
+
+/* Glowing horizontal light bar behind top-right glass edge (like Attachment 2) */
+.light-tube--top-bar {
+  top: 2px;
+  right: 14%;
+  width: 440px;
+  height: 5px;
+  background: linear-gradient(90deg, transparent 0%, #E4E2DD 20%, #FFFDF9 50%, #DFC8A2 80%, transparent 100%);
+  box-shadow:
+    0 0 18px 3px rgba(244, 241, 234, 0.65),
+    0 0 42px 10px rgba(223, 200, 162, 0.34);
+}
+
+/* Subtle diagonal champagne-platinum light streak refracting through top-right glass (upgraded from Attachment 3) */
+.light-tube--diagonal-streak {
+  top: 38px;
+  right: 4%;
+  width: 520px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(228, 226, 221, 0.35) 22%, rgba(255, 250, 240, 0.92) 54%, rgba(223, 200, 162, 0.45) 78%, transparent 100%);
+  transform: rotate(-19.5deg);
+  box-shadow:
+    0 0 22px 4px rgba(244, 241, 234, 0.45),
+    0 0 54px 12px rgba(223, 200, 162, 0.25);
+}
+
+/* ==========================================================================
+   SHARED ORGANIC NOISE FROSTED GLASS ENGINE
+   Fill: #E6E6FA @ 0.09 | Blur: 4px | Distortion: 8 | Corner Radius: 30px
+   Outline: #FFFFFF @ 1.0 | Inset: #FFFFFF @ 0.5 | Shadow: -171° dist 18 blur 5 @ 0.2
+   ========================================================================== */
+.glass-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--glass-radius);
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur)) saturate(125%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(125%);
+  filter: drop-shadow(-17.78px -2.82px 5px rgba(0, 0, 0, 0.20));
+}
+
+/* Organic turbulence noise refraction texture inside each glass sheet */
+.glass-refraction-noise {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(700px 260px at 78% 6%, rgba(244, 241, 234, 0.14), transparent 65%),
+    radial-gradient(500px 360px at 6% 56%, rgba(228, 226, 221, 0.10), transparent 68%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(230, 230, 250, 0.02) 48%, rgba(255, 255, 255, 0.05) 100%);
+  filter: url(#ma-organic-glass-filter);
+  opacity: 0.92;
+}
+
+.glass-caustic-bleed {
+  position: absolute;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.glass-caustic-bleed--tr {
+  top: 0;
+  right: 10%;
+  width: 480px;
+  height: 95px;
+  background: radial-gradient(ellipse at top, rgba(244, 241, 234, 0.24), rgba(223, 200, 162, 0.09) 52%, transparent 75%);
+  filter: url(#ma-organic-glass-filter);
+}
+
+.glass-caustic-bleed--bl {
+  bottom: 12%;
+  left: -10px;
+  width: 140px;
+  height: 360px;
+  background: radial-gradient(ellipse at left, rgba(244, 241, 234, 0.22), transparent 72%);
+  filter: url(#ma-organic-glass-filter);
+}
+
+.glass-caustic-bleed--terrace {
+  top: 0;
+  right: 6%;
+  width: 580px;
+  height: 110px;
+  background: radial-gradient(ellipse at 65% 0%, rgba(244, 241, 234, 0.20), rgba(197, 194, 184, 0.06) 60%, transparent 80%);
+}
+
+.glass-caustic-bleed--primary {
+  inset: 0;
+  background:
+    radial-gradient(520px 120px at 72% 2%, rgba(244, 241, 234, 0.16), transparent 70%),
+    radial-gradient(240px 340px at 0% 54%, rgba(228, 226, 221, 0.13), transparent 72%),
+    radial-gradient(240px 300px at 100% 38%, rgba(228, 226, 221, 0.12), transparent 72%);
+}
+
+.layer-rim-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 4;
+}
+
+/* ==========================================================================
+   LAYER 1: DEEPEST BACKGROUND SMOKED CRYSTAL PLANE
+   transform: rotate(-1.2deg) translate(-18px, -12px)
+   ========================================================================== */
+.glass-layer--1 {
+  z-index: 2;
+  transform: rotate(-1.2deg) translate(-18px, -12px);
+  background: rgba(230, 230, 250, 0.065);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.layer-1-corner-mark {
+  position: absolute;
+  bottom: 14px;
+  left: 28px;
+  font-size: 8.5px;
+  letter-spacing: 0.26em;
+  color: rgba(228, 226, 221, 0.36);
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   LAYER 2: MIDDLE ARCHITECTURAL GLASS CHASSIS
+   transform: rotate(0.6deg) translate(14px, 10px)
+   ========================================================================== */
+.glass-layer--2 {
+  z-index: 3;
+  transform: rotate(0.6deg) translate(14px, 10px);
+  background: rgba(230, 230, 250, 0.075);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  pointer-events: none;
+}
+
+.layer-2-telemetry-bar {
+  position: absolute;
+  top: 11px;
+  left: 340px;
+  right: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(228, 226, 221, 0.56);
+}
+
+.l2-telemetry-left,
+.l2-telemetry-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.l2-Diamond {
+  color: var(--platinum-bright);
+  font-size: 10px;
+}
+
+.l2-code {
+  color: var(--bone-white);
+  font-weight: 500;
+}
+
+.l2-divider {
+  width: 18px;
+  height: 1px;
+  background: rgba(228, 226, 221, 0.28);
+}
+
+.layer-2-bottom-telemetry {
+  position: absolute;
+  bottom: 10px;
+  right: 34px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 8.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(197, 194, 184, 0.45);
+}
+
+/* ==========================================================================
+   LAYER 3: PRIMARY ASYMMETRICAL CINEMA STAGE & INTEGRATED HUD
+   ========================================================================== */
+.glass-layer--3 {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 92px 1fr 78px;
+  padding: 0 28px;
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ==========================================================================
+   TOP ARCHITECTURAL DECK:
+   1. Top-Left Brand Sanctuary (Raised Asymmetrical Wing with New Platinum Foil Logo)
+   2. Center-Left Slope Telemetry
+   3. Top-Right Stepped Glass HUD Rail
+   ========================================================================== */
+.stage-top-deck {
+  position: relative;
+  z-index: 6;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 10px 6px 6px 4px;
+}
+
+/* Top-Left Brand Sanctuary */
+.brand-sanctuary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: var(--bone-white);
+  padding: 8px 20px 8px 10px;
+  border-radius: 22px 28px 18px 22px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(230, 230, 250, 0.03) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.50),
+    0 8px 24px rgba(0, 0, 0, 0.28);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease;
+}
+
+.brand-sanctuary:hover {
+  transform: translateY(-1px) scale(1.015);
+  border-color: rgba(255, 255, 255, 0.65);
+}
+
+.brand-mark-pedestal {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  background: radial-gradient(circle at 30% 25%, #272B30 0%, #16181B 100%);
+  border: 1px solid rgba(228, 226, 221, 0.48);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px;
+  flex-shrink: 0;
+}
+
+.brand-creature-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.65));
+}
+
+.brand-lockup-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.brand-wordmark-row {
+  display: flex;
+  align-items: center;
+}
+
+.brand-name-img {
+  height: 14px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+}
+
+.brand-sub-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-signature-img {
+  height: 22px;
+  width: auto;
+  display: block;
+  margin-top: -2px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.55));
+}
+
+.brand-atelier-tag {
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--platinum-mid);
+  padding-left: 10px;
+  border-left: 1px solid rgba(228, 226, 221, 0.28);
+}
+
+/* Center-Left Slope Bridge Telemetry */
+.deck-slope-telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 14px;
+  border-left: 1px solid rgba(228, 226, 221, 0.20);
+}
+
+.slope-line-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slope-tick {
+  width: 14px;
+  height: 1px;
+  background: var(--platinum-bright);
+}
+
+.slope-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  color: var(--platinum-mid);
+  text-transform: uppercase;
+}
+
+.slope-coords {
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  color: rgba(244, 241, 234, 0.78);
+  text-transform: uppercase;
+}
+
+.slope-coords strong {
+  color: var(--bone-white);
+  font-weight: 600;
+}
+
+/* Top-Right Stepped Glass HUD Navigation Rail */
+.hud-nav-rail {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 5px 8px;
+  border-radius: 20px;
+  background: rgba(230, 230, 250, 0.09);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+    -17.78px -2.82px 5px rgba(0, 0, 0, 0.20);
+}
+
+.hud-nav-item {
+  position: relative;
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: rgba(244, 241, 234, 0.76);
+  font-family: var(--font-sans);
+  padding: 9px 18px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hud-nav-item:hover {
+  color: var(--bone-white);
+  background: rgba(255, 255, 255, 0.06);
+  transform: scale(1.04);
+}
+
+.hud-nav-item.is-active {
+  color: var(--bone-white);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(228, 226, 221, 0.05) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.nav-index {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--platinum-muted);
+}
+
+.hud-nav-item.is-active .nav-index {
+  color: var(--platinum-bright);
+}
+
+.nav-label {
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.nav-specular-bar {
+  position: absolute;
+  bottom: 3px;
+  left: 24%;
+  right: 24%;
+  height: 1.5px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #FFFFFF, transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.hud-nav-item.is-active .nav-specular-bar {
+  opacity: 1;
+}
+
+.hud-nav-divider {
+  width: 1px;
+  height: 20px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+}
+
+.hud-nav-item--inquire .nav-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--platinum-bright);
+  box-shadow: 0 0 8px rgba(244, 241, 234, 0.9);
+}
+
+/* ==========================================================================
+   SCULPTED ASYMMETRICAL CINEMA VIEWPORT
+   Dynamic clip-path applied by ResizeObserver in JS (with CSS fallback)
+   ========================================================================== */
+.cinema-viewport-wrapper {
+  position: relative;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.cinema-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #0D0F11;
+  box-shadow:
+    inset 0 0 80px rgba(0, 0, 0, 0.72),
+    0 18px 46px rgba(0, 0, 0, 0.45);
+}
+
+.viewport-rim-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 12;
+  overflow: visible;
+}
+
+/* 5-Reel Crossfading Visual Slides */
+.reel-slides {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.reel-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.035);
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reel-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 44%;
+  display: block;
+  filter: contrast(1.05) saturate(1.02);
+}
+
+/* Subtle Multi-Stop Luxury Vignette so Typography & Glass HUD Pop */
+.viewport-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(16, 18, 21, 0.48) 0%, rgba(16, 18, 21, 0.06) 28%, rgba(16, 18, 21, 0.14) 55%, rgba(14, 16, 19, 0.84) 100%),
+    radial-gradient(circle at 50% 44%, transparent 38%, rgba(12, 14, 17, 0.56) 100%);
+  z-index: 2;
+}
+
+/* ==========================================================================
+   OPTICAL HUD RETICLES & TELEMETRY INSIDE THE VIEWPORT
+   ========================================================================== */
+.viewport-hud-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Top-Left Chamfer Telemetry Badge following the diagonal cut */
+.vhud-chamfer-badge {
+  position: absolute;
+  top: 20px;
+  left: 118px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(20, 23, 26, 0.52);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bone-white);
+}
+
+.vhud-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #E4E2DD;
+  box-shadow: 0 0 10px #FFFFFF;
+}
+
+.vhud-reel-code {
+  font-weight: 600;
+  color: var(--platinum-bright);
+}
+
+.vhud-sep {
+  color: rgba(228, 226, 221, 0.35);
+}
+
+.vhud-reel-title {
+  color: rgba(244, 241, 234, 0.86);
+}
+
+/* Top-Right Timecode Pill */
+.vhud-top-right {
+  position: absolute;
+  top: 20px;
+  right: 112px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(20, 23, 26, 0.52);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  font-size: 9.5px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.84);
+}
+
+.vhud-tc-label {
+  color: var(--platinum-muted);
+  font-weight: 600;
+}
+
+.vhud-timecode {
+  font-variant-numeric: tabular-nums;
+  color: var(--bone-white);
+  font-weight: 500;
+}
+
+/* Precision Leica/Hasselblad Corner Hairline Crosshairs */
+.vhud-crosshair {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: rgba(244, 241, 234, 0.38);
+  border-style: solid;
+  border-width: 0;
+}
+
+.vhud-crosshair--tl { top: 64px; left: 42px; border-top-width: 1px; border-left-width: 1px; }
+.vhud-crosshair--tr { top: 64px; right: 118px; border-top-width: 1px; border-right-width: 1px; }
+.vhud-crosshair--bl { bottom: 64px; left: 42px; border-bottom-width: 1px; border-left-width: 1px; }
+.vhud-crosshair--br { bottom: 64px; right: 118px; border-bottom-width: 1px; border-right-width: 1px; }
+
+/* ==========================================================================
+   QUIET-LUXURY EDITORIAL COPY OVERLAY
+   "Without narrative, it is just stone and steel. We craft mythology."
+   ========================================================================== */
+.cinema-editorial-copy {
+  position: absolute;
+  left: 50%;
+  bottom: 58px;
+  transform: translateX(-50%);
+  width: min(860px, 82%);
+  text-align: center;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.editorial-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--platinum-bright);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.75);
+}
+
+.eyebrow-line {
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--platinum-bright), transparent);
+}
+
+.editorial-headline {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(28px, 2.75vw, 44px);
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+  color: var(--bone-white);
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.85);
+}
+
+.headline-primary {
+  display: inline;
+}
+
+.headline-italic {
+  display: inline;
+  margin-left: 10px;
+  font-style: italic;
+  font-weight: 400;
+  background: linear-gradient(135deg, #FFFFFF 0%, #E4E2DD 45%, #DFC8A2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.editorial-subline {
+  max-width: 640px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.55;
+  letter-spacing: 0.06em;
+  color: rgba(244, 241, 234, 0.82);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+}
+
+/* ==========================================================================
+   5 VERTICAL FROSTED GLASS SWITCHER BUTTONS ON THE RIGHT
+   Active button scales 1.4x with platinum specular rim & progress hair-ring
+   ========================================================================== */
+.reel-switcher-rail {
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  transform: translateY(-50%);
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 10px;
+  border-radius: 26px;
+  background: rgba(20, 23, 27, 0.34);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.switcher-rail-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  width: 100%;
+}
+
+.sr-label {
+  font-size: 8px;
+  letter-spacing: 0.28em;
+  color: var(--platinum-muted);
+}
+
+.sr-count {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: rgba(244, 241, 234, 0.72);
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-count b {
+  color: var(--bone-white);
+  font-weight: 600;
+}
+
+.switcher-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 4px;
+}
+
+/* Individual Frosted Glass Switcher Button (Andrej's Exact FrostedButton Engine) */
+.frosted-reel-btn {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: rgba(230, 230, 250, 0.09); /* #E6E6FA @ 0.09 */
+  backdrop-filter: blur(4px) saturate(135%);
+  -webkit-backdrop-filter: blur(4px) saturate(135%);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.42),
+    -17.78px -2.82px 5px rgba(0, 0, 0, 0.20),
+    0 6px 16px rgba(0, 0, 0, 0.35);
+  color: rgba(244, 241, 234, 0.78);
+  font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  cursor: pointer;
+  transition:
+    transform 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  margin: 0;
+}
+
+.frosted-reel-btn .frb-noise {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.22), rgba(230, 230, 250, 0.04) 70%);
+  filter: url(#ma-organic-glass-filter);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.frosted-reel-btn:hover {
+  transform: scale(1.12);
+  border-color: #FFFFFF;
+  color: var(--bone-white);
+}
+
+/* Active Button Scales 1.4x with Platinum Specular Rim & Progress Hair-Ring */
+.frosted-reel-btn.is-active {
+  transform: scale(1.4);
+  margin: 10px 0;
+  background: linear-gradient(145deg, rgba(244, 241, 234, 0.20) 0%, rgba(230, 230, 250, 0.10) 100%);
+  border-color: #FFFFFF;
+  color: var(--bone-white);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.62),
+    -17.78px -2.82px 5px rgba(0, 0, 0, 0.26),
+    0 0 22px rgba(228, 226, 221, 0.28);
+  z-index: 4;
+}
+
+.frb-ring-svg {
+  position: absolute;
+  inset: -3px;
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.frosted-reel-btn.is-active .frb-ring-svg {
+  opacity: 1;
+}
+
+.frb-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1;
+}
+
+.frb-ring-progress {
+  fill: none;
+  stroke: url(#platinum-rim-grad);
+  stroke-width: 1.5;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 65;
+  stroke-linecap: round;
+}
+
+.frb-num {
+  position: relative;
+  z-index: 2;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+.frb-caption {
+  position: relative;
+  z-index: 2;
+  font-size: 5.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--platinum-bright);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.25s ease, max-height 0.25s ease;
+}
+
+.frosted-reel-btn.is-active .frb-caption {
+  opacity: 0.92;
+  max-height: 10px;
+  margin-top: 2px;
+}
+
+.switcher-rail-footer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  width: 100%;
+  justify-content: center;
+}
+
+.sr-auto-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--platinum-bright);
+  box-shadow: 0 0 6px #FFFFFF;
+}
+
+.sr-auto-text {
+  font-size: 7.5px;
+  letter-spacing: 0.22em;
+  color: rgba(228, 226, 221, 0.68);
+}
+
+/* ==========================================================================
+   BOTTOM ASYMMETRICAL GLASS COMMAND DOCK & SCULPTED NOTCH CTA
+   ========================================================================== */
+.stage-bottom-dock {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 0 10px;
+}
+
+.dock-wing {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dock-wing--left {
+  align-items: flex-start;
+}
+
+.dock-wing--right {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+}
+
+.dock-wing-label {
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--platinum-mid);
+}
+
+.dock-wing-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(244, 241, 234, 0.68);
+}
+
+.dock-dot {
+  color: rgba(228, 226, 221, 0.35);
+}
+
+.dock-active-reel-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.dock-wing-sub {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: rgba(244, 241, 234, 0.72);
+}
+
+/* Center Sculpted Glass Command CTA Dock ("Commission a Work")
+   Floats partly over the bottom sculpted notch of the cinema viewport */
+.cta-command-dock-wrap {
+  position: relative;
+  margin-top: -34px;
+  z-index: 14;
+}
+
+.cta-command-button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 318px;
+  padding: 13px 38px 15px;
+  border-radius: 22px 26px 22px 26px;
+  background: linear-gradient(165deg, rgba(32, 36, 41, 0.84) 0%, rgba(20, 23, 27, 0.92) 100%);
+  backdrop-filter: blur(8px) saturate(140%);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  border: 1px solid #FFFFFF;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.50),
+    -17.78px -2.82px 5px rgba(0, 0, 0, 0.20),
+    0 18px 38px rgba(0, 0, 0, 0.65),
+    0 0 28px rgba(228, 226, 221, 0.14);
+  text-decoration: none;
+  color: var(--bone-white);
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s ease;
+  overflow: hidden;
+}
+
+.cta-command-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.65),
+    -17.78px -2.82px 5px rgba(0, 0, 0, 0.25),
+    0 22px 46px rgba(0, 0, 0, 0.75),
+    0 0 36px rgba(244, 241, 234, 0.24);
+}
+
+.cta-glass-noise {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(240px 80px at 50% 0%, rgba(244, 241, 234, 0.22), rgba(230, 230, 250, 0.09) 65%, transparent 100%);
+  filter: url(#ma-organic-glass-filter);
+  pointer-events: none;
+}
+
+.cta-kicker {
+  position: relative;
+  z-index: 2;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--platinum-mid);
+}
+
+.cta-main-row {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cta-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F4F1EA 45%, #C5C2B8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cta-arrow-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(230, 230, 250, 0.09);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bone-white);
+}
+
+.cta-platinum-lightline {
+  position: absolute;
+  bottom: 0;
+  left: 14%;
+  right: 14%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #E4E2DD, #FFFDF9, #DFC8A2, transparent);
+  box-shadow: 0 0 12px rgba(244, 241, 234, 0.9);
+}
+
+/* Right Audio / Reel Cycle Pill */
+.dock-audio-pill {
+  appearance: none;
+  background: rgba(230, 230, 250, 0.09);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    -17.78px -2.82px 5px rgba(0, 0, 0, 0.20);
+  color: var(--bone-white);
+  border-radius: 14px;
+  padding: 9px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: transform 0.22s ease, border-color 0.22s ease;
+}
+
+.dock-audio-pill:hover {
+  transform: scale(1.05);
+  border-color: #FFFFFF;
+}
+
+.audio-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 11px;
+}
+
+.audio-bars i {
+  display: block;
+  width: 2px;
+  background: var(--platinum-bright);
+  border-radius: 1px;
+}
+
+.audio-bars i:nth-child(1) { height: 5px; }
+.audio-bars i:nth-child(2) { height: 11px; }
+.audio-bars i:nth-child(3) { height: 7px; }
+.audio-bars i:nth-child(4) { height: 9px; }
+
+.audio-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+/* ==========================================================================
+   FLUID MOBILE & TABLET RESPONSIVENESS
+   Proves the dynamic ResizeObserver glass geometry + fluid layout works on mobile
+   ========================================================================== */
+@media (max-width: 1180px) {
+  .hero-section {
+    padding: 36px 32px;
+  }
+  .deck-slope-telemetry {
+    display: none;
+  }
+  .stage-top-deck {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+  }
+  .layer-2-telemetry-bar {
+    left: 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .outer-telemetry--tr,
+  .outer-telemetry--br {
+    display: none;
+  }
+  .outer-telemetry--tl {
+    top: 10px;
+    left: 16px;
+    font-size: 8px;
+  }
+  .outer-telemetry--bl {
+    bottom: 8px;
+    left: 16px;
+    font-size: 8px;
+  }
+
+  .hero-section {
+    padding: 28px 14px 24px;
+    min-height: 100vh;
+    align-items: stretch;
+  }
+
+  .stage-assembly {
+    height: auto;
+    min-height: calc(100vh - 52px);
+    max-height: none;
+  }
+
+  /* Subtle mobile layer tilts so 3D stacked glass still reads clearly on phone screens */
+  .glass-layer--1 {
+    transform: rotate(-1.1deg) translate(-8px, -7px);
+  }
+  .glass-layer--2 {
+    transform: rotate(0.65deg) translate(7px, 6px);
+  }
+
+  .layer-2-telemetry-bar {
+    top: 7px;
+    left: 20px;
+    right: 20px;
+    font-size: 7.5px;
+  }
+  .l2-sub,
+  .l2-telemetry-right {
+    display: none;
+  }
+
+  .glass-layer--3 {
+    grid-template-rows: auto 1fr auto;
+    padding: 12px 14px 16px;
+    gap: 10px;
+  }
+
+  .stage-top-deck {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 4px 0 2px;
+  }
+
+  .brand-sanctuary {
+    padding: 7px 12px 7px 8px;
+    justify-content: flex-start;
+  }
+
+  .brand-mark-pedestal {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+
+  .brand-name-img {
+    height: 12px;
+  }
+
+  .brand-signature-img {
+    height: 18px;
+  }
+
+  .brand-atelier-tag {
+    font-size: 7.5px;
+    letter-spacing: 0.20em;
+  }
+
+  .hud-nav-rail {
+    width: 100%;
+    height: 44px;
+    justify-content: space-between;
+    padding: 4px 6px;
+    border-radius: 16px;
+  }
+
+  .hud-nav-item {
+    padding: 6px 9px;
+    gap: 4px;
+  }
+
+  .nav-index {
+    font-size: 8px;
+  }
+
+  .nav-label {
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+  }
+
+  .cinema-viewport-wrapper {
+    min-height: 460px;
+    flex-direction: column;
+  }
+
+  .cinema-viewport {
+    height: 460px;
+    border-radius: 22px;
+  }
+
+  .vhud-chamfer-badge {
+    top: 14px;
+    left: 48px;
+    padding: 4px 10px;
+    font-size: 8px;
+  }
+
+  .vhud-reel-title {
+    display: none;
+  }
+
+  .vhud-top-right {
+    top: 14px;
+    right: 14px;
+    padding: 4px 10px;
+    font-size: 8px;
+  }
+
+  .vhud-format {
+    display: none;
+  }
+
+  .vhud-crosshair {
+    display: none;
+  }
+
+  .cinema-editorial-copy {
+    width: 90%;
+    bottom: 84px;
+    gap: 8px;
+  }
+
+  .editorial-eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.22em;
+  }
+
+  .eyebrow-line {
+    width: 14px;
+  }
+
+  .editorial-headline {
+    font-size: 24px;
+    line-height: 1.16;
+  }
+
+  .headline-italic {
+    display: block;
+    margin-left: 0;
+    margin-top: 2px;
+  }
+
+  .editorial-subline {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  /* On mobile, the 5 frosted glass buttons dock cleanly as a horizontal floating rail inside the lower viewport */
+  .reel-switcher-rail {
+    top: auto;
+    bottom: 14px;
+    right: 50%;
+    transform: translateX(50%);
+    flex-direction: row;
+    padding: 7px 12px;
+    border-radius: 20px;
+    gap: 10px;
+  }
+
+  .switcher-rail-header,
+  .switcher-rail-footer {
+    display: none;
+  }
+
+  .switcher-buttons {
+    flex-direction: row;
+    gap: 10px;
+    padding: 2px 4px;
+  }
+
+  .frosted-reel-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+  }
+
+  .frosted-reel-btn.is-active {
+    transform: scale(1.28);
+    margin: 0 5px;
+  }
+
+  .frb-num {
+    font-size: 9.5px;
+  }
+
+  .frb-caption {
+    display: none;
+  }
+
+  .stage-bottom-dock {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 0 4px;
+    text-align: center;
+  }
+
+  .cta-command-dock-wrap {
+    order: -1;
+    margin-top: -12px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .cta-command-button {
+    min-width: 0;
+    width: 100%;
+    padding: 11px 22px 13px;
+  }
+
+  .cta-title {
+    font-size: 18px;
+  }
+
+  .dock-wing--left {
+    align-items: center;
+  }
+
+  .dock-wing-meta {
+    font-size: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .dock-wing--right {
+    display: none;
+  }
+}
