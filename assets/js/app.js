@@ -35,11 +35,22 @@
     },
     {
       num: "03",
-      title: "AETHEL · ARCHITECTURAL FILM",
-      bottomRightCredit: "MONOLITH & SEA · ARCHITECTURAL MONOGRAPH · DIR. ANDREJ KLIMOV",
+      code: "03",
+      title: "ASHES · ANIMATED SHORT FILM",
+      directorTag: "ANIMATED SHORT FILM · WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      bottomRightCredit: "ANIMATED SHORT FILM · WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      videoSrc: "assets/reel-03-ashes.mp4",
+      video: "assets/reel-03-ashes.mp4",
+      posterSrc: "assets/reel-03-ashes-poster.jpg",
+      src: "assets/reel-03-ashes-poster.jpg",
       laurels: [
-        { src: "assets/laurel-tribeca-glass.svg", alt: "Tribeca X Selection" },
-        { src: "assets/laurel-dad-glass.svg", alt: "D&AD Graphite Pencil" },
+        { src: "assets/laurel-kursaal-finalist-glass.png", alt: "Finalist Nominee, Kursaal-AI Film Festival San Sebastián 2026" },
+        { src: "assets/laurel-ashes-aimovie-glass.png", alt: "Official Selection, AI Movie Awards Magaluf, Spain 2026" },
+        { src: "assets/laurel-ashes-shaike-glass.png", alt: "SHAIKE Best Animation TOP10 2025" },
+        { src: "assets/laurel-aifilm3-glass.png", alt: "Official Selection, AI Film 3 - AI Film and Art Festival | Arizona | Year II 2025" },
+        { src: "assets/laurel-aifj-glass.png", alt: "Official Selection, AI-FJ | AI Film Festival Japan 2025" },
+        { src: "assets/laurel-lifeart-glass.png", alt: "Official Selection, LifeArt Festival 2026" },
+        { src: "assets/laurel-monaco-glass.png", alt: "Official Selection, AI Film Fest Monaco" },
       ],
     },
     {
@@ -648,8 +659,7 @@
 
     if (elVhudCode) elVhudCode.textContent = data.num;
     if (elVhudTitle) elVhudTitle.textContent = data.title;
-    if (elCredit) elCredit.textContent = data.bottomRightCredit;
-    document.body.classList.toggle("reel-quad", !!(data.laurels && data.laurels.length >= 4));
+    if (elCredit) elCredit.textContent = data.bottomRightCredit || data.directorTag || "";
     renderLaurels(data.laurels);
 
     document.querySelectorAll(".reel-slide video").forEach((video) => {
@@ -671,13 +681,27 @@
 
   let laurelsMarkup = "";
 
+  function laurelSpan(item, extra) {
+    const cls = extra ? `viewport-laurel ${extra}` : "viewport-laurel";
+    return `<span class="${cls}"><img src="${item.src}" alt="${item.alt}"></span>`;
+  }
+
   function renderLaurels(laurels) {
     const host = document.getElementById("viewport-laurels");
     if (!host || !laurels) return;
-    host.classList.toggle("is-quad", laurels.length >= 4);
-    const markup = laurels
-      .map((item) => `<span class="viewport-laurel"><img src="${item.src}" alt="${item.alt}"></span>`)
-      .join("");
+    const count = laurels.length;
+    host.classList.toggle("is-quad", count === 4);
+    host.dataset.laurelCount = String(count);
+    document.body.classList.toggle("reel-quad", count === 4);
+    document.body.classList.toggle("reel-septet", count >= 7);
+    let markup;
+    if (count > 4) {
+      const spans = laurels.map((item, i) => laurelSpan(item, i === count - 1 ? "is-base" : ""));
+      const split = count - 3;
+      markup = `<div class="laurel-cluster laurel-cluster--left">${spans.slice(0, split).join("")}</div><div class="laurel-cluster laurel-cluster--right">${spans.slice(split).join("")}</div>`;
+    } else {
+      markup = laurels.map((item) => laurelSpan(item)).join("");
+    }
     if (markup === laurelsMarkup) return;
     const first = laurelsMarkup === "";
     laurelsMarkup = markup;

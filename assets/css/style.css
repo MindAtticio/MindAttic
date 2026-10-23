@@ -1569,11 +1569,114 @@ html, body {
    gutter. Lift the four-badge pyramid above that pair and let the studio
    line wrap so the stack keeps a clear lane. */
 @media (max-width: 560px) {
-  body.reel-quad .cinema-editorial-copy {
+  body.reel-quad .cinema-editorial-copy,
+  body.reel-septet .cinema-editorial-copy {
     width: min(54%, 176px);
   }
 
   .viewport-laurels.is-quad {
     bottom: 136px;
+  }
+}
+
+/* Seven laurels. Desktop splits four to the left of the commission notch
+   and three to the right. Below 1180 they become one bottom-left pyramid,
+   narrowest at the top. */
+.viewport-laurels[data-laurel-count="7"] {
+  left: 36px;
+  right: 36px;
+  bottom: 32px;
+  max-width: none;
+  width: auto;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.viewport-laurels[data-laurel-count="7"] .laurel-cluster {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  max-width: calc(50% - 220px);
+}
+
+.viewport-laurels[data-laurel-count="7"] .laurel-cluster--right {
+  justify-content: flex-end;
+}
+
+.viewport-laurels[data-laurel-count="7"] .viewport-laurel img {
+  height: 58px;
+  max-width: 150px;
+}
+
+@media (min-width: 1181px) {
+  body.reel-septet #vhud-director-tag {
+    position: absolute;
+    right: 56px;
+    bottom: 200px;
+    z-index: 12;
+    max-width: min(280px, 22vw);
+    text-align: right;
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 1180px) {
+  .viewport-laurels[data-laurel-count="7"] {
+    left: 16px;
+    right: auto;
+    bottom: 16px;
+    max-width: 148px;
+    width: max-content;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .viewport-laurels[data-laurel-count="7"] .laurel-cluster {
+    display: contents;
+    max-width: none;
+  }
+
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel {
+    padding: 3px 4px 3px;
+    border-radius: 10px;
+  }
+
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel img,
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel:first-child img {
+    height: 32px;
+    max-width: 136px;
+  }
+
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel.is-base img {
+    height: 36px;
+    max-width: 142px;
+  }
+}
+
+@media (max-width: 768px) {
+  .viewport-laurels[data-laurel-count="7"] {
+    left: 12px;
+    bottom: 132px;
+    max-width: 78px;
+    gap: 3px;
+  }
+
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel {
+    padding: 2px 3px 2px;
+    border-radius: 8px;
+  }
+
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel img,
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel:first-child img {
+    height: 24px;
+    max-width: 70px;
+  }
+
+  .viewport-laurels[data-laurel-count="7"] .viewport-laurel.is-base img {
+    height: 28px;
+    max-width: 72px;
   }
 }
