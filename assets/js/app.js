@@ -313,7 +313,9 @@
     const slope = notch ? notch.slope : isMobile ? 0.42 : 0.62;
     let shoulder = notch ? notch.shoulder : isMobile ? 9 : 12;
     let mouthR = notch ? notch.mouthRadius : isMobile ? 8 : 14;
-    const cx = notch ? notch.center : w * 0.5;
+    // The commission button is locked to 50%. The notch shares that center
+    // so a longer reel credit cannot slide the cutout.
+    const cx = w / 2;
     let mouthHalf = ceilingHalf + slope * notchDepth;
 
     // Keep the bottom-right chamfer outside the notch mouth. On a narrow
