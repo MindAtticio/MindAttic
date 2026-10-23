@@ -456,16 +456,37 @@
     const rTop = isMobile ? Math.round(Math.min(w * 0.24, 95)) : 155;
     const cx = Math.round(w * (isMobile ? 0.74 : 0.78));
     const cy = isMobile ? 110 : 180;
-    const rLeft = isMobile ? 110 : 190;
-    const xLeft = isMobile ? 28 : 55;
-    const rRight = isMobile ? 95 : 155;
-    const xRight = w - (isMobile ? 28 : 62);
-    const cyLeft = Math.round(h * 0.56);
-    const cyRight = Math.round(h * 0.39);
+
+    // Side circles share the emitter's pixel box. Their chords sit inside
+    // the cinema frame (the video hides the tips) and the minor arc bulges
+    // outward, so the bright stroke crosses both frosted sheets and crests
+    // in the dark margin. A chord on the outer rim never enters the glass.
+    const viewport = document.getElementById("cinema-viewport");
+    const emitterRect = emitter.getBoundingClientRect();
+    const vpRect = viewport && viewport.clientWidth > 2 ? viewport.getBoundingClientRect() : null;
+    const vpLeft = vpRect ? vpRect.left - emitterRect.left : w * 0.12;
+    const vpRight = vpRect ? vpRect.right - emitterRect.left : w * 0.88;
+    const vpTop = vpRect ? vpRect.top - emitterRect.top : h * 0.16;
+    const vpBottom = vpRect ? vpRect.bottom - emitterRect.top : h * 0.84;
+    const inset = isMobile ? 24 : 50;
+    const lx = Math.round(vpLeft + inset);
+    const rx = Math.round(vpRight - inset);
+
+    let sideR = isMobile ? Math.round(h * 0.17) : Math.round(h * 0.25);
+    let dy = sideR * 0.92;
+    const chordRoom = Math.max(48, (vpBottom - vpTop) / 2 - (isMobile ? 18 : 28));
+    if (dy > chordRoom) {
+      dy = chordRoom;
+      sideR = dy / 0.92;
+    }
+    const cySide = Math.round((vpTop + vpBottom) / 2);
+    const y1 = Math.round(cySide - dy);
+    const y2 = Math.round(cySide + dy);
+    sideR = Math.round(sideR);
 
     const topD = `M ${cx - rTop} ${cy} A ${rTop} ${rTop} 0 0 1 ${cx + rTop} ${cy}`;
-    const leftD = `M ${xLeft} ${cyLeft - rLeft} A ${rLeft} ${rLeft} 0 0 0 ${xLeft} ${cyLeft + rLeft}`;
-    const rightD = `M ${xRight} ${cyRight - rRight} A ${rRight} ${rRight} 0 0 1 ${xRight} ${cyRight + rRight}`;
+    const leftD = `M ${lx} ${y1} A ${sideR} ${sideR} 0 0 0 ${lx} ${y2}`;
+    const rightD = `M ${rx} ${y1} A ${sideR} ${sideR} 0 0 1 ${rx} ${y2}`;
 
     svg.innerHTML = `
       <path d="${leftD}" fill="none" stroke="url(#champagne-arc-grad-vert)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--left" />
