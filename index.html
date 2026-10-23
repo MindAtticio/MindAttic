@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MIND ATTIC — A Cinematic Atelier · Story First</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <!-- Global SVG Defs: Andrej's Exact Organic Noise Frosted Glass Engine & Brushed Platinum Gradients -->
+  <svg class="svg-defs" aria-hidden="true" width="0" height="0">
+    <defs>
+      <!-- Exact Organic Noise Displacement Filter:
+           feTurbulence fractalNoise baseFrequency="0.02" numOctaves="2" seed="5"
+           feComponentTransfer slope="2" intercept="-0.5"
+           feGaussianBlur stdDeviation="4"
+           feDisplacementMap scale="8" -->
+      <filter id="ma-organic-glass-filter" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="5" result="rawNoise" />
+        <feComponentTransfer in="rawNoise" result="contrastedNoise">
+          <feFuncR type="linear" slope="2" intercept="-0.5" />
+          <feFuncG type="linear" slope="2" intercept="-0.5" />
+          <feFuncB type="linear" slope="2" intercept="-0.5" />
+        </feComponentTransfer>
+        <feGaussianBlur in="contrastedNoise" stdDeviation="4" result="smoothNoise" />
+        <feDisplacementMap in="SourceGraphic" in2="smoothNoise" scale="8" xChannelSelector="R" yChannelSelector="G" result="refracted" />
+      </filter>
+
+      <!-- Outside-Only Cast Shadow Filter:
+           angle: -171 deg -> dx: -17.78px, dy: -2.82px, blur: 5px, color: #000000, opacity: 0.2 -->
+      <filter id="ma-outside-shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="-17.78" dy="-2.82" stdDeviation="5" flood-color="#000000" flood-opacity="0.2" />
+      </filter>
+
+      <!-- Fine Film Grain Filter for Obsidian Canvas -->
+      <filter id="ma-film-grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+
+      <!-- Brushed Platinum Specular Rim Gradients -->
+      <linearGradient id="platinum-rim-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+        <stop offset="22%" stop-color="#E4E2DD" stop-opacity="0.75" />
+        <stop offset="52%" stop-color="#C5C2B8" stop-opacity="0.32" />
+        <stop offset="78%" stop-color="#8E8C84" stop-opacity="0.58" />
+        <stop offset="100%" stop-color="#F4F1EA" stop-opacity="0.90" />
+      </linearGradient>
+
+      <linearGradient id="platinum-inset-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.5" />
+        <stop offset="45%" stop-color="#E4E2DD" stop-opacity="0.22" />
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.5" />
+      </linearGradient>
+
+      <linearGradient id="platinum-foil-grad" x1="0%" y1="0%" x2="100%" y2="85%">
+        <stop offset="0%" stop-color="#F4F1EA" />
+        <stop offset="28%" stop-color="#E4E2DD" />
+        <stop offset="56%" stop-color="#C5C2B8" />
+        <stop offset="82%" stop-color="#9A978F" />
+        <stop offset="100%" stop-color="#E4E2DD" />
+      </linearGradient>
+
+      <linearGradient id="champagne-arc-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#E4E2DD" stop-opacity="0" />
+        <stop offset="25%" stop-color="#F4F1EA" stop-opacity="0.88" />
+        <stop offset="55%" stop-color="#DFC8A2" stop-opacity="0.96" />
+        <stop offset="80%" stop-color="#E4E2DD" stop-opacity="0.75" />
+        <stop offset="100%" stop-color="#C5C2B8" stop-opacity="0" />
+      </linearGradient>
+
+      <!-- Vector Creature Symbol (Asymmetry Preserved as Drawn) -->
+      <symbol id="creature-of-the-attic" viewBox="0 0 400 417">
+        <path d="M54.7,5.7 Q58.3,2.3 63.3,3.0 Q68.3,3.7 71.8,7.2 Q75.3,10.7 78.3,14.7 Q81.3,18.7 84.3,22.7 Q87.2,26.8 89.9,31.1 Q92.6,35.4 95.3,39.7 Q98.0,44.0 100.6,48.4 Q103.3,52.7 105.8,57.2 Q108.4,61.6 111.0,66.0 Q113.6,70.4 116.2,74.8 Q118.8,79.2 121.5,83.5 Q124.1,87.9 126.8,92.2 Q129.5,96.5 132.1,100.9 Q134.7,105.3 137.6,109.4 Q140.4,113.6 143.5,117.5 Q146.6,121.4 150.2,124.8 Q153.7,128.3 158.2,130.8 Q162.7,133.3 168.2,134.8 Q173.7,136.3 179.6,137.4 Q185.5,138.5 191.4,139.6 Q197.4,140.6 203.4,141.6 Q209.4,142.6 215.4,143.6 Q221.4,144.6 227.3,145.7 Q233.2,146.8 239.1,147.9 Q244.9,149.1 251.1,149.9 Q257.2,150.8 263.4,151.2 Q269.6,151.5 274.8,149.8 Q280.1,148.1 283.5,144.5 Q286.9,140.9 289.6,136.6 Q292.3,132.3 294.9,127.9 Q297.5,123.5 300.2,119.2 Q302.8,114.8 305.7,110.7 Q308.6,106.6 311.7,102.7 Q314.8,98.8 318.1,95.1 Q321.3,91.3 324.9,87.9 Q328.5,84.5 332.9,82.0 Q337.3,79.5 342.2,80.2 Q347.1,80.9 350.3,84.7 Q353.5,88.5 355.1,93.9 Q356.7,99.3 357.9,105.1 Q359.2,110.8 359.8,117.2 Q360.4,123.5 360.3,129.9 Q360.2,136.2 359.8,142.8 Q359.5,149.5 358.6,155.6 Q357.6,161.6 356.3,167.3 Q355.0,173.0 353.6,178.6 Q352.2,184.2 350.9,189.9 Q349.6,195.6 349.6,202.0 Q349.6,208.4 350.8,214.2 Q352.1,219.9 353.8,225.2 Q355.6,230.4 357.3,235.7 Q359.1,240.9 360.8,246.2 Q362.5,251.5 364.2,256.8 Q365.9,262.1 367.5,267.5 Q369.1,272.9 370.8,278.2 Q372.4,283.6 374.0,289.0 Q375.5,294.5 377.2,299.8 Q378.8,305.2 380.4,310.6 Q381.9,316.1 383.5,321.5 Q385.0,327.0 386.6,332.4 Q388.1,337.9 389.7,343.3 Q391.2,348.8 392.5,354.5 Q393.8,360.2 395.3,365.7 Q396.7,371.3 397.8,377.2 Q398.8,383.2 397.3,388.4 Q395.7,393.7 391.1,396.1 Q386.5,398.5 381.0,400.0 Q375.5,401.5 369.8,402.8 Q364.1,404.1 358.1,405.1 Q352.1,406.1 346.0,407.0 Q339.9,407.9 333.8,408.8 Q327.7,409.7 321.4,410.4 Q315.1,411.1 308.7,411.7 Q302.3,412.3 295.9,412.9 Q289.5,413.5 282.8,413.8 Q276.2,414.2 269.6,414.6 Q262.9,414.9 256.3,415.3 Q249.6,415.6 242.8,415.8 Q236.0,416.0 229.0,416.0 Q222.0,416.0 215.0,416.0 Q208.0,416.0 201.0,416.0 Q194.0,416.0 187.0,416.0 Q180.0,416.0 173.1,415.9 Q166.2,415.8 159.8,415.2 Q153.4,414.6 146.7,414.3 Q140.0,414.0 133.2,413.8 Q126.5,413.5 120.1,412.9 Q113.8,412.2 107.4,411.6 Q101.1,410.9 94.6,410.4 Q88.1,409.9 81.7,409.3 Q75.3,408.7 69.2,407.8 Q63.1,406.9 56.8,406.2 Q50.6,405.4 44.5,404.5 Q38.4,403.6 32.5,402.5 Q26.5,401.5 20.9,400.1 Q15.2,398.8 10.4,396.6 Q5.6,394.4 3.6,389.7 Q1.6,385.1 2.5,379.2 Q3.4,373.4 4.5,367.5 Q5.6,361.6 6.9,355.9 Q8.2,350.2 9.6,344.6 Q11.0,339.0 12.4,333.4 Q13.8,327.8 15.2,322.2 Q16.6,316.6 18.0,311.0 Q19.4,305.4 20.8,299.8 Q22.2,294.2 23.6,288.6 Q25.1,283.1 26.4,277.4 Q27.7,271.7 29.2,266.2 Q30.6,260.6 32.0,255.0 Q33.4,249.4 34.9,243.9 Q36.4,238.4 37.9,232.9 Q39.4,227.4 41.1,222.1 Q42.7,216.7 44.5,211.5 Q46.3,206.3 47.5,200.5 Q48.8,194.8 48.4,188.4 Q48.0,182.0 46.7,176.3 Q45.4,170.6 44.3,164.7 Q43.3,158.7 42.3,152.7 Q41.3,146.7 40.6,140.4 Q39.9,134.1 39.5,127.5 Q39.1,120.9 39.1,113.9 Q39.0,107.0 38.7,100.3 Q38.4,93.6 38.5,87.1 Q38.6,80.6 38.9,73.9 Q39.1,67.1 39.7,60.7 Q40.2,54.2 41.0,48.0 Q41.8,41.8 43.0,36.0 Q44.1,30.1 45.5,24.5 Q46.9,18.9 49.0,14.0 Q51.1,9.1 54.7,5.7 Z M131.4,207.4 Q130.4,207.4 124.1,208.1 Q117.7,208.7 112.2,210.2 Q106.7,211.7 102.6,214.6 Q98.4,217.4 95.5,221.5 Q92.6,225.6 90.8,230.8 Q89.1,236.1 88.2,242.2 Q87.3,248.3 87.2,255.1 Q87.1,261.9 88.0,268.0 Q88.9,274.1 91.7,278.3 Q94.4,282.6 98.6,285.4 Q102.7,288.3 108.0,290.0 Q113.2,291.8 119.3,292.7 Q125.5,293.5 132.1,293.6 Q138.7,293.7 145.2,293.2 Q151.6,292.6 157.7,291.7 Q163.8,290.8 169.2,289.2 Q174.6,287.6 178.6,284.6 Q182.6,281.6 185.2,277.2 Q187.7,272.7 188.7,266.7 Q189.8,260.8 189.8,253.9 Q189.9,247.1 189.3,240.7 Q188.6,234.4 187.2,228.8 Q185.8,223.2 182.9,219.1 Q180.0,215.0 175.4,212.6 Q170.7,210.3 164.9,209.1 Q159.0,208.0 152.5,207.5 Q146.0,207.0 139.2,207.2 Q132.3,207.3 131.4,207.4 Z M264.8,210.6 Q258.5,210.5 253.0,212.0 Q247.5,213.5 244.2,217.2 Q240.9,220.9 239.6,226.6 Q238.3,232.3 238.3,239.0 Q238.4,245.6 239.7,251.3 Q241.0,257.0 243.6,261.4 Q246.1,265.9 250.4,268.6 Q254.7,271.3 260.9,272.1 Q267.0,273.0 273.6,272.6 Q280.2,272.2 286.2,271.2 Q292.2,270.2 296.8,267.8 Q301.5,265.5 304.1,261.1 Q306.8,256.8 307.3,250.5 Q307.8,244.2 306.7,238.3 Q305.5,232.5 302.8,228.2 Q300.2,223.8 296.4,220.6 Q292.6,217.4 287.7,215.3 Q282.8,213.2 277.0,212.0 Q271.2,210.8 264.8,210.6 Z" fill-rule="evenodd" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Matte Obsidian Charcoal Canvas (#1A1D20) + Fine Film Grain -->
+  <div class="obsidian-canvas" aria-hidden="true">
+    <div class="ambient-caustic ambient-caustic--top-right"></div>
+    <div class="ambient-caustic ambient-caustic--bottom-left"></div>
+    <div class="ambient-caustic ambient-caustic--center"></div>
+    <svg class="grain-overlay" width="100%" height="100%">
+      <rect width="100%" height="100%" filter="url(#ma-film-grain)" opacity="0.042" />
+    </svg>
+  </div>
+
+  <!-- Outer Architectural Negative-Space Micro-Telemetry -->
+  <div class="outer-telemetry outer-telemetry--tl" aria-hidden="true">
+    <span class="ot-coord">51°30′26″N · 00°07′39″W</span>
+    <span class="ot-sep">//</span>
+    <span class="ot-label">MINDATTIC.IO · ATELIER CHASSIS IV</span>
+  </div>
+  <div class="outer-telemetry outer-telemetry--tr" aria-hidden="true">
+    <span class="ot-dot"></span>
+    <span class="ot-label">ORGANIC REFRACTION ENGINE · BLUR 4.0 · DISTORT 8.0 · #E6E6FA @ 0.09</span>
+  </div>
+  <div class="outer-telemetry outer-telemetry--bl" aria-hidden="true">
+    <span class="ot-label">SURFACE 01: MATTE OBSIDIAN #1A1D20</span>
+    <span class="ot-sep">·</span>
+    <span class="ot-label">SURFACE 02: BRUSHED PLATINUM FOIL</span>
+  </div>
+  <div class="outer-telemetry outer-telemetry--br" aria-hidden="true">
+    <span class="ot-label">CANNES LIONS · TRIBECA · ANNECY · LON-AI · SHAIKE</span>
+  </div>
+
+  <!-- SECTION 1: HERO — 3-LAYERED ASYMMETRICAL SMOKED CRYSTAL ARCHITECTURE -->
+  <main class="hero-section" id="hero-section">
+    <div class="stage-assembly" id="stage-assembly">
+
+      <!-- =================================================================
+           REFRACTIVE LIGHT TUBES & ARCS BEHIND THE GLASS STACK (Like Ref 2)
+           ================================================================= -->
+      <div class="light-emitter-layer" aria-hidden="true">
+        <!-- Top-Right Warm Champagne-Platinum Light Tube -->
+        <div class="light-tube light-tube--top-bar"></div>
+        <!-- Diagonal Refractive Light Streak cutting behind the top-right glass terrace -->
+        <div class="light-tube light-tube--diagonal-streak"></div>
+        <!-- Left & Right Glowing Semi-Circular Caustic Arcs (Ref 2 homage) -->
+        <svg class="light-arcs-svg" viewBox="0 0 1600 940" preserveAspectRatio="none">
+          <!-- Left luminous platinum semi-circular arc bleeding through frosted left edge -->
+          <path d="M 55 340 A 190 190 0 0 0 55 710" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--left" />
+          <path d="M 55 340 A 190 190 0 0 0 55 710" fill="none" stroke="#F4F1EA" stroke-width="2" stroke-linecap="round" opacity="0.92" />
+          <!-- Right luminous platinum arc behind the 5-button switcher rail -->
+          <path d="M 1538 220 A 155 155 0 0 1 1538 510" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5" stroke-linecap="round" class="caustic-arc caustic-arc--right" />
+          <path d="M 1538 220 A 155 155 0 0 1 1538 510" fill="none" stroke="#F4F1EA" stroke-width="1.8" stroke-linecap="round" opacity="0.88" />
+          <!-- Top-right horizontal light bar behind Layer 1 & Layer 2 -->
+          <line x1="820" y1="16" x2="1360" y2="16" stroke="url(#champagne-arc-grad)" stroke-width="6" stroke-linecap="round" class="caustic-bar-glow" />
+          <line x1="850" y1="16" x2="1330" y2="16" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
+      </div>
+
+      <!-- =================================================================
+           LAYER 1: DEEPEST BACKGROUND SMOKED GLASS PLANE
+           rotate(-1.2deg) translate(-18px, -12px)
+           ================================================================= -->
+      <div class="glass-layer glass-layer--1" id="glass-layer-1" aria-hidden="true">
+        <div class="glass-refraction-noise"></div>
+        <div class="glass-caustic-bleed glass-caustic-bleed--tr"></div>
+        <div class="glass-caustic-bleed glass-caustic-bleed--bl"></div>
+        <svg class="layer-rim-svg" id="svg-layer-1"></svg>
+        <div class="layer-1-corner-mark">
+          <span>PLANE 01 // CAST CRYSTAL SUBSTRATE · -1.2°</span>
+        </div>
+      </div>
+
+      <!-- =================================================================
+           LAYER 2: MIDDLE ARCHITECTURAL GLASS CHASSIS & STEPPED HUD TERRACE
+           rotate(0.6deg) translate(14px, 10px)
+           ================================================================= -->
+      <div class="glass-layer glass-layer--2" id="glass-layer-2">
+        <div class="glass-refraction-noise"></div>
+        <div class="glass-caustic-bleed glass-caustic-bleed--terrace"></div>
+        <svg class="layer-rim-svg" id="svg-layer-2"></svg>
+
+        <!-- Precision HUD Hairlines & Festival Telemetry on Layer 2 -->
+        <div class="layer-2-telemetry-bar">
+          <div class="l2-telemetry-left">
+            <span class="l2-Diamond">◇</span>
+            <span class="l2-code">XI × FESTIVAL-SELECTED ATELIER // 01 — 05</span>
+            <span class="l2-divider"></span>
+            <span class="l2-sub">AUTHORSHIP FOR MAISONS &amp; FOUNDERS</span>
+          </div>
+          <div class="l2-telemetry-right">
+            <span class="l2-aspect">ANAMORPHIC 2.39:1</span>
+            <span class="l2-divider"></span>
+            <span class="l2-fps">24.00 FPS · RAW MASTER</span>
+          </div>
+        </div>
+
+        <!-- Bottom-Right Chassis Coordinate Readout on Layer 2 -->
+        <div class="layer-2-bottom-telemetry" aria-hidden="true">
+          <span>CHASSIS REF // MA-2026-X1</span>
+          <span class="l2-divider"></span>
+          <span>REFRACTION INDEX 1.52 · ORGANIC TURBULENCE SEED 05</span>
+        </div>
+      </div>
+
+      <!-- =================================================================
+           LAYER 3: PRIMARY ASYMMETRICAL CINEMA STAGE & INTEGRATED GLASS HUD
+           Fluid ResizeObserver SVG Rim + Asymmetrical Ear Sanctuary + Stepped Nav
+           ================================================================= -->
+      <div class="glass-layer glass-layer--3" id="glass-layer-3">
+        <!-- Organic Noise Frosted Glass Backing -->
+        <div class="glass-refraction-noise"></div>
+        <div class="glass-caustic-bleed glass-caustic-bleed--primary"></div>
+
+        <!-- Dynamic Parametric SVG Rim for Layer 3 (Outline #FFFFFF Opacity 1 + Inset 0.5) -->
+        <svg class="layer-rim-svg" id="svg-layer-3"></svg>
+
+        <!-- TOP ARCHITECTURAL DECK: Left Brand Sanctuary + Right Stepped Glass HUD Rail -->
+        <header class="stage-top-deck">
+          <!-- Top-Left Brand Sanctuary (Echoing the Creature's Asymmetrical Ear Wing) -->
+          <a href="#hero-section" class="brand-sanctuary" aria-label="Mind Attic — Story first">
+            <div class="brand-mark-pedestal">
+              <img src="assets/mindattic-mark-foil.png" alt="The Creature of the Attic" class="brand-creature-img" />
+              <span class="brand-pedestal-ring" aria-hidden="true"></span>
+            </div>
+            <div class="brand-lockup-text">
+              <div class="brand-wordmark-row">
+                <img src="assets/mindattic-name-foil.png" alt="MIND ATTIC" class="brand-name-img" />
+              </div>
+              <div class="brand-sub-row">
+                <img src="assets/mindattic-storyfirst-foil.png" alt="Story first" class="brand-signature-img" />
+                <span class="brand-atelier-tag">CINEMATIC ATELIER</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Center-Left Asymmetrical Slope Bridge Telemetry -->
+          <div class="deck-slope-telemetry" aria-hidden="true">
+            <div class="slope-line-group">
+              <span class="slope-tick"></span>
+              <span class="slope-label">DIRECTED BY ANDREJ KLIMOV</span>
+            </div>
+            <div class="slope-coords">REEL <strong id="hud-top-reel-idx">01</strong> / 05 · <span id="hud-top-laurel">CANNES · TRIBECA · ANNECY HERITAGE</span></div>
+          </div>
+
+          <!-- Top-Right Stepped Glass HUD Menu Rail -->
+          <nav class="hud-nav-rail" aria-label="Primary Atelier Navigation">
+            <button class="hud-nav-item is-active" data-nav="atelier" type="button">
+              <span class="nav-index">01</span>
+              <span class="nav-label">Atelier</span>
+              <span class="nav-specular-bar" aria-hidden="true"></span>
+            </button>
+            <span class="hud-nav-divider" aria-hidden="true"></span>
+            <button class="hud-nav-item" data-nav="commissions" type="button">
+              <span class="nav-index">02</span>
+              <span class="nav-label">Commissions</span>
+              <span class="nav-specular-bar" aria-hidden="true"></span>
+            </button>
+            <span class="hud-nav-divider" aria-hidden="true"></span>
+            <button class="hud-nav-item" data-nav="auteur" type="button">
+              <span class="nav-index">03</span>
+              <span class="nav-label">The Auteur</span>
+              <span class="nav-specular-bar" aria-hidden="true"></span>
+            </button>
+            <span class="hud-nav-divider" aria-hidden="true"></span>
+            <button class="hud-nav-item hud-nav-item--inquire" data-nav="inquire" type="button">
+              <span class="nav-index">04</span>
+              <span class="nav-label">Inquire</span>
+              <span class="nav-dot" aria-hidden="true"></span>
+              <span class="nav-specular-bar" aria-hidden="true"></span>
+            </button>
+          </nav>
+        </header>
+
+        <!-- SCULPTED ASYMMETRICAL CINEMA VIEWPORT -->
+        <div class="cinema-viewport-wrapper" id="cinema-viewport-wrapper">
+          <div class="cinema-viewport" id="cinema-viewport">
+            <!-- 5 High-Contrast Standout Visuals (Crossfading Film Frames) -->
+            <div class="reel-slides" id="reel-slides">
+              <div class="reel-slide is-active" data-index="0">
+                <img src="assets/reel-01-oculus.jpg" alt="Reel 01 — The Oculus / Memory Archive" class="reel-image" />
+              </div>
+              <div class="reel-slide" data-index="1">
+                <img src="assets/reel-02-the-raw.jpg" alt="Reel 02 — The Raw / Uncut Obsidian Marble at Dawn" class="reel-image" />
+              </div>
+              <div class="reel-slide" data-index="2">
+                <img src="assets/reel-03-the-mark.jpg" alt="Reel 03 — The Mark / Platinum Line & Architectural Sketch" class="reel-image" />
+              </div>
+              <div class="reel-slide" data-index="3">
+                <img src="assets/reel-04-the-legacy.jpg" alt="Reel 04 — The Legacy / Superyacht & Cliffside Twilight" class="reel-image" />
+              </div>
+              <div class="reel-slide" data-index="4">
+                <img src="assets/reel-05-everclose.jpg" alt="Reel 05 — Everclose / Auteur Animation" class="reel-image" />
+              </div>
+            </div>
+
+            <!-- Subtle Luxury Cinema Vignette & Optical Reticle Hairlines -->
+            <div class="viewport-vignette" aria-hidden="true"></div>
+
+            <!-- Precision Optical HUD Reticles inside the Viewport -->
+            <div class="viewport-hud-overlay" aria-hidden="true">
+              <!-- Top-Left Diagonal Chamfer Telemetry (Echoing Creature Ear Slope) -->
+              <div class="vhud-chamfer-badge">
+                <span class="vhud-pulse"></span>
+                <span class="vhud-reel-code" id="vhud-reel-code">REEL 01 / 05</span>
+                <span class="vhud-sep">//</span>
+                <span class="vhud-reel-title" id="vhud-reel-title">THE OCULUS · MEMORY ARCHIVE</span>
+              </div>
+
+              <!-- Top-Right Timecode & Festival Laurels Pill -->
+              <div class="vhud-top-right">
+                <span class="vhud-tc-label">TC</span>
+                <span class="vhud-timecode" id="vhud-timecode">00:14:08:22</span>
+                <span class="vhud-sep">·</span>
+                <span class="vhud-format" id="vhud-format">35MM ANAMORPHIC</span>
+              </div>
+
+              <!-- Subtle Optical Crosshairs -->
+              <div class="vhud-crosshair vhud-crosshair--tl"></div>
+              <div class="vhud-crosshair vhud-crosshair--tr"></div>
+              <div class="vhud-crosshair vhud-crosshair--bl"></div>
+              <div class="vhud-crosshair vhud-crosshair--br"></div>
+            </div>
+
+            <!-- QUIET-LUXURY EDITORIAL COPY OVERLAY -->
+            <div class="cinema-editorial-copy">
+              <div class="editorial-eyebrow">
+                <span class="eyebrow-line"></span>
+                <span class="eyebrow-text" id="editorial-eyebrow-text">FRAME I — THE OCULUS · STORY FIRST</span>
+                <span class="eyebrow-line"></span>
+              </div>
+
+              <h1 class="editorial-headline" id="editorial-headline">
+                <span class="headline-primary">Without narrative, it is just stone and steel.</span>
+                <em class="headline-italic">We craft mythology.</em>
+              </h1>
+
+              <p class="editorial-subline" id="editorial-subline">
+                A cinematic atelier. Eleven-time festival-selected authorship for maisons and founders that build for legacy.
+              </p>
+            </div>
+          </div>
+
+          <!-- Dynamic Parametric SVG Rim around the Sculpted Asymmetrical Cinema Viewport -->
+          <svg class="viewport-rim-svg" id="svg-viewport-rim" aria-hidden="true"></svg>
+
+          <!-- ===============================================================
+               5 VERTICAL FROSTED GLASS SWITCHER BUTTONS ON THE RIGHT
+               With organic noise refraction, active button scaled 1.4x,
+               platinum specular rim & progress hair-ring
+               =============================================================== -->
+          <aside class="reel-switcher-rail" aria-label="5-Film Atelier Reel Switcher">
+            <div class="switcher-rail-header" aria-hidden="true">
+              <span class="sr-label">REEL</span>
+              <span class="sr-count"><b id="sr-active-num">01</b>/05</span>
+            </div>
+
+            <div class="switcher-buttons" id="switcher-buttons">
+              <button class="frosted-reel-btn is-active" data-reel="0" type="button" aria-label="Reel 01: The Oculus / Memory Archive">
+                <span class="frb-noise" aria-hidden="true"></span>
+                <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
+                </svg>
+                <span class="frb-num">01</span>
+                <span class="frb-caption">OCULUS</span>
+              </button>
+
+              <button class="frosted-reel-btn" data-reel="1" type="button" aria-label="Reel 02: The Raw / Uncut Obsidian Marble">
+                <span class="frb-noise" aria-hidden="true"></span>
+                <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
+                </svg>
+                <span class="frb-num">02</span>
+                <span class="frb-caption">THE RAW</span>
+              </button>
+
+              <button class="frosted-reel-btn" data-reel="2" type="button" aria-label="Reel 03: The Mark / Platinum Line">
+                <span class="frb-noise" aria-hidden="true"></span>
+                <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
+                </svg>
+                <span class="frb-num">03</span>
+                <span class="frb-caption">THE MARK</span>
+              </button>
+
+              <button class="frosted-reel-btn" data-reel="3" type="button" aria-label="Reel 04: The Legacy / Superyacht Twilight">
+                <span class="frb-noise" aria-hidden="true"></span>
+                <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
+                </svg>
+                <span class="frb-num">04</span>
+                <span class="frb-caption">LEGACY</span>
+              </button>
+
+              <button class="frosted-reel-btn" data-reel="4" type="button" aria-label="Reel 05: Everclose / Auteur Animation">
+                <span class="frb-noise" aria-hidden="true"></span>
+                <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
+                  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
+                </svg>
+                <span class="frb-num">05</span>
+                <span class="frb-caption">AUTEUR</span>
+              </button>
+            </div>
+
+            <div class="switcher-rail-footer" aria-hidden="true">
+              <span class="sr-auto-dot"></span>
+              <span class="sr-auto-text">AUTO</span>
+            </div>
+          </aside>
+        </div>
+
+        <!-- ===============================================================
+             BOTTOM ASYMMETRICAL GLASS COMMAND DOCK & SCULPTED NOTCH CTA
+             =============================================================== -->
+        <footer class="stage-bottom-dock">
+          <!-- Left Archival Provenance Readout -->
+          <div class="dock-wing dock-wing--left">
+            <span class="dock-wing-label">SELECTED COMMISSIONS &amp; HONORS</span>
+            <div class="dock-wing-meta">
+              <span>BIG SCREEN HACK LONDON</span>
+              <span class="dock-dot">·</span>
+              <span>AI MOVIE AWARDS</span>
+              <span class="dock-dot">·</span>
+              <span>SHAIKE BEST ANIMATION</span>
+            </div>
+          </div>
+
+          <!-- Center Sculpted Glass Command CTA Dock ("Commission a Work") -->
+          <div class="cta-command-dock-wrap">
+            <a href="mailto:andrej@mindattic.io?subject=Commission%20Inquiry%20%E2%80%94%20Mind%20Attic" class="cta-command-button" id="cta-command-button">
+              <span class="cta-glass-noise" aria-hidden="true"></span>
+              <span class="cta-inset-border" aria-hidden="true"></span>
+              <span class="cta-kicker">PERSONAL AUTEUR COMMISSION</span>
+              <span class="cta-main-row">
+                <span class="cta-title">Commission a Work</span>
+                <span class="cta-arrow-badge" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5V10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </span>
+              <span class="cta-platinum-lightline" aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <!-- Right Active Reel Specs & Sound Toggle -->
+          <div class="dock-wing dock-wing--right">
+            <div class="dock-active-reel-info">
+              <span class="dock-wing-label" id="dock-reel-category">ARCHIVE 01 // THE OCULUS</span>
+              <span class="dock-wing-sub" id="dock-reel-desc">Golden-hour corneal reflection · Memory &amp; origin study</span>
+            </div>
+            <button class="dock-audio-pill" id="dock-cycle-btn" type="button" title="Advance to Next Reel">
+              <span class="audio-bars" aria-hidden="true">
+                <i></i><i></i><i></i><i></i>
+              </span>
+              <span class="audio-label">NEXT REEL</span>
+            </button>
+          </div>
+        </footer>
+
+      </div><!-- /#glass-layer-3 -->
+
+    </div><!-- /#stage-assembly -->
+  </main>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
