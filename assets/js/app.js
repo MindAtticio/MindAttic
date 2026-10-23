@@ -88,7 +88,30 @@
    * Generates a rounded asymmetrical polygon/bezier path for Layer 1 & Layer 2
    * with a sleek architectural terrace step on the top edge.
    */
+  function roundedRectPath(w, h, r, inset) {
+    const rad = Math.max(8, r - inset);
+    const x0 = inset;
+    const y0 = inset;
+    const x1 = w - inset;
+    const y1 = h - inset;
+    return [
+      `M ${x0 + rad} ${y0}`,
+      `L ${x1 - rad} ${y0}`,
+      `Q ${x1} ${y0} ${x1} ${y0 + rad}`,
+      `L ${x1} ${y1 - rad}`,
+      `Q ${x1} ${y1} ${x1 - rad} ${y1}`,
+      `L ${x0 + rad} ${y1}`,
+      `Q ${x0} ${y1} ${x0} ${y1 - rad}`,
+      `L ${x0} ${y0 + rad}`,
+      `Q ${x0} ${y0} ${x0 + rad} ${y0}`,
+      "Z",
+    ].join(" ");
+  }
+
   function buildChassisPath(w, h, r, inset, stepXRatio, stepDrop) {
+    // Stacked mobile header: a plain rounded contour. The desktop terrace
+    // step would slice through the nav once brand and nav sit on two rows.
+    if (w < 768) return roundedRectPath(w, h, r, inset);
     const x0 = inset;
     const y0 = inset;
     const x1 = w - inset;
@@ -125,6 +148,10 @@
   function buildLayer3Path(w, h, inset) {
     const isMobile = w < 768;
     const r = isMobile ? 22 : 30;
+    // On the stacked mobile header the desktop S-curve terrace (wingW / step)
+    // drops across the right side and cuts the navigation pill. Wrap the
+    // whole stack in one even rounded contour instead.
+    if (isMobile) return roundedRectPath(w, h, r, inset);
     const rad = Math.max(8, r - inset);
     const x0 = inset;
     const y0 = inset;
@@ -132,9 +159,9 @@
     const y1 = h - inset;
 
     // Top-left sanctuary wing width and gentle step drop
-    const wingW = isMobile ? Math.round(w * 0.56) : Math.min(410, Math.max(280, Math.round(w * 0.27)));
-    const slopeW = isMobile ? 36 : 68;
-    const drop = isMobile ? 6 : 12;
+    const wingW = Math.min(410, Math.max(280, Math.round(w * 0.27)));
+    const slopeW = 68;
+    const drop = 12;
 
     return [
       `M ${x0 + rad} ${y0}`,
@@ -163,6 +190,9 @@
   function buildViewportPath(w, h, inset) {
     const isMobile = w < 768;
     const r = isMobile ? 20 : 28;
+    // No bottom notch on mobile. The notch was drawn through the reel
+    // switcher and the commission dock once those panels stacked.
+    if (isMobile) return roundedRectPath(w, h, r, inset);
     const rad = Math.max(6, r - inset);
     const x0 = inset;
     const y0 = inset;
@@ -170,17 +200,13 @@
     const y1 = h - inset;
 
     // Top-left asymmetrical diagonal sweep (echoing the creature's left ear slope)
-    const cutX = isMobile ? 54 : Math.min(118, Math.round(w * 0.082));
-    const cutY = isMobile ? 34 : Math.min(68, Math.round(h * 0.095));
+    const cutX = Math.min(118, Math.round(w * 0.082));
+    const cutY = Math.min(68, Math.round(h * 0.095));
 
     // Bottom-center sculpted notch for the floating glass CTA dock.
-    // Clamp so the notch stays inside the side corners on narrow screens.
-    const notchHalfW = Math.min(
-      isMobile ? Math.min(108, Math.round(w * 0.24)) : 196,
-      Math.max(28, Math.round(w * 0.3))
-    );
-    const notchDepth = isMobile ? 12 : 34;
-    const notchCurve = isMobile ? 18 : 48;
+    const notchHalfW = Math.min(196, Math.max(28, Math.round(w * 0.3)));
+    const notchDepth = 34;
+    const notchCurve = 48;
     const cx = w * 0.5;
 
     const nLeftStart = cx - notchHalfW - notchCurve;
@@ -190,8 +216,8 @@
     const nTopY = y1 - notchDepth;
 
     // Bottom-right subtle asymmetrical chamfer (echoing Attachment 3's right corner balance)
-    const brCutX = isMobile ? 28 : 56;
-    const brCutY = isMobile ? 22 : 42;
+    const brCutX = 56;
+    const brCutY = 42;
 
     return [
       // Start after top-left diagonal sweep
