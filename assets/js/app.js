@@ -479,14 +479,24 @@
       dy = chordRoom;
       sideR = dy / 0.92;
     }
-    const cySide = Math.round((vpTop + vpBottom) / 2);
-    const y1 = Math.round(cySide - dy);
-    const y2 = Math.round(cySide + dy);
+    const cySide = (vpTop + vpBottom) / 2;
+    const vpH = vpBottom - vpTop;
+    // Right circle sits higher, left sits lower. The shift stops once a tip
+    // would leave the flat side of the frame and enter the corner radius.
+    const corner = isMobile ? 36 : 48;
+    const slack = Math.max(0, vpH / 2 - dy - corner);
+    const shift = Math.min(Math.round(vpH * (isMobile ? 0.1 : 0.11)), Math.floor(slack));
+    const rightCy = Math.round(cySide - shift);
+    const leftCy = Math.round(cySide + shift);
     sideR = Math.round(sideR);
+    const leftY1 = Math.round(leftCy - dy);
+    const leftY2 = Math.round(leftCy + dy);
+    const rightY1 = Math.round(rightCy - dy);
+    const rightY2 = Math.round(rightCy + dy);
 
     const topD = `M ${cx - rTop} ${cy} A ${rTop} ${rTop} 0 0 1 ${cx + rTop} ${cy}`;
-    const leftD = `M ${lx} ${y1} A ${sideR} ${sideR} 0 0 0 ${lx} ${y2}`;
-    const rightD = `M ${rx} ${y1} A ${sideR} ${sideR} 0 0 1 ${rx} ${y2}`;
+    const leftD = `M ${lx} ${leftY1} A ${sideR} ${sideR} 0 0 0 ${lx} ${leftY2}`;
+    const rightD = `M ${rx} ${rightY1} A ${sideR} ${sideR} 0 0 1 ${rx} ${rightY2}`;
 
     svg.innerHTML = `
       <path d="${leftD}" fill="none" stroke="url(#champagne-arc-grad-vert)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--left" />
