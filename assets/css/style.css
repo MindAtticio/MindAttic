@@ -1431,13 +1431,11 @@ html, body {
     max-height: none;
   }
 
-  /* Keep the offset small enough that the rear frames stay in the obsidian
-     margin instead of sweeping through the header. */
   .glass-layer--1 {
-    transform: rotate(-0.45deg) translate(-3px, -2px);
+    transform: rotate(-0.65deg) translate(-5px, -4px);
   }
   .glass-layer--2 {
-    transform: rotate(0.35deg) translate(3px, 2px);
+    transform: rotate(0.45deg) translate(5px, 4px);
   }
 
   .layer-2-telemetry-bar {
@@ -1568,7 +1566,7 @@ html, body {
 
   .cinema-editorial-copy {
     width: 88%;
-    bottom: 72px;
+    bottom: 88px;
     gap: 6px;
   }
 
@@ -1597,10 +1595,10 @@ html, body {
     line-height: 1.45;
   }
 
-  /* Inside the cinema frame, clear of the rounded stroke. */
+  /* Sits above the 26px commission notch so the stroke does not cross the pills. */
   .reel-switcher-rail {
     top: auto;
-    bottom: 12px;
+    bottom: 38px;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
@@ -1650,17 +1648,19 @@ html, body {
 
   .cta-command-dock-wrap {
     order: -1;
-    margin-top: 0;
+    margin-top: -24px;
+    position: relative;
+    z-index: 14;
     display: flex;
     justify-content: center;
   }
 
   .cta-command-button {
     min-width: 0;
-    width: auto;
-    max-width: 100%;
-    padding: 8px 22px 9px;
-    border-radius: 16px;
+    width: 228px;
+    max-width: 72vw;
+    padding: 8px 18px 9px;
+    border-radius: 16px 20px 16px 20px;
   }
 
   .cta-title {

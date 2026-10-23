@@ -109,18 +109,17 @@
   }
 
   function buildChassisPath(w, h, r, inset, stepXRatio, stepDrop) {
-    // Stacked mobile header: a plain rounded contour. The desktop terrace
-    // step would slice through the nav once brand and nav sit on two rows.
-    if (w < 768) return roundedRectPath(w, h, r, inset);
+    const mobile = w < 768;
     const x0 = inset;
     const y0 = inset;
     const x1 = w - inset;
     const y1 = h - inset;
-    const rad = Math.max(8, r - inset);
+    const radius = mobile ? 24 : r;
+    const rad = Math.max(8, radius - inset);
 
     const stepX = Math.round(w * stepXRatio);
-    const sDrop = stepDrop;
-    const sWidth = Math.min(54, Math.max(24, w * 0.04));
+    const sDrop = mobile ? Math.round(stepDrop * 0.65) : stepDrop;
+    const sWidth = mobile ? Math.min(36, Math.max(20, w * 0.06)) : Math.min(54, Math.max(24, w * 0.04));
 
     return [
       `M ${x0 + rad} ${y0}`,
@@ -148,29 +147,50 @@
   function buildLayer3Path(w, h, inset) {
     const isMobile = w < 768;
     const r = isMobile ? 22 : 30;
-    // On the stacked mobile header the desktop S-curve terrace (wingW / step)
-    // drops across the right side and cuts the navigation pill. Wrap the
-    // whole stack in one even rounded contour instead.
-    if (isMobile) return roundedRectPath(w, h, r, inset);
     const rad = Math.max(8, r - inset);
     const x0 = inset;
     const y0 = inset;
     const x1 = w - inset;
     const y1 = h - inset;
 
-    // Top-left sanctuary wing width and gentle step drop
-    const wingW = Math.min(410, Math.max(280, Math.round(w * 0.27)));
-    const slopeW = 68;
-    const drop = 12;
+    // Top-left sanctuary wing. On mobile the wing only covers the logo badge
+    // (about 9px of drop at the top edge). The nav rail sits a full row below.
+    const wingW = isMobile
+      ? Math.min(Math.round(w * 0.64), 270)
+      : Math.min(410, Math.max(280, Math.round(w * 0.27)));
+    const slopeW = isMobile ? 42 : 68;
+    const drop = isMobile ? 9 : 12;
+    const slopeEnd = Math.min(wingW + slopeW, x1 - rad - 8);
 
+    if (!isMobile) {
+      return [
+        `M ${x0 + rad} ${y0}`,
+        `L ${wingW} ${y0}`,
+        `C ${wingW + slopeW * 0.45} ${y0}, ${wingW + slopeW * 0.55} ${y0 + drop}, ${wingW + slopeW} ${y0 + drop}`,
+        `L ${x1 - rad} ${y0 + drop}`,
+        `Q ${x1} ${y0 + drop} ${x1} ${y0 + drop + rad}`,
+        `L ${x1} ${y1 - rad}`,
+        `Q ${x1} ${y1} ${x1 - rad} ${y1}`,
+        `L ${x0 + rad} ${y1}`,
+        `Q ${x0} ${y1} ${x0} ${y1 - rad}`,
+        `L ${x0} ${y0 + rad}`,
+        `Q ${x0} ${y0} ${x0 + rad} ${y0}`,
+        "Z",
+      ].join(" ");
+    }
+
+    const brCutX = 22;
+    const brCutY = 16;
     return [
       `M ${x0 + rad} ${y0}`,
       `L ${wingW} ${y0}`,
-      `C ${wingW + slopeW * 0.45} ${y0}, ${wingW + slopeW * 0.55} ${y0 + drop}, ${wingW + slopeW} ${y0 + drop}`,
+      `C ${wingW + slopeW * 0.45} ${y0}, ${wingW + slopeW * 0.55} ${y0 + drop}, ${slopeEnd} ${y0 + drop}`,
       `L ${x1 - rad} ${y0 + drop}`,
       `Q ${x1} ${y0 + drop} ${x1} ${y0 + drop + rad}`,
-      `L ${x1} ${y1 - rad}`,
-      `Q ${x1} ${y1} ${x1 - rad} ${y1}`,
+      `L ${x1} ${y1 - brCutY - rad * 0.4}`,
+      `Q ${x1} ${y1 - brCutY} ${x1 - brCutX * 0.35} ${y1 - brCutY * 0.55}`,
+      `L ${x1 - brCutX * 0.75} ${y1 - brCutY * 0.15}`,
+      `Q ${x1 - brCutX} ${y1} ${x1 - brCutX - rad * 0.5} ${y1}`,
       `L ${x0 + rad} ${y1}`,
       `Q ${x0} ${y1} ${x0} ${y1 - rad}`,
       `L ${x0} ${y0 + rad}`,
@@ -190,9 +210,6 @@
   function buildViewportPath(w, h, inset) {
     const isMobile = w < 768;
     const r = isMobile ? 20 : 28;
-    // No bottom notch on mobile. The notch was drawn through the reel
-    // switcher and the commission dock once those panels stacked.
-    if (isMobile) return roundedRectPath(w, h, r, inset);
     const rad = Math.max(6, r - inset);
     const x0 = inset;
     const y0 = inset;
@@ -200,24 +217,28 @@
     const y1 = h - inset;
 
     // Top-left asymmetrical diagonal sweep (echoing the creature's left ear slope)
-    const cutX = Math.min(118, Math.round(w * 0.082));
-    const cutY = Math.min(68, Math.round(h * 0.095));
+    const cutX = isMobile ? Math.min(52, Math.round(w * 0.13)) : Math.min(118, Math.round(w * 0.082));
+    const cutY = isMobile ? Math.min(34, Math.round(h * 0.065)) : Math.min(68, Math.round(h * 0.095));
 
-    // Bottom-center sculpted notch for the floating glass CTA dock.
-    const notchHalfW = Math.min(196, Math.max(28, Math.round(w * 0.3)));
-    const notchDepth = 34;
-    const notchCurve = 48;
+    // Bottom-center sculpted notch for the Commission a Work dock.
+    const notchCurve = isMobile ? 26 : 48;
+    const brCutX = isMobile ? 28 : 56;
+    const brCutY = isMobile ? 20 : 42;
+    let notchHalfW = isMobile
+      ? Math.min(122, Math.max(96, Math.round(w * 0.33)))
+      : Math.min(196, Math.max(28, Math.round(w * 0.3)));
+    const notchDepth = isMobile ? 26 : 34;
     const cx = w * 0.5;
+    // Keep the notch mouth to the left of the bottom-right chamfer.
+    const brLanding = x1 - brCutX - rad * 0.6;
+    const maxHalf = brLanding - cx - notchCurve - 6;
+    if (maxHalf > 48) notchHalfW = Math.min(notchHalfW, maxHalf);
 
     const nLeftStart = cx - notchHalfW - notchCurve;
     const nLeftInner = cx - notchHalfW + notchCurve * 0.35;
     const nRightInner = cx + notchHalfW - notchCurve * 0.35;
     const nRightEnd = cx + notchHalfW + notchCurve;
     const nTopY = y1 - notchDepth;
-
-    // Bottom-right subtle asymmetrical chamfer (echoing Attachment 3's right corner balance)
-    const brCutX = 56;
-    const brCutY = 42;
 
     return [
       // Start after top-left diagonal sweep
