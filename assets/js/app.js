@@ -15,9 +15,9 @@
       src: "assets/reel-01-everclose-poster.jpg",
       bottomRightCredit: '"THE BOND THAT SAVES YOU." · WRITTEN & DIRECTED BY ANDREJ KLIMOV',
       laurels: [
-        { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026", width: 2485, height: 843 },
-        { src: "assets/laurel-aimovie-glass.png", alt: "Official Selection, AI Movie Awards 2026", width: 1735, height: 1152 },
-        { src: "assets/laurel-bigscreenhack-glass.svg", alt: "Finalist, Big Screen Hack London 2026", width: 808, height: 672 },
+        { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026", width: 2485, height: 767 },
+        { src: "assets/laurel-aimovie-glass.png", alt: "Official Selection, AI Movie Awards 2026", width: 1665, height: 1078 },
+        { src: "assets/laurel-bigscreenhack-glass.png", alt: "Finalist, Big Screen Hack London 2026", width: 1540, height: 1291 },
       ],
     },
     {
