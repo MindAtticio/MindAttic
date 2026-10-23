@@ -111,12 +111,11 @@ html, body {
 }
 
 .ambient-caustic--top-right {
-  width: 560px;
-  height: 220px;
-  top: 4%;
-  right: 11%;
-  background: linear-gradient(125deg, rgba(244, 241, 234, 0.14), rgba(223, 200, 162, 0.11), transparent);
-  transform: rotate(-16deg);
+  width: 460px;
+  height: 460px;
+  top: -4%;
+  right: 6%;
+  background: radial-gradient(circle, rgba(244, 241, 234, 0.20) 0%, rgba(223, 200, 162, 0.10) 42%, transparent 72%);
 }
 
 .ambient-caustic--bottom-left {
@@ -215,40 +214,21 @@ html, body {
   overflow: visible;
 }
 
-.caustic-arc,
-.caustic-bar-glow {
+.caustic-arc {
   filter: blur(4px) drop-shadow(0 0 14px rgba(244, 241, 234, 0.58)) drop-shadow(0 0 28px rgba(223, 200, 162, 0.36));
 }
 
-.light-tube {
+/* Circular champagne halo sitting behind the top-right caustic crest */
+.caustic-halo--top-right {
   position: absolute;
+  top: -28px;
+  right: 10%;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
   pointer-events: none;
-  border-radius: 999px;
-}
-
-/* Glowing horizontal light bar behind top-right glass edge (like Attachment 2) */
-.light-tube--top-bar {
-  top: 2px;
-  right: 14%;
-  width: 440px;
-  height: 5px;
-  background: linear-gradient(90deg, transparent 0%, #E4E2DD 20%, #FFFDF9 50%, #DFC8A2 80%, transparent 100%);
-  box-shadow:
-    0 0 18px 3px rgba(244, 241, 234, 0.65),
-    0 0 42px 10px rgba(223, 200, 162, 0.34);
-}
-
-/* Subtle diagonal champagne-platinum light streak refracting through top-right glass (upgraded from Attachment 3) */
-.light-tube--diagonal-streak {
-  top: 38px;
-  right: 4%;
-  width: 520px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent 0%, rgba(228, 226, 221, 0.35) 22%, rgba(255, 250, 240, 0.92) 54%, rgba(223, 200, 162, 0.45) 78%, transparent 100%);
-  transform: rotate(-19.5deg);
-  box-shadow:
-    0 0 22px 4px rgba(244, 241, 234, 0.45),
-    0 0 54px 12px rgba(223, 200, 162, 0.25);
+  background: radial-gradient(circle, rgba(255, 250, 240, 0.34) 0%, rgba(244, 241, 234, 0.16) 28%, rgba(223, 200, 162, 0.08) 52%, transparent 72%);
+  filter: blur(10px);
 }
 
 /* ==========================================================================

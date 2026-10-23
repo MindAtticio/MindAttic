@@ -71,6 +71,14 @@
         <stop offset="80%" stop-color="#E4E2DD" stop-opacity="0.75" />
         <stop offset="100%" stop-color="#C5C2B8" stop-opacity="0" />
       </linearGradient>
+      <!-- Top-right crest core: aligned to the arc span so both tips dissolve -->
+      <linearGradient id="champagne-core-grad" gradientUnits="userSpaceOnUse" x1="1102" y1="180" x2="1412" y2="180">
+        <stop offset="0%" stop-color="#F4F1EA" stop-opacity="0" />
+        <stop offset="18%" stop-color="#F4F1EA" stop-opacity="0.92" />
+        <stop offset="50%" stop-color="#F4F1EA" stop-opacity="0.96" />
+        <stop offset="82%" stop-color="#F4F1EA" stop-opacity="0.92" />
+        <stop offset="100%" stop-color="#F4F1EA" stop-opacity="0" />
+      </linearGradient>
 
       <!-- Vector Creature Symbol (Asymmetry Preserved as Drawn) -->
       <symbol id="creature-of-the-attic" viewBox="0 0 400 417">
@@ -116,11 +124,9 @@
            REFRACTIVE LIGHT TUBES & ARCS BEHIND THE GLASS STACK (Like Ref 2)
            ================================================================= -->
       <div class="light-emitter-layer" aria-hidden="true">
-        <!-- Top-Right Warm Champagne-Platinum Light Tube -->
-        <div class="light-tube light-tube--top-bar"></div>
-        <!-- Diagonal Refractive Light Streak cutting behind the top-right glass terrace -->
-        <div class="light-tube light-tube--diagonal-streak"></div>
-        <!-- Left & Right Glowing Semi-Circular Caustic Arcs (Ref 2 homage) -->
+        <!-- Soft circular halo behind the top-right caustic arc -->
+        <div class="caustic-halo caustic-halo--top-right"></div>
+        <!-- Glowing semi-circular caustic arcs (left edge, right rail, top-right terrace) -->
         <svg class="light-arcs-svg" viewBox="0 0 1600 940" preserveAspectRatio="none">
           <!-- Left luminous platinum semi-circular arc bleeding through frosted left edge -->
           <path d="M 55 340 A 190 190 0 0 0 55 710" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--left" />
@@ -128,9 +134,10 @@
           <!-- Right luminous platinum arc behind the 5-button switcher rail -->
           <path d="M 1538 220 A 155 155 0 0 1 1538 510" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5" stroke-linecap="round" class="caustic-arc caustic-arc--right" />
           <path d="M 1538 220 A 155 155 0 0 1 1538 510" fill="none" stroke="#F4F1EA" stroke-width="1.8" stroke-linecap="round" opacity="0.88" />
-          <!-- Top-right horizontal light bar behind Layer 1 & Layer 2 -->
-          <line x1="820" y1="16" x2="1360" y2="16" stroke="url(#champagne-arc-grad)" stroke-width="6" stroke-linecap="round" class="caustic-bar-glow" />
-          <line x1="850" y1="16" x2="1330" y2="16" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round" />
+          <!-- Top-right crest: semicircle behind the nav terrace. The shared gradient runs
+               along this arc's horizontal span and fades to opacity 0 at both tips. -->
+          <path d="M 1102 180 A 155 155 0 0 1 1412 180" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--top" />
+          <path d="M 1102 180 A 155 155 0 0 1 1412 180" fill="none" stroke="url(#champagne-core-grad)" stroke-width="2" stroke-linecap="round" />
         </svg>
       </div>
 

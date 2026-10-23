@@ -439,18 +439,21 @@
     const vp = document.getElementById("cinema-viewport");
     const cta = document.getElementById("cta-command-button");
 
+    // Rear planes stay simple rounded rectangles. A negative stepDrop on
+    // layer 1 pushed the stroke above y = 0, so the clip chopped the fill
+    // and the rim floated across layer 2 in the top-right.
     const b1 = elementBox(l1);
     if (b1) {
-      const dOuter = buildChassisPath(b1.w, b1.h, 30, 0.5, 0.58, -8);
-      const dInset = buildChassisPath(b1.w, b1.h, 30, 2.5, 0.58, -8);
+      const dOuter = roundedRectPath(b1.w, b1.h, 30, 0.5);
+      const dInset = roundedRectPath(b1.w, b1.h, 30, 2.5);
       applyClip(l1, dOuter);
       renderDualRimSVG(document.getElementById("svg-layer-1"), dOuter, dInset, b1.w, b1.h, true);
     }
 
     const b2 = elementBox(l2);
     if (b2) {
-      const dOuter = buildChassisPath(b2.w, b2.h, 30, 0.5, 0.24, 8);
-      const dInset = buildChassisPath(b2.w, b2.h, 30, 2.5, 0.24, 8);
+      const dOuter = roundedRectPath(b2.w, b2.h, 30, 0.5);
+      const dInset = roundedRectPath(b2.w, b2.h, 30, 2.5);
       applyClip(l2, dOuter);
       renderDualRimSVG(document.getElementById("svg-layer-2"), dOuter, dInset, b2.w, b2.h, true);
     }
