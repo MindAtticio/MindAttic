@@ -1220,7 +1220,7 @@ html, body {
     z-index: 15;
     left: 50%;
     right: auto;
-    bottom: 96px;
+    bottom: 122px;
     transform: translateX(-50%);
     width: min(88%, 420px);
     text-align: center;
@@ -1270,25 +1270,25 @@ html, body {
     right: auto;
     top: auto;
     left: 50%;
-    bottom: 42px;
+    bottom: 52px;
     transform: translateX(-50%);
     flex-direction: row;
-    gap: 7px;
-    padding: 5px 8px;
-    border-radius: 14px;
+    gap: clamp(7px, 1.8vw, 10px);
+    padding: 6px 10px;
+    border-radius: 16px;
     max-width: none;
   }
 
   .switcher-buttons {
     flex-direction: row;
-    gap: 7px;
+    gap: clamp(7px, 1.8vw, 10px);
     padding: 0;
   }
 
   .frosted-reel-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 10px;
+    width: clamp(36px, 8.5vw, 42px);
+    height: clamp(36px, 8.5vw, 42px);
+    border-radius: 11px;
   }
 
   .frosted-reel-btn.is-active {
@@ -1297,13 +1297,13 @@ html, body {
   }
 
   .frb-num {
-    font-size: 9.5px;
+    font-size: clamp(11px, 2.6vw, 13px);
   }
 
   .stage-bottom-dock {
     display: block;
-    min-height: 10px;
-    padding: 2px 2px 0;
+    min-height: 22px;
+    padding: 6px 14px 8px;
     text-align: center;
   }
 
@@ -1315,30 +1315,32 @@ html, body {
   }
 
   .cta-command-dock-wrap {
-    margin-top: -32px;
+    margin-top: 0;
+    transform: translate(-50%, -28px);
   }
 
   .cta-command-button {
     min-width: 0;
     width: max-content;
-    max-width: 72vw;
-    padding: 9px 22px 10px;
+    max-width: min(78vw, 340px);
+    padding: clamp(11px, 2.7vw, 14px) clamp(24px, 5.8vw, 34px) clamp(11px, 2.7vw, 14px) clamp(28px, 6.6vw, 38px);
+    gap: clamp(9px, 2.2vw, 13px);
   }
 
   .cta-title {
-    font-size: 13.5px;
-    letter-spacing: 0.09em;
+    font-size: clamp(12px, 3vw, 14.5px);
+    letter-spacing: 0.17em;
     white-space: nowrap;
   }
 
   .cta-arrow-badge {
-    width: 19px;
-    height: 19px;
+    width: clamp(21px, 5vw, 24px);
+    height: clamp(21px, 5vw, 24px);
     border-radius: 6px;
   }
 
   .cta-main-row {
-    gap: 8px;
+    gap: clamp(9px, 2.2vw, 13px);
   }
 
   .dock-wing--right {
@@ -1346,9 +1348,9 @@ html, body {
   }
 }
 
-/* The centered notch reaches the left ledge only on the narrowest phones. */
-@media (max-width: 440px) {
+/* The wider mobile notch reaches the laurel stack through about 680px. */
+@media (max-width: 680px) {
   .viewport-laurels {
-    bottom: 32px;
+    bottom: 42px;
   }
 }

@@ -203,8 +203,8 @@
    */
   function ctaMetrics(w, h, inset) {
     const isMobile = layoutIsMobile();
-    const taper = isMobile ? Math.round(w * 0.095) : Math.round(w * 0.12);
-    const rTop = isMobile ? 12 : 18;
+    const taper = isMobile ? Math.round(Math.min(w * 0.12, Math.max(18, h * 0.42))) : Math.round(w * 0.12);
+    const rTop = isMobile ? 14 : 18;
     const rBot = isMobile ? 12 : 18;
     const x0 = inset;
     const y0 = inset;
@@ -278,7 +278,7 @@
       ceilingHalf,
       slope: shape.slope,
       shoulder: shape.tanTop,
-      mouthRadius: isMobile ? 8 : 14,
+      mouthRadius: isMobile ? 10 : 14,
       center: b.left - v.left + b.width / 2,
     };
   }
@@ -321,8 +321,9 @@
     // Keep the bottom-right chamfer outside the notch mouth. On a narrow
     // phone the tapered button needs the full mouth, so the chamfer yields
     // instead of pinching the ceiling narrower than the button.
-    const sideRoom = cx - (x0 + rad + mouthR + 8);
-    const rightRoom = x1 - rad * 0.6 - mouthHalf - mouthR - 8 - cx;
+    const sidePad = isMobile ? 4 : 8;
+    const sideRoom = cx - (x0 + rad + mouthR + sidePad);
+    const rightRoom = x1 - rad * 0.6 - mouthHalf - mouthR - sidePad - cx;
     if (rightRoom < brCutX) brCutX = Math.max(12, rightRoom);
     if (brCutX < 28 && isMobile) brCutY = Math.max(10, Math.round(brCutY * (brCutX / 28)));
     if (mouthHalf + mouthR > sideRoom && sideRoom > 48) {
