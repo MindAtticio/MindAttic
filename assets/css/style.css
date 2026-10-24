@@ -709,16 +709,6 @@ html, body {
   gap: 0;
 }
 
-/* On a phone the laurel corner sits on the reel switcher, so the note stays off. */
-@media (max-width: 768px) {
-  .reel-status {
-    display: none;
-  }
-  .viewport-laurels.has-status {
-    display: none;
-  }
-}
-
 .editorial-headline {
   font-family: var(--font-display);
   font-weight: 300;
@@ -1584,6 +1574,39 @@ html, body {
 @media (max-width: 680px) {
   .viewport-laurels {
     bottom: 48px;
+  }
+}
+
+/* Below ~630px the centered reel switcher reaches the laurel corner.
+   Keep the note on the same left edge and sit it just above the rail.
+   The rail is 58px up plus its button row (clamp matches .frosted-reel-btn). */
+@media (max-width: 630px) {
+  .viewport-laurels.has-status {
+    bottom: calc(78px + clamp(36px, 8.5vw, 42px));
+  }
+}
+
+/* Narrower than ~480px the second headline line reaches that left edge.
+   The open band above the rail is only about 13–17px, so the same hairline
+   drops to a shorter box and stays inside the band. */
+@media (max-width: 479px) {
+  .reel-status {
+    padding: 0 8px;
+    font-size: 8px;
+    line-height: 8px;
+  }
+  .viewport-laurels.has-status {
+    bottom: calc(74px + clamp(36px, 8.5vw, 42px));
+  }
+}
+
+/* Through 423px the rail is still its shortest, so the band fits the
+   desktop 9px type with only the vertical padding pulled in. */
+@media (max-width: 423px) {
+  .reel-status {
+    padding: 1px 8px;
+    font-size: 9px;
+    line-height: 9px;
   }
 }
 
