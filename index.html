@@ -8,22 +8,25 @@
 </head>
 <body>
   <!-- Global SVG Defs: Andrej's Exact Organic Noise Frosted Glass Engine & Brushed Platinum Gradients -->
-  <svg class="svg-defs" aria-hidden="true" width="0" height="0">
+  <!-- width/height stay non-zero so userSpaceOnUse primitives (blur 4, distort 8)
+       are not resolved against a 0×0 viewport. CSS hides the sprite. -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false" width="1440" height="900">
     <defs>
-      <!-- Exact Organic Noise Displacement Filter:
-           feTurbulence fractalNoise baseFrequency="0.02" numOctaves="2" seed="5"
-           feComponentTransfer slope="2" intercept="-0.5"
-           feGaussianBlur stdDeviation="4"
-           feDisplacementMap scale="8" -->
-      <filter id="ma-organic-glass-filter" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <!-- Organic refraction: fractal noise, contrast, blur 4, distort 8.
+           The region is the element box only, and feComposite "in" restores
+           SourceGraphic alpha so the displacement map cannot paint an opaque
+           grey plate over backdrop-filter. -->
+      <filter id="ma-organic-glass-filter" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
         <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="5" result="rawNoise" />
         <feComponentTransfer in="rawNoise" result="contrastedNoise">
           <feFuncR type="linear" slope="2" intercept="-0.5" />
           <feFuncG type="linear" slope="2" intercept="-0.5" />
           <feFuncB type="linear" slope="2" intercept="-0.5" />
+          <feFuncA type="discrete" tableValues="1" />
         </feComponentTransfer>
         <feGaussianBlur in="contrastedNoise" stdDeviation="4" result="smoothNoise" />
         <feDisplacementMap in="SourceGraphic" in2="smoothNoise" scale="8" xChannelSelector="R" yChannelSelector="G" result="refracted" />
+        <feComposite in="refracted" in2="SourceGraphic" operator="in" />
       </filter>
 
       <!-- Outside-Only Cast Shadow Filter:
@@ -68,6 +71,44 @@
         <stop offset="80%" stop-color="#E4E2DD" stop-opacity="0.75" />
         <stop offset="100%" stop-color="#C5C2B8" stop-opacity="0" />
       </linearGradient>
+      <!-- Side arcs: tips dissolve behind the cinema frame. The stroke is
+           already bright from 6% to 94%, which is where the circle crosses
+           the frosted HUD panels. -->
+      <linearGradient id="champagne-arc-grad-vert" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#E4E2DD" stop-opacity="0" />
+        <stop offset="4%" stop-color="#E4E2DD" stop-opacity="0" />
+        <stop offset="6%" stop-color="#F4F1EA" stop-opacity="0.85" />
+        <stop offset="20%" stop-color="#F4F1EA" stop-opacity="0.95" />
+        <stop offset="50%" stop-color="#DFC8A2" stop-opacity="0.95" />
+        <stop offset="80%" stop-color="#F4F1EA" stop-opacity="0.95" />
+        <stop offset="94%" stop-color="#F4F1EA" stop-opacity="0.85" />
+        <stop offset="96%" stop-color="#C5C2B8" stop-opacity="0" />
+        <stop offset="100%" stop-color="#C5C2B8" stop-opacity="0" />
+      </linearGradient>
+      <linearGradient id="champagne-core-vert" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#F4F1EA" stop-opacity="0" />
+        <stop offset="4%" stop-color="#F4F1EA" stop-opacity="0" />
+        <stop offset="6%" stop-color="#F4F1EA" stop-opacity="0.90" />
+        <stop offset="50%" stop-color="#F4F1EA" stop-opacity="0.96" />
+        <stop offset="94%" stop-color="#F4F1EA" stop-opacity="0.90" />
+        <stop offset="96%" stop-color="#F4F1EA" stop-opacity="0" />
+        <stop offset="100%" stop-color="#F4F1EA" stop-opacity="0" />
+      </linearGradient>
+      <!-- Top crest: user space is rewritten to the arc's pixel span -->
+      <linearGradient id="champagne-arc-grad-top" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#E4E2DD" stop-opacity="0" />
+        <stop offset="25%" stop-color="#F4F1EA" stop-opacity="0.88" />
+        <stop offset="55%" stop-color="#DFC8A2" stop-opacity="0.96" />
+        <stop offset="80%" stop-color="#E4E2DD" stop-opacity="0.75" />
+        <stop offset="100%" stop-color="#C5C2B8" stop-opacity="0" />
+      </linearGradient>
+      <linearGradient id="champagne-core-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#F4F1EA" stop-opacity="0" />
+        <stop offset="18%" stop-color="#F4F1EA" stop-opacity="0.92" />
+        <stop offset="50%" stop-color="#F4F1EA" stop-opacity="0.96" />
+        <stop offset="82%" stop-color="#F4F1EA" stop-opacity="0.92" />
+        <stop offset="100%" stop-color="#F4F1EA" stop-opacity="0" />
+      </linearGradient>
 
       <!-- Vector Creature Symbol (Asymmetry Preserved as Drawn) -->
       <symbol id="creature-of-the-attic" viewBox="0 0 400 417">
@@ -86,25 +127,6 @@
     </svg>
   </div>
 
-  <!-- Outer Architectural Negative-Space Micro-Telemetry -->
-  <div class="outer-telemetry outer-telemetry--tl" aria-hidden="true">
-    <span class="ot-coord">51°30′26″N · 00°07′39″W</span>
-    <span class="ot-sep">//</span>
-    <span class="ot-label">MINDATTIC.IO · ATELIER CHASSIS IV</span>
-  </div>
-  <div class="outer-telemetry outer-telemetry--tr" aria-hidden="true">
-    <span class="ot-dot"></span>
-    <span class="ot-label">ORGANIC REFRACTION ENGINE · BLUR 4.0 · DISTORT 8.0 · #E6E6FA @ 0.09</span>
-  </div>
-  <div class="outer-telemetry outer-telemetry--bl" aria-hidden="true">
-    <span class="ot-label">SURFACE 01: MATTE OBSIDIAN #1A1D20</span>
-    <span class="ot-sep">·</span>
-    <span class="ot-label">SURFACE 02: BRUSHED PLATINUM FOIL</span>
-  </div>
-  <div class="outer-telemetry outer-telemetry--br" aria-hidden="true">
-    <span class="ot-label">CANNES LIONS · TRIBECA · ANNECY · LON-AI · SHAIKE</span>
-  </div>
-
   <!-- SECTION 1: HERO — 3-LAYERED ASYMMETRICAL SMOKED CRYSTAL ARCHITECTURE -->
   <main class="hero-section" id="hero-section">
     <div class="stage-assembly" id="stage-assembly">
@@ -112,23 +134,11 @@
       <!-- =================================================================
            REFRACTIVE LIGHT TUBES & ARCS BEHIND THE GLASS STACK (Like Ref 2)
            ================================================================= -->
-      <div class="light-emitter-layer" aria-hidden="true">
-        <!-- Top-Right Warm Champagne-Platinum Light Tube -->
-        <div class="light-tube light-tube--top-bar"></div>
-        <!-- Diagonal Refractive Light Streak cutting behind the top-right glass terrace -->
-        <div class="light-tube light-tube--diagonal-streak"></div>
-        <!-- Left & Right Glowing Semi-Circular Caustic Arcs (Ref 2 homage) -->
-        <svg class="light-arcs-svg" viewBox="0 0 1600 940" preserveAspectRatio="none">
-          <!-- Left luminous platinum semi-circular arc bleeding through frosted left edge -->
-          <path d="M 55 340 A 190 190 0 0 0 55 710" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5.5" stroke-linecap="round" class="caustic-arc caustic-arc--left" />
-          <path d="M 55 340 A 190 190 0 0 0 55 710" fill="none" stroke="#F4F1EA" stroke-width="2" stroke-linecap="round" opacity="0.92" />
-          <!-- Right luminous platinum arc behind the 5-button switcher rail -->
-          <path d="M 1538 220 A 155 155 0 0 1 1538 510" fill="none" stroke="url(#champagne-arc-grad)" stroke-width="5" stroke-linecap="round" class="caustic-arc caustic-arc--right" />
-          <path d="M 1538 220 A 155 155 0 0 1 1538 510" fill="none" stroke="#F4F1EA" stroke-width="1.8" stroke-linecap="round" opacity="0.88" />
-          <!-- Top-right horizontal light bar behind Layer 1 & Layer 2 -->
-          <line x1="820" y1="16" x2="1360" y2="16" stroke="url(#champagne-arc-grad)" stroke-width="6" stroke-linecap="round" class="caustic-bar-glow" />
-          <line x1="850" y1="16" x2="1330" y2="16" stroke="#FFFDF9" stroke-width="2.2" stroke-linecap="round" />
-        </svg>
+      <div class="light-emitter-layer" id="light-emitter-layer" aria-hidden="true">
+        <!-- Soft circular halo behind the top-right caustic arc -->
+        <div class="caustic-halo caustic-halo--top-right"></div>
+        <!-- Arcs are redrawn in 1:1 pixel space so they stay circles at every width -->
+        <svg class="light-arcs-svg" id="svg-light-arcs" aria-hidden="true"></svg>
       </div>
 
       <!-- =================================================================
@@ -140,9 +150,6 @@
         <div class="glass-caustic-bleed glass-caustic-bleed--tr"></div>
         <div class="glass-caustic-bleed glass-caustic-bleed--bl"></div>
         <svg class="layer-rim-svg" id="svg-layer-1"></svg>
-        <div class="layer-1-corner-mark">
-          <span>PLANE 01 // CAST CRYSTAL SUBSTRATE · -1.2°</span>
-        </div>
       </div>
 
       <!-- =================================================================
@@ -153,28 +160,6 @@
         <div class="glass-refraction-noise"></div>
         <div class="glass-caustic-bleed glass-caustic-bleed--terrace"></div>
         <svg class="layer-rim-svg" id="svg-layer-2"></svg>
-
-        <!-- Precision HUD Hairlines & Festival Telemetry on Layer 2 -->
-        <div class="layer-2-telemetry-bar">
-          <div class="l2-telemetry-left">
-            <span class="l2-Diamond">◇</span>
-            <span class="l2-code">XI × FESTIVAL-SELECTED ATELIER // 01 — 05</span>
-            <span class="l2-divider"></span>
-            <span class="l2-sub">AUTHORSHIP FOR MAISONS &amp; FOUNDERS</span>
-          </div>
-          <div class="l2-telemetry-right">
-            <span class="l2-aspect">ANAMORPHIC 2.39:1</span>
-            <span class="l2-divider"></span>
-            <span class="l2-fps">24.00 FPS · RAW MASTER</span>
-          </div>
-        </div>
-
-        <!-- Bottom-Right Chassis Coordinate Readout on Layer 2 -->
-        <div class="layer-2-bottom-telemetry" aria-hidden="true">
-          <span>CHASSIS REF // MA-2026-X1</span>
-          <span class="l2-divider"></span>
-          <span>REFRACTION INDEX 1.52 · ORGANIC TURBULENCE SEED 05</span>
-        </div>
       </div>
 
       <!-- =================================================================
@@ -192,59 +177,69 @@
         <!-- TOP ARCHITECTURAL DECK: Left Brand Sanctuary + Right Stepped Glass HUD Rail -->
         <header class="stage-top-deck">
           <!-- Top-Left Brand Sanctuary (Echoing the Creature's Asymmetrical Ear Wing) -->
-          <a href="#hero-section" class="brand-sanctuary" aria-label="Mind Attic — Story first">
+          <a href="#hero-section" class="brand-sanctuary" id="brand-sanctuary" aria-label="Mind Attic">
             <div class="brand-mark-pedestal">
-              <img src="assets/mindattic-mark-foil.png" alt="The Creature of the Attic" class="brand-creature-img" />
+              <img src="assets/mindattic-mark-foil.png" alt="" class="brand-creature-img" />
               <span class="brand-pedestal-ring" aria-hidden="true"></span>
             </div>
-            <div class="brand-lockup-text">
-              <div class="brand-wordmark-row">
-                <img src="assets/mindattic-name-foil.png" alt="MIND ATTIC" class="brand-name-img" />
-              </div>
-              <div class="brand-sub-row">
-                <img src="assets/mindattic-storyfirst-foil.png" alt="Story first" class="brand-signature-img" />
-                <span class="brand-atelier-tag">CINEMATIC ATELIER</span>
-              </div>
-            </div>
+            <img src="assets/brand-wordmark.svg" alt="MIND ATTIC" class="brand-wordmark-svg" />
           </a>
 
-          <!-- Center-Left Asymmetrical Slope Bridge Telemetry -->
           <div class="deck-slope-telemetry" aria-hidden="true">
-            <div class="slope-line-group">
-              <span class="slope-tick"></span>
-              <span class="slope-label">DIRECTED BY ANDREJ KLIMOV</span>
-            </div>
-            <div class="slope-coords">REEL <strong id="hud-top-reel-idx">01</strong> / 05 · <span id="hud-top-laurel">CANNES · TRIBECA · ANNECY HERITAGE</span></div>
+            <span class="slope-credit" id="slope-credit">WRITTEN &amp; DIRECTED BY ANDREJ KLIMOV</span>
           </div>
 
           <!-- Top-Right Stepped Glass HUD Menu Rail -->
           <nav class="hud-nav-rail" aria-label="Primary Atelier Navigation">
             <button class="hud-nav-item is-active" data-nav="atelier" type="button">
-              <span class="nav-index">01</span>
               <span class="nav-label">Atelier</span>
               <span class="nav-specular-bar" aria-hidden="true"></span>
             </button>
             <span class="hud-nav-divider" aria-hidden="true"></span>
             <button class="hud-nav-item" data-nav="commissions" type="button">
-              <span class="nav-index">02</span>
               <span class="nav-label">Commissions</span>
               <span class="nav-specular-bar" aria-hidden="true"></span>
             </button>
             <span class="hud-nav-divider" aria-hidden="true"></span>
             <button class="hud-nav-item" data-nav="auteur" type="button">
-              <span class="nav-index">03</span>
               <span class="nav-label">The Auteur</span>
               <span class="nav-specular-bar" aria-hidden="true"></span>
             </button>
             <span class="hud-nav-divider" aria-hidden="true"></span>
             <button class="hud-nav-item hud-nav-item--inquire" data-nav="inquire" type="button">
-              <span class="nav-index">04</span>
               <span class="nav-label">Inquire</span>
               <span class="nav-dot" aria-hidden="true"></span>
               <span class="nav-specular-bar" aria-hidden="true"></span>
             </button>
           </nav>
+
+          <button type="button" class="mobile-menu-trigger" id="mobile-menu-trigger" aria-expanded="false" aria-controls="mobile-glass-menu">
+            <span class="mobile-menu-label">Menu</span>
+            <span class="mobile-menu-bars" aria-hidden="true"><span></span><span></span></span>
+          </button>
         </header>
+
+        <nav class="mobile-glass-menu" id="mobile-glass-menu" aria-hidden="true" aria-label="Atelier">
+          <button type="button" class="mobile-menu-row is-active" data-nav="atelier">
+            <span class="mobile-menu-index">01</span>
+            <span class="mobile-menu-name">Atelier</span>
+          </button>
+          <button type="button" class="mobile-menu-row" data-nav="commissions">
+            <span class="mobile-menu-index">02</span>
+            <span class="mobile-menu-name">Commissions</span>
+          </button>
+          <button type="button" class="mobile-menu-row" data-nav="auteur">
+            <span class="mobile-menu-index">03</span>
+            <span class="mobile-menu-name">The Auteur</span>
+          </button>
+          <a class="mobile-menu-inquire" data-nav="inquire" href="mailto:andrej@mindattic.io?subject=Commission%20Inquiry%20%E2%80%94%20Mind%20Attic">
+            <span class="mobile-inquire-dot" aria-hidden="true"></span>
+            <span class="mobile-inquire-text">
+              <span class="mobile-inquire-kicker">Commission inquiry</span>
+              <span class="mobile-inquire-label">Inquire</span>
+            </span>
+          </a>
+        </nav>
 
         <!-- SCULPTED ASYMMETRICAL CINEMA VIEWPORT -->
         <div class="cinema-viewport-wrapper" id="cinema-viewport-wrapper">
@@ -252,19 +247,19 @@
             <!-- 5 High-Contrast Standout Visuals (Crossfading Film Frames) -->
             <div class="reel-slides" id="reel-slides">
               <div class="reel-slide is-active" data-index="0">
-                <img src="assets/reel-01-oculus.jpg" alt="Reel 01 — The Oculus / Memory Archive" class="reel-image" />
+                <video id="reel-video" class="reel-video is-active" src="assets/reel-01-everclose.mp4" poster="assets/reel-01-everclose-poster.jpg" autoplay muted loop playsinline preload="auto"></video>
               </div>
               <div class="reel-slide" data-index="1">
-                <img src="assets/reel-02-the-raw.jpg" alt="Reel 02 — The Raw / Uncut Obsidian Marble at Dawn" class="reel-image" />
+                <video class="reel-video" src="assets/reel-02-era-of-giants.mp4" poster="assets/reel-02-era-of-giants-poster.jpg" muted loop playsinline preload="auto"></video>
               </div>
               <div class="reel-slide" data-index="2">
-                <img src="assets/reel-03-the-mark.jpg" alt="Reel 03 — The Mark / Platinum Line & Architectural Sketch" class="reel-image" />
+                <video class="reel-video" src="assets/reel-03-ashes.mp4" poster="assets/reel-03-ashes-poster.jpg" muted loop playsinline preload="auto"></video>
               </div>
               <div class="reel-slide" data-index="3">
-                <img src="assets/reel-04-the-legacy.jpg" alt="Reel 04 — The Legacy / Superyacht & Cliffside Twilight" class="reel-image" />
+                <video class="reel-video" src="assets/reel-04-veiled.mp4" poster="assets/reel-04-veiled-poster.jpg" muted playsinline preload="auto" data-end-fade="1"></video>
               </div>
               <div class="reel-slide" data-index="4">
-                <img src="assets/reel-05-everclose.jpg" alt="Reel 05 — Everclose / Auteur Animation" class="reel-image" />
+                <img src="assets/reel-04-the-legacy.jpg" alt="Reel 05 — The Legacy / Sovereign Worlds" class="reel-image" />
               </div>
             </div>
 
@@ -273,50 +268,31 @@
 
             <!-- Precision Optical HUD Reticles inside the Viewport -->
             <div class="viewport-hud-overlay" aria-hidden="true">
-              <!-- Top-Left Diagonal Chamfer Telemetry (Echoing Creature Ear Slope) -->
               <div class="vhud-chamfer-badge">
                 <span class="vhud-pulse"></span>
-                <span class="vhud-reel-code" id="vhud-reel-code">REEL 01 / 05</span>
+                <span class="vhud-reel-code" id="vhud-reel-code">01</span>
                 <span class="vhud-sep">//</span>
-                <span class="vhud-reel-title" id="vhud-reel-title">THE OCULUS · MEMORY ARCHIVE</span>
+                <span class="vhud-reel-title" id="vhud-reel-title">EVERCLOSE · FLAGSHIP SERIES</span>
               </div>
-
-              <!-- Top-Right Timecode & Festival Laurels Pill -->
-              <div class="vhud-top-right">
-                <span class="vhud-tc-label">TC</span>
-                <span class="vhud-timecode" id="vhud-timecode">00:14:08:22</span>
-                <span class="vhud-sep">·</span>
-                <span class="vhud-format" id="vhud-format">35MM ANAMORPHIC</span>
-              </div>
-
-              <!-- Subtle Optical Crosshairs -->
-              <div class="vhud-crosshair vhud-crosshair--tl"></div>
-              <div class="vhud-crosshair vhud-crosshair--tr"></div>
-              <div class="vhud-crosshair vhud-crosshair--bl"></div>
-              <div class="vhud-crosshair vhud-crosshair--br"></div>
             </div>
 
             <!-- QUIET-LUXURY EDITORIAL COPY OVERLAY -->
             <div class="cinema-editorial-copy">
-              <div class="editorial-eyebrow">
-                <span class="eyebrow-line"></span>
-                <span class="eyebrow-text" id="editorial-eyebrow-text">FRAME I — THE OCULUS · STORY FIRST</span>
-                <span class="eyebrow-line"></span>
-              </div>
-
-              <h1 class="editorial-headline" id="editorial-headline">
-                <span class="headline-primary">Without narrative, it is just stone and steel.</span>
-                <em class="headline-italic">We craft mythology.</em>
+              <h1 class="editorial-headline" id="reel-headline">
+                Story First — Cinematic Atelier.<br><em>We build worlds.</em>
               </h1>
-
-              <p class="editorial-subline" id="editorial-subline">
-                A cinematic atelier. Eleven-time festival-selected authorship for maisons and founders that build for legacy.
-              </p>
             </div>
-          </div>
 
-          <!-- Dynamic Parametric SVG Rim around the Sculpted Asymmetrical Cinema Viewport -->
-          <svg class="viewport-rim-svg" id="svg-viewport-rim" aria-hidden="true"></svg>
+            <div class="viewport-laurels" id="viewport-laurels" aria-label="Festival laurels" data-laurel-count="3">
+              <span class="viewport-laurel"><img src="assets/laurel-shaike-glass.png" alt="Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026" width="2485" height="767" decoding="sync" loading="eager"></span>
+              <span class="viewport-laurel"><img src="assets/laurel-aimovie-glass.png" alt="Official Selection, AI Movie Awards 2026" width="1665" height="1078" decoding="sync" loading="eager"></span>
+              <span class="viewport-laurel"><img src="assets/laurel-bigscreenhack-glass.png" alt="Finalist, Big Screen Hack London 2026" width="1540" height="1291" decoding="sync" loading="eager"></span>
+            </div>
+
+            <!-- Specular rim shares #cinema-viewport's border box. It must stay
+                 inside this element so viewBox, clip-path, and the image cannot diverge. -->
+            <svg class="viewport-rim-svg" id="svg-viewport-rim" aria-hidden="true"></svg>
+          </div>
 
           <!-- ===============================================================
                5 VERTICAL FROSTED GLASS SWITCHER BUTTONS ON THE RIGHT
@@ -324,66 +300,51 @@
                platinum specular rim & progress hair-ring
                =============================================================== -->
           <aside class="reel-switcher-rail" aria-label="5-Film Atelier Reel Switcher">
-            <div class="switcher-rail-header" aria-hidden="true">
-              <span class="sr-label">REEL</span>
-              <span class="sr-count"><b id="sr-active-num">01</b>/05</span>
-            </div>
-
             <div class="switcher-buttons" id="switcher-buttons">
-              <button class="frosted-reel-btn is-active" data-reel="0" type="button" aria-label="Reel 01: The Oculus / Memory Archive">
+              <button class="frosted-reel-btn is-active" data-reel="0" type="button" aria-label="Reel 01: Everclose, flagship series">
                 <span class="frb-noise" aria-hidden="true"></span>
                 <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
                 </svg>
                 <span class="frb-num">01</span>
-                <span class="frb-caption">OCULUS</span>
               </button>
 
-              <button class="frosted-reel-btn" data-reel="1" type="button" aria-label="Reel 02: The Raw / Uncut Obsidian Marble">
+              <button class="frosted-reel-btn" data-reel="1" type="button" aria-label="Reel 02: Era Of Giants, prehistoric micro drama pilot">
                 <span class="frb-noise" aria-hidden="true"></span>
                 <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
                 </svg>
                 <span class="frb-num">02</span>
-                <span class="frb-caption">THE RAW</span>
               </button>
 
-              <button class="frosted-reel-btn" data-reel="2" type="button" aria-label="Reel 03: The Mark / Platinum Line">
+              <button class="frosted-reel-btn" data-reel="2" type="button" aria-label="Reel 03: Ashes, animated short film">
                 <span class="frb-noise" aria-hidden="true"></span>
                 <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
                 </svg>
                 <span class="frb-num">03</span>
-                <span class="frb-caption">THE MARK</span>
               </button>
 
-              <button class="frosted-reel-btn" data-reel="3" type="button" aria-label="Reel 04: The Legacy / Superyacht Twilight">
+              <button class="frosted-reel-btn" data-reel="3" type="button" aria-label="Reel 04: Veiled, upcoming fantasy series">
                 <span class="frb-noise" aria-hidden="true"></span>
                 <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
                 </svg>
                 <span class="frb-num">04</span>
-                <span class="frb-caption">LEGACY</span>
               </button>
 
-              <button class="frosted-reel-btn" data-reel="4" type="button" aria-label="Reel 05: Everclose / Auteur Animation">
+              <button class="frosted-reel-btn" data-reel="4" type="button" aria-label="Reel 05: Nocturne IX, private aviation">
                 <span class="frb-noise" aria-hidden="true"></span>
                 <svg class="frb-ring-svg" viewBox="0 0 64 64" aria-hidden="true">
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-track" />
                   <rect x="2" y="2" width="60" height="60" rx="16" ry="16" class="frb-ring-progress" />
                 </svg>
                 <span class="frb-num">05</span>
-                <span class="frb-caption">AUTEUR</span>
               </button>
-            </div>
-
-            <div class="switcher-rail-footer" aria-hidden="true">
-              <span class="sr-auto-dot"></span>
-              <span class="sr-auto-text">AUTO</span>
             </div>
           </aside>
         </div>
@@ -392,24 +353,13 @@
              BOTTOM ASYMMETRICAL GLASS COMMAND DOCK & SCULPTED NOTCH CTA
              =============================================================== -->
         <footer class="stage-bottom-dock">
-          <!-- Left Archival Provenance Readout -->
-          <div class="dock-wing dock-wing--left">
-            <span class="dock-wing-label">SELECTED COMMISSIONS &amp; HONORS</span>
-            <div class="dock-wing-meta">
-              <span>BIG SCREEN HACK LONDON</span>
-              <span class="dock-dot">·</span>
-              <span>AI MOVIE AWARDS</span>
-              <span class="dock-dot">·</span>
-              <span>SHAIKE BEST ANIMATION</span>
-            </div>
-          </div>
+          <div class="dock-wing dock-wing--left" aria-hidden="true"></div>
 
-          <!-- Center Sculpted Glass Command CTA Dock ("Commission a Work") -->
           <div class="cta-command-dock-wrap">
             <a href="mailto:andrej@mindattic.io?subject=Commission%20Inquiry%20%E2%80%94%20Mind%20Attic" class="cta-command-button" id="cta-command-button">
+              <svg class="cta-rim-svg" id="svg-cta-rim" aria-hidden="true"></svg>
               <span class="cta-glass-noise" aria-hidden="true"></span>
               <span class="cta-inset-border" aria-hidden="true"></span>
-              <span class="cta-kicker">PERSONAL AUTEUR COMMISSION</span>
               <span class="cta-main-row">
                 <span class="cta-title">Commission a Work</span>
                 <span class="cta-arrow-badge" aria-hidden="true">
@@ -422,17 +372,13 @@
             </a>
           </div>
 
-          <!-- Right Active Reel Specs & Sound Toggle -->
           <div class="dock-wing dock-wing--right">
-            <div class="dock-active-reel-info">
-              <span class="dock-wing-label" id="dock-reel-category">ARCHIVE 01 // THE OCULUS</span>
-              <span class="dock-wing-sub" id="dock-reel-desc">Golden-hour corneal reflection · Memory &amp; origin study</span>
-            </div>
+            <span class="dock-wing-label" id="vhud-director-tag">An independent action drama series, choreographed by a martial artist with 25 years' experience.</span>
             <button class="dock-audio-pill" id="dock-cycle-btn" type="button" title="Advance to Next Reel">
               <span class="audio-bars" aria-hidden="true">
                 <i></i><i></i><i></i><i></i>
               </span>
-              <span class="audio-label">NEXT REEL</span>
+              <span class="audio-label">NEXT</span>
             </button>
           </div>
         </footer>

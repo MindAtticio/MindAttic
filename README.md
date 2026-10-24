@@ -24,6 +24,9 @@ Then open [http://localhost:8080](http://localhost:8080). The page is Section 1 
 
 ## Reference screenshots
 
-- `section1-hero-full.png` — full hero
-- `section1-glass-detail.png` — glass detail
-- `section1-mobile.png` — mobile
+- `section1-hero-full.png` — full hero at 1920×1080
+- `section1-glass-detail.png` — glass rim and wordmark
+- `section1-mobile.png` — mobile at 390×844
+- `previews/` — the same frame at 390×844, 430×932, 480×980, and 1920×1080
+
+Add `?reel=4&autoplay=0` to hold one reel still.
