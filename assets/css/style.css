@@ -689,6 +689,36 @@ html, body {
   object-fit: contain;
 }
 
+/* A production note, not a festival laurel: hairline only, no frost or shadow. */
+.reel-status {
+  display: inline-block;
+  padding: 6px 10px 7px;
+  border: 1px solid rgba(228, 226, 221, 0.62);
+  border-radius: 2px;
+  background: transparent;
+  color: rgba(244, 241, 234, 0.78);
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.viewport-laurels.has-status {
+  gap: 0;
+}
+
+/* On a phone the laurel corner sits on the reel switcher, so the note stays off. */
+@media (max-width: 768px) {
+  .reel-status {
+    display: none;
+  }
+  .viewport-laurels.has-status {
+    display: none;
+  }
+}
+
 .editorial-headline {
   font-family: var(--font-display);
   font-weight: 300;

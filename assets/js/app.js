@@ -58,13 +58,13 @@
     },
     {
       num: "04",
-      title: "VESPERS · BESPOKE AUTOMOTIVE",
+      title: "VEILED · UPCOMING FANTASY SERIES",
+      video: "assets/reel-04-veiled.mp4",
+      src: "assets/reel-04-veiled-poster.jpg",
       topCredit: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
-      bottomRightCredit: "COACHBUILT ONE-OFF · LAKE COMO COMMISSION · DIR. ANDREJ KLIMOV",
-      laurels: [
-        { src: "assets/laurel-venice-glass.svg", alt: "Venice Design Biennial", width: 808, height: 672 },
-        { src: "assets/laurel-reddot-glass.svg", alt: "Red Dot Luminary", width: 808, height: 672 },
-      ],
+      bottomRightCredit: "The second flagship series, an original fantasy world of adventure and magic, now in development.",
+      status: "IN DEVELOPMENT",
+      laurels: [],
     },
     {
       num: "05",
@@ -667,7 +667,7 @@
     if (elVhudTitle) elVhudTitle.textContent = data.title;
     if (elTopCredit) elTopCredit.textContent = data.topCredit || "";
     if (elCredit) elCredit.textContent = data.bottomRightCredit || data.directorTag || "";
-    renderLaurels(data.laurels);
+    renderLaurels(data.laurels || [], data.status || "");
 
     document.querySelectorAll(".reel-slide video").forEach((video) => {
       const slide = video.closest(".reel-slide");
@@ -678,6 +678,7 @@
         if (play && play.catch) play.catch(() => {});
       } else {
         video.pause();
+        if (video.hasAttribute("data-end-fade")) video.style.opacity = "1";
       }
     });
 
@@ -695,22 +696,97 @@
     return `<span class="${cls}"><img src="${item.src}" alt="${item.alt}"${width}${height} decoding="sync" loading="eager"></span>`;
   }
 
-  function renderLaurels(laurels) {
+  function renderLaurels(laurels, status) {
     const host = document.getElementById("viewport-laurels");
     if (!host || !laurels) return;
     const count = laurels.length;
     let markup;
-    if (count > 4) {
+    if (!count) {
+      markup = status ? `<span class="reel-status">${status}</span>` : "";
+    } else if (count > 4) {
       const spans = laurels.map((item, i) => laurelSpan(item, i === count - 1 ? "is-base" : ""));
       const split = count - 3;
       markup = `<div class="laurel-cluster laurel-cluster--left">${spans.slice(0, split).join("")}</div><div class="laurel-cluster laurel-cluster--right">${spans.slice(split).join("")}</div>`;
     } else {
       markup = laurels.map((item) => laurelSpan(item)).join("");
     }
-    if (markup === laurelsMarkup && host.dataset.laurelCount === String(count)) return;
-    host.dataset.laurelCount = String(count);
+    const countKey = count ? String(count) : status ? "status" : "0";
+    if (markup === laurelsMarkup && host.dataset.laurelCount === countKey) return;
+    host.dataset.laurelCount = countKey;
+    host.classList.toggle("has-status", !count && !!status);
+    host.setAttribute("aria-label", count ? "Festival laurels" : status || "");
+    host.toggleAttribute("hidden", !count && !status);
     host.innerHTML = markup;
     laurelsMarkup = markup;
+  }
+
+  /* Reel 04 ends on a full-frame flash. Fade the last 360ms, then fade back
+     in at the first frame so the loop does not cut. */
+  function bindEndFade(video) {
+    if (!video || video.dataset.endFadeBound) return;
+    video.dataset.endFadeBound = "1";
+    const fadeMs = 360;
+    let dimmed = false;
+    let timer = 0;
+
+    const apply = (mediaTime) => {
+      const t = typeof mediaTime === "number" ? mediaTime : video.currentTime;
+      if (!video.duration || !isFinite(video.duration) || video.paused) return;
+      const remain = video.duration - t;
+      if (remain <= fadeMs / 1000 && t > 0.5) {
+        if (!dimmed) {
+          dimmed = true;
+          video.style.transition = `opacity ${fadeMs}ms linear`;
+          video.style.opacity = "0";
+        }
+      } else if (remain > 1) {
+        dimmed = false;
+      }
+    };
+
+    let frameWatch = 0;
+    const watchFrame = (_now, meta) => {
+      apply(meta && meta.mediaTime);
+      if (!video.paused && !video.ended && video.requestVideoFrameCallback) {
+        frameWatch = video.requestVideoFrameCallback(watchFrame);
+      }
+    };
+    const arm = () => {
+      if (!timer) timer = window.setInterval(apply, 40);
+      if (video.requestVideoFrameCallback && !frameWatch) {
+        frameWatch = video.requestVideoFrameCallback(watchFrame);
+      }
+    };
+    const disarm = () => {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = 0;
+      }
+      if (frameWatch && video.cancelVideoFrameCallback) {
+        video.cancelVideoFrameCallback(frameWatch);
+        frameWatch = 0;
+      }
+    };
+
+    video.addEventListener("play", arm);
+    video.addEventListener("pause", disarm);
+    video.addEventListener("timeupdate", () => apply());
+    video.addEventListener("ended", () => {
+      disarm();
+      const slide = video.closest(".reel-slide");
+      dimmed = false;
+      if (!slide || !slide.classList.contains("is-active")) {
+        video.style.opacity = "1";
+        return;
+      }
+      video.currentTime = 0;
+      const play = video.play();
+      if (play && play.catch) play.catch(() => {});
+      window.requestAnimationFrame(() => {
+        video.style.transition = `opacity ${fadeMs}ms linear`;
+        video.style.opacity = "1";
+      });
+    });
   }
 
   function preloadLaurels() {
@@ -829,6 +905,7 @@
   };
 
   preloadLaurels();
+  document.querySelectorAll("video[data-end-fade]").forEach(bindEndFade);
 
   window.addEventListener("DOMContentLoaded", () => {
     updateFluidGlassGeometry();
