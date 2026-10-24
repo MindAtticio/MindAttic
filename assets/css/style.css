@@ -891,6 +891,8 @@ html, body {
   color: rgba(244, 241, 234, 0.72);
   white-space: normal;
   text-align: right;
+  text-transform: none;
+  max-width: 34em;
 }
 
 /* Center Sculpted Glass Command CTA Dock ("Commission a Work")
@@ -1086,6 +1088,22 @@ html, body {
   .cinema-editorial-copy {
     bottom: 96px;
     width: min(640px, 58%);
+  }
+  /* The right pocket beside the commission button is narrower here.
+     Stack the teaser over the next control and ease the tracking so the
+     sentence stays two or three lines, clear of the button. */
+  .dock-wing--right {
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    max-width: min(220px, calc(50% - 12px));
+  }
+  #vhud-director-tag {
+    max-width: 210px;
+    font-size: 8.5px;
+    letter-spacing: 0.04em;
+    line-height: 1.35;
   }
 }
 

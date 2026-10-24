@@ -13,7 +13,8 @@
       title: "EVERCLOSE · FLAGSHIP SERIES",
       video: "assets/reel-01-everclose.mp4",
       src: "assets/reel-01-everclose-poster.jpg",
-      bottomRightCredit: '"THE BOND THAT SAVES YOU." · WRITTEN & DIRECTED BY ANDREJ KLIMOV',
+      topCredit: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      bottomRightCredit: "An independent action drama series, choreographed by a martial artist with 25 years' experience.",
       laurels: [
         { src: "assets/laurel-shaike-glass.png", alt: "Official Selection, Best Animation, Shaike Film Festival, La Ciotat 2026", width: 2485, height: 767 },
         { src: "assets/laurel-aimovie-glass.png", alt: "Official Selection, AI Movie Awards 2026", width: 1665, height: 1078 },
@@ -25,7 +26,8 @@
       title: "ERA OF GIANTS · PREHISTORIC MICRO DRAMA PILOT",
       video: "assets/reel-02-era-of-giants.mp4",
       src: "assets/reel-02-era-of-giants-poster.jpg",
-      bottomRightCredit: "PREHISTORIC MICRO DRAMA PILOT · WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      topCredit: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      bottomRightCredit: "Prehistoric micro drama pilot, winner Best Action Film at AI London Film Festival 2026.",
       laurels: [
         { src: "assets/laurel-metamorph-glass.png", alt: "Shortlist, Metamorph Award 2026", width: 2024, height: 1100 },
         { src: "assets/laurel-bionic-glass.png", alt: "Finalist, BIONIC Awards 2026", width: 1665, height: 1078 },
@@ -37,8 +39,9 @@
       num: "03",
       code: "03",
       title: "ASHES · ANIMATED SHORT FILM",
-      directorTag: "ANIMATED SHORT FILM · WRITTEN & DIRECTED BY ANDREJ KLIMOV",
-      bottomRightCredit: "ANIMATED SHORT FILM · WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      topCredit: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
+      directorTag: "Animated drama short film, official selection at seven international festivals.",
+      bottomRightCredit: "Animated drama short film, official selection at seven international festivals.",
       videoSrc: "assets/reel-03-ashes.mp4",
       video: "assets/reel-03-ashes.mp4",
       posterSrc: "assets/reel-03-ashes-poster.jpg",
@@ -56,6 +59,7 @@
     {
       num: "04",
       title: "VESPERS · BESPOKE AUTOMOTIVE",
+      topCredit: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
       bottomRightCredit: "COACHBUILT ONE-OFF · LAKE COMO COMMISSION · DIR. ANDREJ KLIMOV",
       laurels: [
         { src: "assets/laurel-venice-glass.svg", alt: "Venice Design Biennial", width: 808, height: 672 },
@@ -65,6 +69,7 @@
     {
       num: "05",
       title: "NOCTURNE IX · PRIVATE AVIATION",
+      topCredit: "WRITTEN & DIRECTED BY ANDREJ KLIMOV",
       bottomRightCredit: "BESPOKE CABIN STUDY · GENEVA COMMISSION · DIR. ANDREJ KLIMOV",
       laurels: [
         { src: "assets/laurel-monaco-glass.svg", alt: "Monaco Yacht Show Grand Prix", width: 808, height: 672 },
@@ -655,10 +660,12 @@
 
     const elVhudCode = document.getElementById("vhud-reel-code");
     const elVhudTitle = document.getElementById("vhud-reel-title");
+    const elTopCredit = document.getElementById("slope-credit");
     const elCredit = document.getElementById("vhud-director-tag");
 
     if (elVhudCode) elVhudCode.textContent = data.num;
     if (elVhudTitle) elVhudTitle.textContent = data.title;
+    if (elTopCredit) elTopCredit.textContent = data.topCredit || "";
     if (elCredit) elCredit.textContent = data.bottomRightCredit || data.directorTag || "";
     renderLaurels(data.laurels);
 
